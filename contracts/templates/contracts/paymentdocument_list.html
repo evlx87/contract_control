@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список платежных документов</title>
+</head>
+<body>
+    <h1>Список платежных документов</h1>
+    <a href="{% url 'paymentdocument-create' %}">Создать новый документ</a>
+    <ul>
+        {% for document in documents %}
+        <li>
+            <a href="{% url 'paymentdocument-detail' document.pk %}">{{ document.document_name }}</a> - {{ document.amount }}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

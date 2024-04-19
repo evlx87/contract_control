@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Покупки</title>
+</head>
+<body>
+    <h1>Список покупок</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Наименование объекта закупки</th>
+                <th>Тип закупки</th>
+                <th>Доведено в текущем году</th>
+                <th>Поставщик</th>
+                <th>Предмет контракта</th>
+                <th>Номер контракта</th>
+                <th>Дата контракта</th>
+                <th>Срок действия контракта</th>
+                <th>Дата начала услуг/поставки</th>
+                <th>Дата окончания услуг/поставки</th>
+                <th>Сумма контракта</th>
+                <th>Сумма оплаты</th>
+                <th>Процент оплаты</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+                <tr>
+                    <td>{{ purchase.name }}</td>
+                    <td>{{ purchase.purchase_type }}</td>
+                    <td>{{ purchase.year_published }}</td>
+                    <td>{{ purchase.supplier }}</td>
+                    <td>{{ purchase.contract_subject }}</td>
+                    <td>{{ purchase.contract_number }}</td>
+                    <td>{{ purchase.contract_date }}</td>
+                    <td>{{ purchase.contract_duration }}</td>
+                    <td>{{ purchase.service_start_date }}</td>
+                    <td>{{ purchase.service_end_date }}</td>
+                    <td>{{ purchase.contract_amount }}</td>
+                    <td>{{ purchase.payment_amount }}</td>
+                    <td>{{ purchase.payment_percent }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+

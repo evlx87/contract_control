@@ -2,7 +2,7 @@ from django.db import models
 
 
 # Create your models here.
-class Purchase(models.Model):
+class Contract(models.Model):
     name = models.CharField(max_length=255, verbose_name="Наименование объекта закупки")
     purchase_type = models.CharField(max_length=100, verbose_name="Тип закупки")
     year_published = models.IntegerField(verbose_name="Доведено в текущем году")
@@ -16,3 +16,26 @@ class Purchase(models.Model):
     contract_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сумма контракта")
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сумма оплаты")
     payment_percent = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Процент оплаты")
+
+
+class PaymentDocument(models.Model):
+    contract = models.ForeignKey(Contract, on_delete=models.CASCADE, verbose_name="Контракт", related_name="payments")
+    date_issued = models.DateField(verbose_name="Дата платежного документа")
+    document_name = models.CharField(max_length=255, verbose_name="Наименование и номер документа")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сумма")
+    note = models.TextField(blank=True, verbose_name="Примечание")
+
+    @property
+    def issued_amount(self):
+        """ Суммирует все выставленные суммы по контракту """
+        return PaymentDocument.objects.filter(contract=self.contract).aggregate(models.Sum('amount'))['amount__sum'] or 0.00
+
+    @property
+    def balance(self):
+        """ Рассчитывает остаток по контракту """
+        total_payable = self.contract.contract_amount
+        issued = self.issued_amount
+        return total_payable - issued
+
+    def __str__(self):
+        return f"{self.document_name} - {self.amount}"
