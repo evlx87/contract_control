@@ -1,11 +1,21 @@
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from contracts.forms import PaymentDocumentForm
 from contracts.models import Contract, PaymentDocument
 
 
 # Create your views here.
+class IndexView(TemplateView):
+    template_name = 'contracts/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = "Hello, world!"
+        return context
+
+
 class PurchaseListView(ListView):
     model = Contract
     template_name = 'contracts/purchases_list.html'  # Указываем имя шаблона
