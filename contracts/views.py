@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
-from contracts.forms import PaymentDocumentForm
+from contracts.forms import PaymentDocumentForm, ContractForm
 from contracts.models import Contract, PaymentDocument
 
 
@@ -14,6 +14,17 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['message'] = "Hello, world!"
         return context
+
+
+def add_contract(request):
+    if request.method == 'POST':
+        form = ContractForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/contracts/')  # Перенаправление на главную страницу после добавления, измените это по надобности
+    else:
+        form = ContractForm()
+    return render(request, 'contracts/purchase_add.html', {'form': form})
 
 
 class PurchaseListView(ListView):

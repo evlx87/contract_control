@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить закупку</title>
+</head>
+<body>
+    <h1>Добавление информации о закупке</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+        <a>Отмена</a>
+    </form>
+</body>
+</html>

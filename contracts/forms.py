@@ -1,5 +1,29 @@
 from django import forms
-from .models import PaymentDocument
+from .models import PaymentDocument, Contract
+
+
+class ContractForm(forms.ModelForm):
+    class Meta:
+        model = Contract
+        fields = ('name',
+                  'purchase_type',
+                  'funds_allocated',
+                  'supplier',
+                  'contract_subject',
+                  'contract_number',
+                  'contract_date',
+                  'contract_duration',
+                  'service_start_date',
+                  'service_end_date',
+                  'contract_amount')
+
+        widgets = {
+            'contract_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'contract_duration': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'service_start_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'service_end_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+        }
+
 
 class PaymentDocumentForm(forms.ModelForm):
     class Meta:

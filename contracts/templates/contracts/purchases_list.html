@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Покупки</title>
+    <title>Реестр контрактов</title>
 </head>
 <body>
-    <h1>Список покупок</h1>
+<h1><center>Список закупок</center></h1>
+<div class="contract_buttons"><h2><a href="/add/">Добавить</a></h2></div>
     <table border="1">
         <thead>
             <tr>
@@ -29,7 +30,7 @@
                 <tr>
                     <td>{{ purchase.name }}</td>
                     <td>{{ purchase.purchase_type }}</td>
-                    <td>{{ purchase.year_published }}</td>
+                    <td>{{ purchase.funds_allocated }}</td>
                     <td>{{ purchase.supplier }}</td>
                     <td>{{ purchase.contract_subject }}</td>
                     <td>{{ purchase.contract_number }}</td>
