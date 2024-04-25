@@ -30,13 +30,13 @@ class PaymentDocumentForm(forms.ModelForm):
         model = PaymentDocument
         fields = ['contract', 'date_issued', 'document_name', 'amount', 'note']
         widgets = {
-            'date_issued': forms.DateInput(attrs={'type': 'date'}),
+            'date_issued': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
             'note': forms.Textarea(attrs={'rows': 4, 'cols': 40})
         }
         labels = {
             'contract': 'Контракт',
             'date_issued': 'Дата документа',
-            'document_name': 'Название документа',
+            'document_name': 'Наименование и номер документа',
             'amount': 'Сумма',
             'note': 'Примечание',
         }

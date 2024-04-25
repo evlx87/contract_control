@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView, TemplateView, DetailView
 
-from contracts.forms import ContractForm
+from contracts.forms import ContractForm, PaymentDocumentForm
 from contracts.models import Contract
 
 
@@ -25,14 +25,14 @@ class AddContractView(View):
         form = ContractForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/contracts/')  # Redirect to the main page after adding, modify as needed
+            return redirect('/contracts/')
         return render(request, 'contracts/purchase_add.html', {'form': form})
 
 
 class PurchaseListView(ListView):
     model = Contract
-    template_name = 'contracts/purchases_list.html'  # Указываем имя шаблона
-    context_object_name = 'purchases'  # Как будет называться переменная в шаблоне
+    template_name = 'contracts/purchases_list.html'
+    context_object_name = 'purchases'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,3 +43,16 @@ class PurchaseListView(ListView):
 def contract_detail(request, contract_number):
     contract = Contract.objects.get(contract_number=contract_number)
     return render(request, 'contracts/contract_detail.html', {'contract_detail': contract})
+
+
+class AddPaymentDocView(View):
+    def get(self, request):
+        form = PaymentDocumentForm()
+        return render(request, 'contracts/payment_doc_add.html', {'form': form})
+
+    def post(self, request):
+        form = PaymentDocumentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/contracts/')
+        return render(request, 'contracts/payment_doc_add.html', {'form': form})

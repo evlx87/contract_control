@@ -1,8 +1,10 @@
-    {% block title %}
-        <title>
-            {{ page_title|title }}
-        </title>
-    {% endblock %}
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>
+        {{ page_title|title }}
+    </title>
+{% endblock %}
 
 {% block page_content %}
 <h1><center>Список закупок</center></h1>
