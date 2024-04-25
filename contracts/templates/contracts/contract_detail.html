@@ -1,12 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Контракт</title>
-</head>
-<body>
-<h3>Контракт № ______ от _______</h3>
-<hr>
-
-</body>
-</html>
+{% block page_content %}
+    <h3>Контракт № {{ purchase.contract_number }} от {{ purchase.contract_date }}</h3>
+    <hr>
+    <p>Сумма контракта:  </p>
+    <p>Оплачено:  </p>
+    <p>Остаток по контракту:  </p>
+    <hr>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Дата документа</th>
+                <th>Наименование документа</th>
+                <th>Номер документа</th>
+                <th>Сумма</th>
+                <th>Платежное поручение</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+                <tr>
+                    <td>{{ purchase.name }}</td>
+                    <td>{{ purchase.purchase_type }}</td>
+                    <td>{{ purchase.funds_allocated }}</td>
+                    <td>{{ purchase.supplier }}</td>
+                    <td>{{ purchase.contract_subject }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

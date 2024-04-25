@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    {% block title %}
+
+    {% endblock %}
+
+    {% block css %}
+
+    {% endblock %}
+</head>
+
+<body>
+    {% block main_menu %}
+        {% include 'contracts/includes/inc__menu.html' %}
+    {% endblock %}
+    <hr>
+    <div class="container">
+        {% block page_header %}
+
+        {% endblock %}
+        <hr>
+        {% block page_content %}
+
+        {% endblock %}
+    </div>
+</body>
+
+</html>

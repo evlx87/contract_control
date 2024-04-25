@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Реестр контрактов</title>
-</head>
-<body>
+    {% block title %}
+        <title>
+            {{ page_title|title }}
+        </title>
+    {% endblock %}
+
+{% block page_content %}
 <h1><center>Список закупок</center></h1>
 <div class="contract_buttons"><h2><a href="/add/">Добавить</a></h2></div>
     <table border="1">
@@ -33,7 +33,7 @@
                     <td>{{ purchase.funds_allocated }}</td>
                     <td>{{ purchase.supplier }}</td>
                     <td>{{ purchase.contract_subject }}</td>
-                    <td>{{ purchase.contract_number }}</td>
+                    <td><a href="{% url 'contracts:contract-detail' purchase.contract_number %}">{{ purchase.contract_number }}</a></td>
                     <td>{{ purchase.contract_date }}</td>
                     <td>{{ purchase.contract_duration }}</td>
                     <td>{{ purchase.service_start_date }}</td>
@@ -45,6 +45,5 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}
 

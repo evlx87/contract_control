@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Контракты</title>
-</head>
-<body>
-<h1>Реестр контрактов</h1>
-<ul>
-    <li><a href="/contracts/">Список закупок</a></li>
-    <li>Данные по доведенным лимитам</li>
-</ul>
-<h2><a href="/add/">Добавить новую закупку</a></h2>
-</body>
-</html>
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+        <title>
+            {{ page_title|title }}
+        </title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Реестр контрактов</h1>
+{% endblock %}
+
+{% block page_content %}
+    <h2><a href="/add/">Добавить новую закупку</a></h2>
+{% endblock %}
