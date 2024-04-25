@@ -40,13 +40,6 @@ class PurchaseListView(ListView):
         return context
 
 
-class ContractDetailView(DetailView):
-    model = Contract
-    template_name = 'contracts/contract_detail.html'
-    context_object_name = 'contract'
-    pk_url_kwarg = 'contract_number'
-
-
 def contract_detail(request, contract_number):
     contract = Contract.objects.get(contract_number=contract_number)
     return render(request, 'contracts/contract_detail.html', {'contract_detail': contract})

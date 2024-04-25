@@ -1,28 +1,26 @@
 {% block page_content %}
-    <h3>Контракт № {{ purchase.contract_number }} от {{ purchase.contract_date }}</h3>
+    <h3>Контракт № {{ contract_detail.contract_number }} от {{ contract_detail.contract_date }}</h3>
     <hr>
-    <p>Сумма контракта:  </p>
-    <p>Оплачено:  </p>
-    <p>Остаток по контракту:  </p>
+    <p>Сумма контракта: {{ contract_detail.contract_amount }} </p>
+    <p>Оплачено: </p>
+    <p>Остаток по контракту: </p>
     <hr>
     <table border="1">
         <thead>
             <tr>
                 <th>Дата документа</th>
-                <th>Наименование документа</th>
-                <th>Номер документа</th>
+                <th>Наименование и номер документа</th>
                 <th>Сумма</th>
-                <th>Платежное поручение</th>
+                <th>Примечание</th>
             </tr>
         </thead>
         <tbody>
-            {% for purchase in purchases %}
+            {% for document in contract_detail.payments.all %}
                 <tr>
-                    <td>{{ purchase.name }}</td>
-                    <td>{{ purchase.purchase_type }}</td>
-                    <td>{{ purchase.funds_allocated }}</td>
-                    <td>{{ purchase.supplier }}</td>
-                    <td>{{ purchase.contract_subject }}</td>
+                    <td>{{ document.date_issued }}</td>
+                    <td>{{ document.document_name }}</td>
+                    <td>{{ document.amount }}</td>
+                    <td>{{ document.note }}</td>
                 </tr>
             {% endfor %}
         </tbody>
