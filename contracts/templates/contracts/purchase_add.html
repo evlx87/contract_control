@@ -18,8 +18,20 @@
         {{ form.as_p }}
         <div class="btn-container">
             <button type="submit">Сохранить</button>
-            <button>Отмена</button>
+            <button id="buttonId">Отмена</button>
         </div>
     </form>
 </div>
 {% endblock %}.
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var button = document.querySelector('#buttonId');
+
+            button.addEventListener('click', function() {
+                window.location.href = "{% url 'contracts:purchase_list' %}";
+            });
+        });
+    </script>
+{% endblock %}
