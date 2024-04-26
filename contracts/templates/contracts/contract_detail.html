@@ -12,7 +12,7 @@
     <p>Остаток по контракту: </p>
     <hr>
     <div class="button_container">
-        <button><a>Добавить</a></button>
+        <a href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить</a>
     </div>
     <table border="1">
         <thead>
