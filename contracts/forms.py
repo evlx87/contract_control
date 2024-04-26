@@ -40,6 +40,7 @@ class PaymentDocumentForm(forms.ModelForm):
             'amount': 'Сумма',
             'note': 'Примечание',
         }
+        exclude = ['contract']
 
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')

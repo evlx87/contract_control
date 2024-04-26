@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, TemplateView, DetailView
 
@@ -50,9 +50,26 @@ class AddPaymentDocView(View):
         form = PaymentDocumentForm()
         return render(request, 'contracts/payment_doc_add.html', {'form': form})
 
-    def post(self, request):
+    def post(self, request, contract_id):
+        contract = get_object_or_404(Contract, id=contract_id)
         form = PaymentDocumentForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('/contracts/')
+            payment_document = form.save(commit=False)
+            payment_document.contract = contract
+            payment_document.save()
+            return redirect('contract-detail', contract_number=contract.contract_number)
         return render(request, 'contracts/payment_doc_add.html', {'form': form})
+
+
+def add_payment_document(request, contract_id):
+    contract = get_object_or_404(Contract, id=contract_id)
+    if request.method == 'POST':
+        form = PaymentDocumentForm(request.POST)
+        if form.is_valid():
+            payment_document = form.save(commit=False)
+            payment_document.contract = contract
+            payment_document.save()
+            return redirect('contract-detail', contract_number=contract.contract_number)
+    else:
+        form = PaymentDocumentForm()
+    return render(request, 'contracts/payment_doc_add.html', {'form': form})

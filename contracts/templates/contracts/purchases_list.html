@@ -1,51 +1,55 @@
 {% extends 'contracts/base.html' %}
 
 {% block title %}
-    <title>
-        {{ page_title|title }}
-    </title>
+<title>
+    {{ page_title|title }}
+</title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Список закупок</h1>
 {% endblock %}
 
 {% block page_content %}
-<h1><center>Список закупок</center></h1>
-<div class="contract_buttons"><h2><a href="/add/">Добавить</a></h2></div>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Наименование объекта закупки</th>
-                <th>Тип закупки</th>
-                <th>Доведено в текущем году</th>
-                <th>Поставщик</th>
-                <th>Предмет контракта</th>
-                <th>Номер контракта</th>
-                <th>Дата контракта</th>
-                <th>Срок действия контракта</th>
-                <th>Дата начала услуг/поставки</th>
-                <th>Дата окончания услуг/поставки</th>
-                <th>Сумма контракта</th>
-                <th>Сумма оплаты</th>
-                <th>Процент оплаты</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for purchase in purchases %}
-                <tr>
-                    <td>{{ purchase.name }}</td>
-                    <td>{{ purchase.purchase_type }}</td>
-                    <td>{{ purchase.funds_allocated }}</td>
-                    <td>{{ purchase.supplier }}</td>
-                    <td>{{ purchase.contract_subject }}</td>
-                    <td><a href="{% url 'contracts:contract-detail' purchase.contract_number %}">{{ purchase.contract_number }}</a></td>
-                    <td>{{ purchase.contract_date }}</td>
-                    <td>{{ purchase.contract_duration }}</td>
-                    <td>{{ purchase.service_start_date }}</td>
-                    <td>{{ purchase.service_end_date }}</td>
-                    <td>{{ purchase.contract_amount }}</td>
-                    <td>{{ purchase.payment_amount }}</td>
-                    <td>{{ purchase.payment_percent }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endblock %}
 
+<button><a href="{% url 'contracts:add_contract' %}">Добавить</a></button>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Наименование объекта закупки</th>
+            <th>Тип закупки</th>
+            <th>Доведено в текущем году</th>
+            <th>Поставщик</th>
+            <th>Предмет контракта</th>
+            <th>Номер контракта</th>
+            <th>Дата контракта</th>
+            <th>Срок действия контракта</th>
+            <th>Дата начала услуг/поставки</th>
+            <th>Дата окончания услуг/поставки</th>
+            <th>Сумма контракта</th>
+            <th>Сумма оплаты</th>
+            <th>Процент оплаты</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for purchase in purchases %}
+        <tr>
+            <td>{{ purchase.name }}</td>
+            <td>{{ purchase.purchase_type }}</td>
+            <td>{{ purchase.funds_allocated }}</td>
+            <td>{{ purchase.supplier }}</td>
+            <td>{{ purchase.contract_subject }}</td>
+            <td><a href="{% url 'contracts:contract-detail' purchase.contract_number %}">{{ purchase.contract_number }}</a></td>
+            <td>{{ purchase.contract_date }}</td>
+            <td>{{ purchase.contract_duration }}</td>
+            <td>{{ purchase.service_start_date }}</td>
+            <td>{{ purchase.service_end_date }}</td>
+            <td>{{ purchase.contract_amount }}</td>
+            <td>{{ purchase.payment_amount }}</td>
+            <td>{{ purchase.payment_percent }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
