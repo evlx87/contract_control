@@ -28,14 +28,19 @@ li {
 }
 
 li:hover {
-    background-color: red;
-    color: #333;
+    background-color: brown;
+    color: white;
 }
 
 a {
     text-decoration: none;
     color: brown;
     font-weight: bold;
+}
+
+a:hover {
+    background-color: brown;
+    color: white;
 }
 
 ul li:last-child {
@@ -108,4 +113,11 @@ button {
 
 .add_form button {
     margin: 0 10px;
+    color: brown;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: brown;
+    color: white;
 }
