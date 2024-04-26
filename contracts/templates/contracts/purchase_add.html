@@ -9,13 +9,17 @@
 {% block page_header %}
     <h1>Добавление информации о закупке</h1>
 {% endblock %}
-<div class="add_form">
+
+
 {% block page_content %}
+<div class="add_form">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Сохранить</button>
-        <a>Отмена</a>
+        <div class="btn-container">
+            <button type="submit">Сохранить</button>
+            <button>Отмена</button>
+        </div>
     </form>
-{% endblock %}.
 </div>
+{% endblock %}.
