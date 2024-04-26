@@ -46,9 +46,14 @@ def contract_detail(request, contract_number):
 
 
 class AddPaymentDocView(View):
-    def get(self, request):
-        form = PaymentDocumentForm()
-        return render(request, 'contracts/payment_doc_add.html', {'form': form})
+    def get(self, request, contract_id=None):
+        if contract_id:
+            contract = get_object_or_404(Contract, id=contract_id)
+            form = PaymentDocumentForm(initial={'contract': contract})
+        else:
+            form = PaymentDocumentForm()
+        return render(
+            request, 'contracts/payment_doc_add.html', {'form': form, 'contract': contract})
 
     def post(self, request, contract_id):
         contract = get_object_or_404(Contract, id=contract_id)
@@ -58,4 +63,5 @@ class AddPaymentDocView(View):
             payment_document.contract = contract
             payment_document.save()
             return redirect('contract-detail', contract_number=contract.contract_number)
-        return render(request, 'contracts/payment_doc_add.html', {'form': form})
+        return render(
+            request, 'contracts/payment_doc_add.html', {'form': form, 'contract': contract})
