@@ -7,9 +7,9 @@
 {% block page_content %}
 <div class="contract_card">
     <p>Сумма контракта: {{ contract_detail.contract_amount }} </p>
-    <p>Сумма выставленных счетов: </p>
+    <p>Сумма выставленных счетов: {{ contract_detail.total_issued_amount }} </p>
     <p>Оплачено: </p>
-    <p>Остаток по контракту: </p>
+    <p>Остаток по контракту: {{ contract_detail.contract_amount - contract_detail.total_issued_amount }}</p>
     <hr>
     <div class="button_container">
         <a href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить</a>

@@ -75,6 +75,12 @@ class Contract(models.Model):
             self.payment_percent = None
             super().save(*args, **kwargs)
 
+    def total_issued_amount(self):
+        """ Возвращает сумму всех счетов, связанных с этим контрактом """
+        return self.payments.aggregate(total=models.Sum('amount'))['total'] or Decimal('0.00')
+
+    def total_balance(self):
+        return self.contract_amount - self.total_issued_amount()
 
 class PaymentDocument(models.Model):
     contract = models.ForeignKey(
