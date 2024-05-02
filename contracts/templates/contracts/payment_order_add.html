@@ -13,6 +13,18 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Сохранить</button>
-        <a href="{% url 'contracts:contract-detail' contract_number=contract.contract_number %}">Отмена</a>
+        <button id="buttonId">Отмена</button>
     </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var button = document.querySelector('#buttonId');
+
+            button.addEventListener('click', function() {
+                window.location.href = "{% url 'contracts:contract-detail' contract_number=contract.contract_number %}";
+            });
+        });
+    </script>
 {% endblock %}
