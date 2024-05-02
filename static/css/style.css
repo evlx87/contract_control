@@ -73,6 +73,16 @@ button {
     margin: 0 auto;
 }
 
+.contract_card_top {
+    display: flex;
+}
+
+.amounts_card, .contract_data {
+    display: inline-block;
+    min-width: 350px;
+    flex-grow: 1;
+}
+
 /* Форма добавления закупки */
 .add_form {
     width: 800px;

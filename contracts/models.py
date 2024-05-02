@@ -109,18 +109,17 @@ class Contract(models.Model):
             new_filename = f"{self.contract_type} {self.contract_number} от {self.contract_date} - {self.supplier}.pdf"
             self.contract_file.name = os.path.join(
                 os.path.dirname(original_filename), new_filename)
-        super().save(*args, **kwargs)
 
         if self.contract_amount and self.payment_amount:
             total_paid = sum(
                 payment.pp_amount for payment in self.payments.all())
             self.payment_amount = total_paid
             self.total_balance = self.contract_amount - total_paid
-            super().save(*args, **kwargs)
         else:
             self.payment_amount = 0
             self.total_balance = self.contract_amount
-            super().save(*args, **kwargs)
+
+        super().save(*args, **kwargs)
 
     def total_issued_amount(self):
         """ Возвращает сумму всех счетов, связанных с этим контрактом """
@@ -133,6 +132,9 @@ class Contract(models.Model):
     
     def total_balance(self):
         return self.contract_amount - self.total_issued_amount()
+    
+    def kbk_full(self):
+        return f'{self.kbk_type} {self.kosgu_type}'
 
 
 class PaymentDocument(models.Model):
