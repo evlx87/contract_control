@@ -33,20 +33,29 @@
             {% for document in contract_detail.payments.all %}
                 <tr>
                     <td>{{ document.date_issued }}</td>
-                    <td>{{ document.document_name }}</td>
+                    {% if document.payment_file %}
+                        <td><a href="{{ document.payment_file.url }}" target="_blank">{{ document.document_name }}</a></td>
+                    {% else %}
+                        <td>{{ document.document_name }}</td>
+                    {% endif %}
                     <td>{{ document.amount }}</td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
             {% endfor %}
+
             {% for order in contract_detail.payment_orders.all %}
                 <tr>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td>{{ order.pp_date }}</td>
-                    <td>{{ order.pp_name }}</td>
+                    {% if order.pp_file %}
+                        <td><a href="{{ order.pp_file.url }}" target="_blank">{{ order.pp_name }}</a></td>
+                    {% else %}
+                        <td>{{ order.pp_name }}</td>
+                    {% endif %}
                     <td>{{ order.pp_amount }}</td>
                 </tr>
             {% endfor %}

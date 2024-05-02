@@ -31,7 +31,7 @@ class ContractForm(forms.ModelForm):
 class PaymentDocumentForm(forms.ModelForm):
     class Meta:
         model = PaymentDocument
-        fields = ['contract', 'date_issued', 'document_name', 'amount']
+        fields = ['contract', 'date_issued', 'document_name', 'amount', 'payment_file']
         widgets = {
             'date_issued': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
             'document_name': forms.Textarea(attrs={'rows': 4, 'cols': 40})}
@@ -53,7 +53,7 @@ class PaymentDocumentForm(forms.ModelForm):
 class PaymentOrderForm(forms.ModelForm):
     class Meta:
         model = PaymentOrder
-        fields = ['contract', 'pp_date', 'pp_name', 'pp_amount']
+        fields = ['contract', 'pp_date', 'pp_name', 'pp_amount', 'pp_file']
         widgets = {
             'pp_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
             'pp_name': forms.Textarea(attrs={'rows': 3, 'cols': 40}),

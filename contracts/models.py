@@ -85,7 +85,7 @@ class Contract(models.Model):
         default=0,
         null=True)
     contract_file = models.FileField(
-        upload_to='contracts/',  # путь к директории сохранения
+        upload_to='contracts/',
         verbose_name="Файл контракта",
         null=True,
         blank=True
@@ -146,6 +146,19 @@ class PaymentDocument(models.Model):
         max_digits=10,
         decimal_places=2,
         verbose_name="Сумма")
+    payment_file = models.FileField(
+        upload_to='payment_docs/',
+        verbose_name="Файл платежного документа",
+        null=True,
+        blank=True
+    )
+
+    def save(self, *args, **kwargs):
+        if self.payment_file:
+            original_filename = os.path.basename(self.payment_file.name)
+            new_filename = f"{self.document_name} от {self.date_issued}.pdf"
+            self.payment_file.name = os.path.join(os.path.dirname(original_filename), new_filename)
+        super().save(*args, **kwargs)
 
     @property
     def issued_amount(self):
@@ -179,6 +192,20 @@ class PaymentOrder(models.Model):
         max_digits=10,
         decimal_places=2,
         verbose_name="Оплаченная сумма")
+    pp_file = models.FileField(
+        upload_to='payment_orders/',
+        verbose_name="Файл платежного поручения",
+        null=True,
+        blank=True
+    )
+
+    def save(self, *args, **kwargs):
+        if self.pp_file:
+            original_filename = os.path.basename(self.pp_file.name)
+            new_filename = f"{self.pp_name} - {self.pp_date}.pdf"
+            self.pp_file.name = os.path.join(
+                os.path.dirname(original_filename), new_filename)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.pp_name} - {self.pp_amount}"

@@ -66,7 +66,7 @@ class AddPaymentDocView(View):
 
     def post(self, request, contract_id):
         contract = self.get_contract(contract_id)
-        form = PaymentDocumentForm(request.POST)
+        form = PaymentDocumentForm(request.POST, request.FILES)
         if form.is_valid():
             payment_document = form.save(commit=False)
             payment_document.contract = contract
@@ -91,7 +91,7 @@ class AddPaymentOrderView(View):
 
     def post(self, request, contract_id):
         contract = get_object_or_404(Contract, id=contract_id)
-        form = PaymentOrderForm(request.POST)
+        form = PaymentOrderForm(request.POST, request.FILES)
         if form.is_valid():
             payment_order = form.save(commit=False)
             payment_order.contract = contract
