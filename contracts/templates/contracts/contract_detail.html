@@ -9,12 +9,15 @@
     <p>Сумма контракта: {{ contract_detail.contract_amount }} </p>
     <p>Сумма выставленных счетов: {{ contract_detail.total_issued_amount }} </p>
     <p>Оплачено: {{ contract_detail.payment_amount }}</p>
-<p>Остаток по контракту: {{ contract_detail.total_balance }}</p>
+    <p>Остаток по контракту: {{ contract_detail.total_balance }}</p>
+    <hr>
+    <a href="{{ contract_detail.contract_file.url }}" target="_blank">Скан контракта</a>
     <hr>
     <div class="button_container">
         <a class="pp_button" href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить платежный документ</a>
         <a class="pp_button" href="{% url 'contracts:add_payment_order' contract_id=contract_detail.id %}">Добавить платежное поручение</a>
     </div>
+    <hr>
     <table border="1">
         <thead>
             <tr>
