@@ -1,6 +1,7 @@
 from django.urls import path
 
-from contracts.views import PurchaseListView, IndexView, AddContractView, contract_detail, AddPaymentDocView
+from contracts.views import PurchaseListView, IndexView, AddContractView, contract_detail, AddPaymentDocView, \
+    AddPaymentOrderView
 
 app_name = 'contracts'
 
@@ -10,4 +11,5 @@ urlpatterns = [
     path('add/', AddContractView.as_view(), name='add_contract'),
     path('contracts/<str:contract_number>/', contract_detail, name='contract-detail'),
     path('add_doc/<int:contract_id>/', AddPaymentDocView.as_view(), name='add_payment_doc'),
+    path('add_order/<int:contract_id>/', AddPaymentOrderView.as_view(), name='add_payment_order')
 ]

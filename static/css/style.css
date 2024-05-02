@@ -120,3 +120,18 @@ button:hover {
     background-color: brown;
     color: white;
 }
+
+.button_container {
+    display: flex;
+    gap: 10px;
+}
+
+a.pp_button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}

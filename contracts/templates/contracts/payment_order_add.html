@@ -1,0 +1,18 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>Добавить платежное поручение</title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Добавить платежное поручение</h1>
+{% endblock %}
+
+{% block page_content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+        <a href="{% url 'contracts:contract-detail' contract_number=contract.contract_number %}">Отмена</a>
+    </form>
+{% endblock %}

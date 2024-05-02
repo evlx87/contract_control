@@ -58,29 +58,23 @@ class Contract(models.Model):
 
     def save(self, *args, **kwargs):
         if self.contract_amount and self.payment_amount:
-            # Приведение DecimalField к Decimal для выполнения арифметической операции
-            contract_amount_decimal = Decimal(self.contract_amount)
-            payment_amount_decimal = Decimal(self.payment_amount)
-
-            # Рассчет процента оплаты
-            if contract_amount_decimal != 0:  # Проверка деления на ноль
-                self.payment_percent = (payment_amount_decimal / contract_amount_decimal) * 100
-            else:
-                self.payment_percent = 0
-
-            # Вызов базового метода save
+            total_paid = sum(payment.pp_amount for payment in self.payments.all())
+            self.payment_amount = total_paid
+            self.total_balance = self.contract_amount - total_paid
             super().save(*args, **kwargs)
         else:
-            # Если одно из полей не установлено, не рассчитываем процент
-            self.payment_percent = None
+            self.payment_amount = 0
+            self.total_balance = self.contract_amount
             super().save(*args, **kwargs)
 
     def total_issued_amount(self):
         """ Возвращает сумму всех счетов, связанных с этим контрактом """
-        return self.payments.aggregate(total=models.Sum('amount'))['total'] or Decimal('0.00')
+        return self.payments.aggregate(total=models.Sum('amount'))[
+            'total'] or Decimal('0.00')
 
     def total_balance(self):
         return self.contract_amount - self.total_issued_amount()
+
 
 class PaymentDocument(models.Model):
     contract = models.ForeignKey(
@@ -97,15 +91,13 @@ class PaymentDocument(models.Model):
         max_digits=10,
         decimal_places=2,
         verbose_name="Сумма")
-    note = models.TextField(
-        blank=True,
-        verbose_name="Примечание")
 
     @property
     def issued_amount(self):
         """ Суммирует все выставленные суммы по контракту """
         return PaymentDocument.objects.filter(
-            contract=self.contract).aggregate(models.Sum('amount'))['amount__sum'] or 0.00
+            contract=self.contract).aggregate(
+            models.Sum('amount'))['amount__sum'] or 0.00
 
     @property
     def balance(self):
@@ -116,3 +108,22 @@ class PaymentDocument(models.Model):
 
     def __str__(self):
         return f"{self.document_name} - {self.amount}"
+
+
+class PaymentOrder(models.Model):
+    contract = models.ForeignKey(
+        Contract,
+        on_delete=models.CASCADE,
+        verbose_name="Контракт",
+        related_name="payment_orders")
+    pp_date = models.DateField(
+        verbose_name="Дата платежного поручения")
+    pp_name = models.TextField(
+        verbose_name="Наименование платежного поручения")
+    pp_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="Оплаченная сумма")
+
+    def __str__(self):
+        return f"{self.pp_name} - {self.pp_amount}"

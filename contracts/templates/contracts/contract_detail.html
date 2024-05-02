@@ -8,30 +8,43 @@
 <div class="contract_card">
     <p>Сумма контракта: {{ contract_detail.contract_amount }} </p>
     <p>Сумма выставленных счетов: {{ contract_detail.total_issued_amount }} </p>
-    <p>Оплачено: </p>
-    <p>Остаток по контракту: {{ contract_detail.contract_amount - contract_detail.total_issued_amount }}</p>
+    <p>Оплачено: {{ contract_detail.payment_amount }}</p>
+<p>Остаток по контракту: {{ contract_detail.total_balance }}</p>
     <hr>
     <div class="button_container">
-        <a href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить</a>
+        <a class="pp_button" href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить платежный документ</a>
+        <a class="pp_button" href="{% url 'contracts:add_payment_order' contract_id=contract_detail.id %}">Добавить платежное поручение</a>
     </div>
     <table border="1">
         <thead>
             <tr>
-                <th>Дата документа</th>
+                <th>Дата платежного документа</th>
                 <th>Наименование и номер документа</th>
                 <th>Сумма к оплате</th>
+                <th>Дата платежного поручения</th>
                 <th>Платежное поручение</th>
                 <th>Оплаченная сумма</th>
             </tr>
         </thead>
-        <tbody>
+<tbody>
             {% for document in contract_detail.payments.all %}
                 <tr>
                     <td>{{ document.date_issued }}</td>
                     <td>{{ document.document_name }}</td>
                     <td>{{ document.amount }}</td>
-                    <td>{{ document.note }}</td>
-                    <td>{{ document.note }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+            {% for order in contract_detail.payment_orders.all %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ order.pp_date }}</td>
+                    <td>{{ order.pp_name }}</td>
+                    <td>{{ order.pp_amount }}</td>
                 </tr>
             {% endfor %}
         </tbody>

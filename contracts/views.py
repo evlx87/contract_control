@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.views.generic import ListView, TemplateView, DetailView
+from django.views.generic import ListView, TemplateView
 
-from contracts.forms import ContractForm, PaymentDocumentForm
+from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm
 from contracts.models import Contract
 
 
@@ -42,7 +42,9 @@ class PurchaseListView(ListView):
 
 def contract_detail(request, contract_number):
     contract = get_object_or_404(Contract, contract_number=contract_number)
-    return render(request, 'contracts/contract_detail.html', {'contract_detail': contract})
+    return render(request,
+                  'contracts/contract_detail.html',
+                  {'contract_detail': contract})
 
 
 class AddPaymentDocView(View):
@@ -58,7 +60,9 @@ class AddPaymentDocView(View):
             form = PaymentDocumentForm(initial={'contract': contract})
         else:
             form = PaymentDocumentForm()
-        return render(request, self.template_name, {'form': form, 'contract': contract})
+        return render(
+            request, self.template_name, {
+                'form': form, 'contract': contract})
 
     def post(self, request, contract_id):
         contract = self.get_contract(contract_id)
@@ -67,5 +71,34 @@ class AddPaymentDocView(View):
             payment_document = form.save(commit=False)
             payment_document.contract = contract
             payment_document.save()
-            return redirect('contracts:contract-detail', contract_number=contract.contract_number)
-        return render(request, self.template_name, {'form': form, 'contract': contract})
+            return redirect(
+                'contracts:contract-detail',
+                contract_number=contract.contract_number)
+        return render(
+            request, self.template_name, {
+                'form': form, 'contract': contract})
+
+
+class AddPaymentOrderView(View):
+    template_name = 'contracts/payment_order_add.html'
+
+    def get(self, request, contract_id=None):
+        contract = get_object_or_404(Contract, id=contract_id)
+        form = PaymentOrderForm(initial={'contract': contract})
+        return render(
+            request, self.template_name, {
+                'form': form, 'contract': contract})
+
+    def post(self, request, contract_id):
+        contract = get_object_or_404(Contract, id=contract_id)
+        form = PaymentOrderForm(request.POST)
+        if form.is_valid():
+            payment_order = form.save(commit=False)
+            payment_order.contract = contract
+            payment_order.save()
+            return redirect(
+                'contracts:contract-detail',
+                contract_number=contract.contract_number)
+        return render(
+            request, self.template_name, {
+                'form': form, 'contract': contract})
