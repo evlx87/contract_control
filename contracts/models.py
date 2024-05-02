@@ -127,6 +127,10 @@ class Contract(models.Model):
         return self.payments.aggregate(total=models.Sum('amount'))[
             'total'] or Decimal('0.00')
 
+    def total_pp_issued_amount(self):
+        """ Возвращает сумму всех оплат по платежным поручениям, связанным с этим контрактом """
+        return sum(payment_order.pp_amount for payment_order in self.payment_orders.all())
+    
     def total_balance(self):
         return self.contract_amount - self.total_issued_amount()
 
