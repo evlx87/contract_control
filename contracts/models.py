@@ -1,3 +1,4 @@
+import os
 from decimal import Decimal
 
 from django.db import models
@@ -104,9 +105,12 @@ class Contract(models.Model):
 
     def save(self, *args, **kwargs):
         if self.contract_file:
-            self.contract_file.name = f"{self.contract_number} от {self.contract_date} - {self.supplier}.pdf"
+            original_filename = os.path.basename(self.contract_file.name)
+            new_filename = f"{self.contract_type} {self.contract_number} от {self.contract_date} - {self.supplier}.pdf"
+            self.contract_file.name = os.path.join(
+                os.path.dirname(original_filename), new_filename)
         super().save(*args, **kwargs)
-        
+
         if self.contract_amount and self.payment_amount:
             total_paid = sum(
                 payment.pp_amount for payment in self.payments.all())

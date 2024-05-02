@@ -22,7 +22,7 @@ class AddContractView(View):
         return render(request, 'contracts/purchase_add.html', {'form': form})
 
     def post(self, request):
-        form = ContractForm(request.POST)
+        form = ContractForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('/contracts/')
