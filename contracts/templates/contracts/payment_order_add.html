@@ -9,12 +9,16 @@
 {% endblock %}
 
 {% block page_content %}
+<div class="add_form">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Сохранить</button>
-        <button id="buttonId">Отмена</button>
+        <div class="btn-container">
+            <button type="submit">Сохранить</button>
+            <button id="buttonId">Отмена</button>
+        </div>
     </form>
+</div>
 {% endblock %}
 
 {% block script %}
