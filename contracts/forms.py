@@ -22,7 +22,7 @@ class ContractForm(forms.ModelForm):
                   'contract_file')
 
         widgets = {
-            'contract_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'contract_date': forms.DateInput(format='d.m.y', attrs={'type': 'date'}),
             'contract_duration': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
             'service_start_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
             'service_end_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}), }
