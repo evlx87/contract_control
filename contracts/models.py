@@ -131,7 +131,7 @@ class Contract(models.Model):
         return sum(payment_order.pp_amount for payment_order in self.payment_orders.all())
     
     def total_balance(self):
-        return self.contract_amount - self.total_issued_amount()
+        return self.contract_amount - self.total_pp_issued_amount()
 
     def calculate_payment_percent(self):
         if self.contract_amount != 0:
