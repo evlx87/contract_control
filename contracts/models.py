@@ -122,7 +122,7 @@ class Contract(models.Model):
         super().save(*args, **kwargs)
 
     def total_issued_amount(self):
-        """ Возвращает сумму всех счетов, связанных с этим контрактом """
+        """ Возвращает сумму всех платежных документов, связанных с этим контрактом """
         return self.payments.aggregate(total=models.Sum('amount'))[
             'total'] or Decimal('0.00')
 
@@ -132,7 +132,14 @@ class Contract(models.Model):
     
     def total_balance(self):
         return self.contract_amount - self.total_issued_amount()
-    
+
+    def calculate_payment_percent(self):
+        if self.contract_amount != 0:
+            total_issued = self.total_pp_issued_amount()
+            percent_paid = (total_issued / self.contract_amount) * 100
+            return round(percent_paid, 2)
+        return 0
+
     def kbk_full(self):
         return f'{self.kbk_type} {self.kosgu_type}'
 

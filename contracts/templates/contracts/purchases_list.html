@@ -46,8 +46,8 @@
             <td>{{ purchase.service_start_date }}</td>
             <td>{{ purchase.service_end_date }}</td>
             <td>{{ purchase.contract_amount }}</td>
-            <td>{{ purchase.payment_amount }}</td>
-            <td>{{ purchase.payment_percent }}</td>
+            <td>{{ purchase.total_pp_issued_amount }}</td>
+            <td>{{ purchase.calculate_payment_percent  }}</td>
         </tr>
         {% endfor %}
     </tbody>
