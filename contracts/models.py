@@ -12,6 +12,34 @@ class Contract(models.Model):
         ('п. 23 ч. 1 ст. 93', 'п. 23 ч. 1 ст. 93')
     )
 
+    CONTRACT_TYPE_CHOICES = (
+        ('ГК', 'Государственный контракт'),
+        ('Д', 'Договор'),
+    )
+
+    KBK_TYPE_CHOICES = (
+        ('417 0702 88 9 00 90059 244', '417 0702 88 9 00 90059 244'),
+        ('417 0702 88 9 00 90059 242', '417 0702 88 9 00 90059 242'),
+        ('417 0702 88 9 00 90071 244', '417 0702 88 9 00 90071 244'),
+        ('417 0702 88 9 00 90071 247', '417 0702 88 9 00 90071 247'),
+        ('417 0705 88 9 00 90059 244', '417 0705 88 9 00 90059 244'),
+
+    )
+
+    KOSGU_TYPE_CHOICES = (
+        ('221', '221'),
+        ('222', '222'),
+        ('223', '223'),
+        ('224', '224'),
+        ('225', '225'),
+        ('226', '226'),
+        ('227', '227'),
+        ('310', '310'),
+        ('343', '343'),
+        ('346', '346'),
+        ('349', '349'),
+    )
+
     name = models.CharField(
         max_length=255,
         verbose_name="Наименование объекта закупки")
@@ -55,10 +83,33 @@ class Contract(models.Model):
         verbose_name="Процент оплаты",
         default=0,
         null=True)
+    contract_file = models.FileField(
+        upload_to='contracts/',  # путь к директории сохранения
+        verbose_name="Файл контракта",
+        null=True,
+        blank=True
+    )
+    contract_type = models.CharField(
+        max_length=100,
+        verbose_name="Тип контракта",
+        choices=CONTRACT_TYPE_CHOICES)
+    kbk_type = models.CharField(
+        max_length=100,
+        verbose_name="КБК",
+        choices=KBK_TYPE_CHOICES)
+    kosgu_type = models.CharField(
+        max_length=100,
+        verbose_name="КОСГУ",
+        choices=KOSGU_TYPE_CHOICES)
 
     def save(self, *args, **kwargs):
+        if self.contract_file:
+            self.contract_file.name = f"{self.contract_number} от {self.contract_date} - {self.supplier}.pdf"
+        super().save(*args, **kwargs)
+        
         if self.contract_amount and self.payment_amount:
-            total_paid = sum(payment.pp_amount for payment in self.payments.all())
+            total_paid = sum(
+                payment.pp_amount for payment in self.payments.all())
             self.payment_amount = total_paid
             self.total_balance = self.contract_amount - total_paid
             super().save(*args, **kwargs)

@@ -5,8 +5,11 @@ from .models import PaymentDocument, Contract, PaymentOrder
 class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
-        fields = ('name',
+        fields = ('kbk_type',
+                  'kosgu_type',
+                  'name',
                   'purchase_type',
+                  'contract_type',
                   'funds_allocated',
                   'supplier',
                   'contract_subject',
@@ -15,18 +18,14 @@ class ContractForm(forms.ModelForm):
                   'contract_duration',
                   'service_start_date',
                   'service_end_date',
-                  'contract_amount')
+                  'contract_amount',
+                  'contract_file')
 
         widgets = {
-            'contract_date': forms.DateInput(
-                format='%d.%m.%Y', attrs={
-                    'type': 'date'}), 'contract_duration': forms.DateInput(
-                format='%d.%m.%Y', attrs={
-                    'type': 'date'}), 'service_start_date': forms.DateInput(
-                        format='%d.%m.%Y', attrs={
-                            'type': 'date'}), 'service_end_date': forms.DateInput(
-                                format='%d.%m.%Y', attrs={
-                                    'type': 'date'}), }
+            'contract_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'contract_duration': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'service_start_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'service_end_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}), }
 
 
 class PaymentDocumentForm(forms.ModelForm):
