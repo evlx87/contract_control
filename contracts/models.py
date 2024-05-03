@@ -16,6 +16,8 @@ class Contract(models.Model):
     CONTRACT_TYPE_CHOICES = (
         ('ГК', 'Государственный контракт'),
         ('Д', 'Договор'),
+        ('ПД', 'Платежный документ'),
+        ('А', 'Авансовый отчет')
     )
 
     KBK_TYPE_CHOICES = (
@@ -42,7 +44,7 @@ class Contract(models.Model):
     )
 
     name = models.CharField(
-        max_length=255,
+        max_length=500,
         verbose_name="Наименование объекта закупки")
     purchase_type = models.CharField(
         max_length=100,
@@ -56,19 +58,27 @@ class Contract(models.Model):
         max_length=255,
         verbose_name="Поставщик (Исполнитель, подрядчик)")
     contract_subject = models.CharField(
-        max_length=255,
+        max_length=500,
         verbose_name="Предмет контракта")
     contract_number = models.CharField(
         max_length=50,
         verbose_name="Номер контракта")
     contract_date = models.DateField(
-        verbose_name="Дата контракта")
+        verbose_name="Дата контракта", 
+        null=True, 
+        blank=True)
     contract_duration = models.DateField(
-        verbose_name="Срок действия контракта")
+        verbose_name="Срок действия контракта",
+        null=True,
+        blank=True)
     service_start_date = models.DateField(
-        verbose_name="Дата начала услуг/поставки")
+        verbose_name="Дата начала услуг/поставки",
+        null=True,
+        blank=True)
     service_end_date = models.DateField(
-        verbose_name="Дата окончания услуг/поставки")
+        verbose_name="Дата окончания услуг/поставки",
+        null=True,
+        blank=True)
     contract_amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -120,6 +130,14 @@ class Contract(models.Model):
             self.total_balance = self.contract_amount
 
         super().save(*args, **kwargs)
+
+    def formatted_contract_number(self):
+        formatted_number = str(self.contract_number)
+        formatted_number = formatted_number.replace('№', 'no')
+        formatted_number = formatted_number.replace('/', 's')
+        formatted_number = formatted_number.replace(' ', '_')
+        formatted_number = formatted_number.encode('ascii', 'ignore').decode()
+        return formatted_number
 
     def total_issued_amount(self):
         """ Возвращает сумму всех платежных документов, связанных с этим контрактом """
