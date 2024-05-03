@@ -16,7 +16,11 @@
         <div class="contract_data">
             <p>КБК {{ contract_detail.kbk_full }} </p>
             <p>Контрагент: {{ contract_detail.supplier }}</p>
-            <p><a href="{{ contract_detail.contract_file.url }}" target="_blank">Скан контракта</a></p>
+            {% if contract_detail.contract_file %}
+                <p><a href="{{ contract_detail.contract_file.url }}" target="_blank">Скан контракта</a></p>
+            {% else %}
+                <p>Скан контракта не загружен</p>
+            {% endif %}
         </div>
     </div>
     <hr>
@@ -24,6 +28,7 @@
     <div class="button_container">
         <a class="pp_button" href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить платежный документ</a>
         <a class="pp_button" href="{% url 'contracts:add_payment_order' contract_id=contract_detail.id %}">Добавить платежное поручение</a>
+        <a class="pp_button" href="{% url 'contracts:contract-edit' contract_id=contract_detail.id %}">Редактировать данные контракта</a>
     </div>
     <hr>
     <table border="1">

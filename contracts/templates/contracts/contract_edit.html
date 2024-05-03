@@ -1,0 +1,31 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>Редактировать контракт</title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Редактировать данные контракта</h1>
+{% endblock %}
+
+{% block page_content %}
+    <div class="add_form">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var button = document.querySelector('#buttonId');
+
+            button.addEventListener('click', function() {
+                window.location.href = "{% url 'contracts:contract-detail' contract_number=contract.contract_number %}";
+            });
+        });
+    </script>
+{% endblock %}

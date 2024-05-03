@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, TemplateView
@@ -42,9 +43,26 @@ class PurchaseListView(ListView):
 
 def contract_detail(request, pk):
     contract = get_object_or_404(Contract, pk=pk)
+
+    if not contract.contract_file:
+        raise Http404("Contract file not found")
+    
     return render(request,
                   'contracts/contract_detail.html',
                   {'contract_detail': contract})
+
+
+def contract_edit(request, contract_id):
+    contract = Contract.objects.get(pk=contract_id)
+    if request.method == 'POST':
+        form = ContractForm(request.POST, request.FILES, instance=contract)
+        if form.is_valid():
+            form.save()
+            return redirect('contract-detail', contract_id=contract.id)
+    else:
+        form = ContractForm(instance=contract)
+
+    return render(request, 'contracts/contract_edit.html', {'form': form})
 
 
 class AddPaymentDocView(View):
