@@ -131,14 +131,9 @@ class Contract(models.Model):
 
         super().save(*args, **kwargs)
 
-    def formatted_contract_number(self):
-        formatted_number = str(self.contract_number)
-        formatted_number = formatted_number.replace('№', 'no')
-        formatted_number = formatted_number.replace('/', 's')
-        formatted_number = formatted_number.replace(' ', '_')
-        formatted_number = formatted_number.encode('ascii', 'ignore').decode()
-        return formatted_number
-
+    def __str__(self):
+        return self.contract_number
+    
     def total_issued_amount(self):
         """ Возвращает сумму всех платежных документов, связанных с этим контрактом """
         return self.payments.aggregate(total=models.Sum('amount'))[

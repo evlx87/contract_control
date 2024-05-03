@@ -40,7 +40,7 @@
             <td>{{ purchase.funds_allocated }}</td>
             <td>{{ purchase.supplier }}</td>
             <td>{{ purchase.contract_subject }}</td>
-            <td><a href="{% url 'contracts:contract-detail' purchase.formatted_contract_number %}">{{ purchase.contract_number }}</a></td>
+            <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
             <td>{{ purchase.contract_date }}</td>
             <td>{{ purchase.contract_duration }}</td>
             <td>{{ purchase.service_start_date }}</td>

@@ -40,8 +40,8 @@ class PurchaseListView(ListView):
         return context
 
 
-def contract_detail(request, contract_number):
-    contract = get_object_or_404(Contract, contract_number=contract_number)
+def contract_detail(request, pk):
+    contract = get_object_or_404(Contract, pk=pk)
     return render(request,
                   'contracts/contract_detail.html',
                   {'contract_detail': contract})
