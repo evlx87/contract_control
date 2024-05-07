@@ -183,7 +183,8 @@ class PaymentDocument(models.Model):
     def save(self, *args, **kwargs):
         if self.payment_file:
             original_filename = os.path.basename(self.payment_file.name)
-            new_filename = f"{self.document_name} от {self.date_issued}.pdf"
+            document_name_cleaned = self.document_name.replace('/', '_')
+            new_filename = f"{document_name_cleaned} от {self.date_issued}.pdf"
             self.payment_file.name = os.path.join(os.path.dirname(original_filename), new_filename)
         super().save(*args, **kwargs)
 
@@ -229,7 +230,8 @@ class PaymentOrder(models.Model):
     def save(self, *args, **kwargs):
         if self.pp_file:
             original_filename = os.path.basename(self.pp_file.name)
-            new_filename = f"{self.pp_name} - {self.pp_date}.pdf"
+            pp_name_cleaned = self.pp_name.replace('/', '_')
+            new_filename = f"{pp_name_cleaned} - {self.pp_date}.pdf"
             self.pp_file.name = os.path.join(
                 os.path.dirname(original_filename), new_filename)
         super().save(*args, **kwargs)
