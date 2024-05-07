@@ -10,25 +10,19 @@
 
 {% block page_content %}
 <div class="add_form">
-    <form method="post" enctype="multipart/form-data">
+     <form id="paymentDocForm" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <div class="btn-container">
-            <button type="submit">Сохранить</button>
-            <button id="buttonId">Отмена</button>
-        </div>
-    </form>
-</div>
-{% endblock %}
+     </form>
+    <div class="btn-container">
+        <a class="pp_button" href="#" id="savePaymentDocBtn">Сохранить</a>
+        <a class="pp_button" href="#" >Отмена</a>
+    </div>
+    </div>
 
-{% block script %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var button = document.querySelector('#buttonId');
-
-            button.addEventListener('click', function() {
-                window.location.href = "{% url 'contracts:contract-detail' contract_number=contract.contract_number %}";
-            });
-        });
-    </script>
+<script>
+    document.getElementById('savePaymentDocBtn').addEventListener('click', function() {
+        document.getElementById('paymentDocForm').submit();
+    });
+</script>
 {% endblock %}
