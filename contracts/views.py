@@ -54,11 +54,11 @@ def contract_edit(request, contract_id):
         form = ContractForm(request.POST, request.FILES, instance=contract)
         if form.is_valid():
             form.save()
-            return redirect('contract-detail', contract_id=contract.id)
+            return redirect('contract-detail', pk=contract.id)
     else:
         form = ContractForm(instance=contract)
 
-    return render(request, 'contracts/contract_edit.html', {'form': form})
+    return render(request, 'contracts/contract_edit.html', {'form': form, 'contract': contract})
 
 
 class AddPaymentDocView(View):

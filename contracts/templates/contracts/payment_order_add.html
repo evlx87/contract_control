@@ -16,7 +16,7 @@
      </form>
     <div class="btn-container">
         <a class="pp_button" href="#" id="savePaymentDocBtn">Сохранить</a>
-        <a class="pp_button" href="#" >Отмена</a>
+        <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" >Отмена</a>
     </div>
     </div>
 

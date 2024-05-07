@@ -11,18 +11,18 @@
 {% block page_content %}
     <div class="add_form">
         <form id="paymentDocForm" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
+            {% csrf_token %}
+            {{ form.as_p }}
         </form>
         <div class="btn-container">
             <a class="pp_button" href="#" id="savePaymentDocBtn">Сохранить</a>
-            <a class="pp_button" href="#" >Отмена</a>
+            <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" >Отмена</a>
         </div>
     </div>
 
 <script>
     document.getElementById('savePaymentDocBtn').addEventListener('click', function() {
-        document.getElementById('paymentDocForm').submit();
+        document.getElementById('contractForm').submit();
     });
 </script>
 {% endblock %}
