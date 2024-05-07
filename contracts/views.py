@@ -43,10 +43,6 @@ class PurchaseListView(ListView):
 
 def contract_detail(request, pk):
     contract = get_object_or_404(Contract, pk=pk)
-
-    if not contract.contract_file:
-        raise Http404("Contract file not found")
-    
     return render(request,
                   'contracts/contract_detail.html',
                   {'contract_detail': contract})
