@@ -116,7 +116,8 @@ class Contract(models.Model):
     def save(self, *args, **kwargs):
         if self.contract_file:
             original_filename = os.path.basename(self.contract_file.name)
-            new_filename = f"{self.contract_type} {self.contract_number} от {self.contract_date} - {self.supplier}.pdf"
+            contract_number_cleaned = self.contract_number.replace('/', '_')
+            new_filename = f"{self.contract_type} {contract_number_cleaned} от {self.contract_date} {self.supplier}.pdf"
             self.contract_file.name = os.path.join(
                 os.path.dirname(original_filename), new_filename)
 
