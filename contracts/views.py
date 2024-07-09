@@ -52,7 +52,11 @@ def contract_edit(request, contract_id):
     contract = Contract.objects.get(pk=contract_id)
     if request.method == 'POST':
         form = ContractForm(request.POST, request.FILES, instance=contract)
+
         if form.is_valid():
+            if 'contract_file' in request.FILES:
+                contract.contract_file = request.FILES['contract_file']
+                
             form.save()
             return redirect('contract-detail', pk=contract.id)
     else:

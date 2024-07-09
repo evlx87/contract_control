@@ -56,6 +56,7 @@ ul li:last-child {
 .button_container {
     display: flex;
     justify-content: center;
+    margin: 20px;
 }
 
 button {
