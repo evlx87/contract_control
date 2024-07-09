@@ -41,10 +41,10 @@
             <td>{{ purchase.supplier }}</td>
             <td>{{ purchase.contract_subject }}</td>
             <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
-            <td>{{ purchase.contract_date }}</td>
-            <td>{{ purchase.contract_duration }}</td>
-            <td>{{ purchase.service_start_date }}</td>
-            <td>{{ purchase.service_end_date }}</td>
+            <td>{{ purchase.contract_date|date:"d.m.Y" }}</td>
+            <td>{{ purchase.contract_duration|date:"d.m.Y" }}</td>
+            <td>{{ purchase.service_start_date|date:"d.m.Y" }}</td>
+            <td>{{ purchase.service_end_date|date:"d.m.Y" }}</td>
             <td>{{ purchase.contract_amount }}</td>
             <td>{{ purchase.total_pp_issued_amount }}</td>
             <td>{{ purchase.calculate_payment_percent  }}</td>

@@ -1,7 +1,7 @@
 {% extends 'contracts/base.html' %}
 
 {% block page_header %}
-<h1>Контракт № {{ contract_detail.contract_number }} от {{ contract_detail.contract_date }}</h1>
+<h1>Контракт № {{ contract_detail.contract_number }} от {{ contract_detail.contract_date|date:"d.m.Y" }}</h1>
 {% endblock %}
 
 {% block page_content %}
@@ -47,7 +47,7 @@
         <tbody>
             {% for document in contract_detail.payments.all %}
             <tr>
-                <td>{{ document.date_issued }}</td>
+                <td>{{ document.date_issued|date:"d.m.Y" }}</td>
                 {% if document.payment_file %}
                 <td><a href="{{ document.payment_file.url }}" target="_blank">{{ document.document_name }}</a></td>
                 {% else %}
@@ -65,7 +65,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ order.pp_date }}</td>
+                <td>{{ order.pp_date|date:"d.m.Y" }}</td>
                 {% if order.pp_file %}
                 <td><a href="{{ order.pp_file.url }}" target="_blank">{{ order.pp_name }}</a></td>
                 {% else %}
