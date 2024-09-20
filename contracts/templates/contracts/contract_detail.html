@@ -1,0 +1,80 @@
+{% extends 'contracts/base.html' %}
+
+{% block page_header %}
+<h1>Контракт № {{ contract_detail.contract_number }} от {{ contract_detail.contract_date|date:"d.m.Y" }}</h1>
+{% endblock %}
+
+{% block page_content %}
+<div class="contract_card">
+    <div class="contract_card_top">
+        <div class="amounts_card">
+            <p>Сумма контракта: {{ contract_detail.contract_amount }} </p>
+            <p>Сумма выставленных счетов: {{ contract_detail.total_issued_amount }} </p>
+            <p>Оплачено: {{ contract_detail.total_pp_issued_amount }} </p>
+            <p>Остаток по контракту: {{ contract_detail.total_balance }}</p>
+        </div>
+        <div class="contract_data">
+            <p>КБК {{ contract_detail.kbk_full }} </p>
+            <p>Контрагент: {{ contract_detail.supplier }}</p>
+            {% if contract_detail.contract_file %}
+                <p><a href="{{ contract_detail.contract_file.url }}" target="_blank">Скан контракта</a></p>
+            {% else %}
+                <p>Скан контракта не загружен</p>
+            {% endif %}
+            <p>Дополнительные соглашения</p>
+        </div>
+    </div>
+    <hr>
+
+    <div class="button_container">
+        <a class="pp_button" href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить платежный документ</a>
+        <a class="pp_button" href="{% url 'contracts:add_payment_order' contract_id=contract_detail.id %}">Добавить платежное поручение</a>
+        <a class="pp_button" href="#">Добавить доп.соглашение</a>
+        <a class="pp_button" href="{% url 'contracts:contract-edit' contract_id=contract_detail.id %}">Редактировать данные контракта</a>
+    </div>
+    <hr>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Дата платежного документа</th>
+                <th>Наименование и номер документа</th>
+                <th>Сумма к оплате</th>
+                <th>Дата платежного поручения</th>
+                <th>Платежное поручение</th>
+                <th>Оплаченная сумма</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in contract_detail.payments.all %}
+            <tr>
+                <td>{{ document.date_issued|date:"d.m.Y" }}</td>
+                {% if document.payment_file %}
+                <td><a href="{{ document.payment_file.url }}" target="_blank">{{ document.document_name }}</a></td>
+                {% else %}
+                <td>{{ document.document_name }}</td>
+                {% endif %}
+                <td>{{ document.amount }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+
+            {% for order in contract_detail.payment_orders.all %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ order.pp_date|date:"d.m.Y" }}</td>
+                {% if order.pp_file %}
+                <td><a href="{{ order.pp_file.url }}" target="_blank">{{ order.pp_name }}</a></td>
+                {% else %}
+                <td>{{ order.pp_name }}</td>
+                {% endif %}
+                <td>{{ order.pp_amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

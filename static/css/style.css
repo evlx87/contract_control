@@ -1,0 +1,148 @@
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+h2 {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+
+/* Основное меню */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+li {
+    margin-right: 20px;
+    /* Расстояние между пунктами меню */
+}
+
+li:hover {
+    background-color: brown;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: brown;
+    font-weight: bold;
+}
+
+a:hover {
+    background-color: brown;
+    color: white;
+}
+
+ul li:last-child {
+    margin-right: 0;
+    /* Убираем отступ справа у последнего пункта меню */
+}
+
+.menu_container {
+    display: flex;
+    justify-content: center;
+}
+
+/* Кнопки */
+.button_container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+button {
+    height: 24px;
+    width: 100px;
+    /* Желаемая ширина кнопки */
+    border-radius: 12px;
+    /* Половина высоты, чтобы получить овальную форму */
+    margin-bottom: 20px;
+}
+
+/* Карточка контракта */
+.contract_card {
+    width: 800px;
+    margin: 0 auto;
+}
+
+.contract_card_top {
+    display: flex;
+}
+
+.amounts_card, .contract_data {
+    display: inline-block;
+    min-width: 350px;
+    flex-grow: 1;
+}
+
+/* Форма добавления закупки */
+.add_form {
+    width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add_form form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Делит форму на две колонки */
+    grid-gap: 10px;
+    /* Расстояние между элементами */
+    margin-top: 10px;
+}
+
+.add_form label {
+    grid-column: span 1;
+    /* Занимает обе колонки */
+}
+
+.add_form input,
+.add_form select {
+    width: 100%;
+    /* Занимает всю ширину ячейки */
+    padding: 5px;
+    box-sizing: border-box;
+    /* Размер с учетом padding */
+}
+.add_form .btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.add_form button {
+    margin: 0 10px;
+    color: brown;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: brown;
+    color: white;
+}
+
+.button_container {
+    display: flex;
+    gap: 10px;
+}
+
+.pp_button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}

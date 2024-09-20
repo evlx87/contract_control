@@ -1,0 +1,37 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+        <title>
+            {{ page_title|title }}
+        </title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Добавление информации о закупке</h1>
+{% endblock %}
+
+
+{% block page_content %}
+<div class="add_form">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="btn-container">
+            <button type="submit">Сохранить</button>
+            <button id="buttonId">Отмена</button>
+        </div>
+    </form>
+</div>
+{% endblock %}.
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var button = document.querySelector('#buttonId');
+
+            button.addEventListener('click', function() {
+                window.location.href = "{% url 'contracts:purchase_list' %}";
+            });
+        });
+    </script>
+{% endblock %}
