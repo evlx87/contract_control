@@ -1,51 +1,15 @@
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.utils.translation import gettext as _
 
-
-# Create your models here.
-class CustomUserManager(BaseUserManager):
-
-    def create_user(self, username, password=None):
-        if not username:
-            raise ValueError('The Username field must be set')
-
-        user = self.model(
-            username=username,
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, username, password=None):
-        user = self.create_user(
-            username=username,
-            password=password,
-        )
-        user.is_superuser = True
-        user.is_staff = True
-        user.save(using=self._db)
-        return user
-
-
-class CustomUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=150, unique=True)
-
-    objects = CustomUserManager()
-
-    USERNAME_FIELD = 'username'
-
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='custom_user_set',
-        blank=True,
-        verbose_name='groups',
-        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.'
-    )
+class CustomUser(AbstractUser):
+    is_admin = models.BooleanField(default=False)
+    groups = models.ManyToManyField(Group, related_name='custom_users')
     user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='custom_user_set',
+        Permission,
+        related_name='custom_users',
+        verbose_name=_('user permissions'),
         blank=True,
-        verbose_name='user permissions',
-        help_text='Specific permissions for this user.'
+        help_text=_('Specific permissions for this user.'),
+        related_query_name='custom_user',
     )

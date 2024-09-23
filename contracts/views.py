@@ -10,10 +10,15 @@ from contracts.models import Contract
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'contracts/index.html'
+    login_url = 'users:login'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Главная'
+
+        if self.request.user.is_authenticated:
+            context['username'] = self.request.user.username
+
         return context
 
 
