@@ -50,10 +50,6 @@ class Contract(models.Model):
         max_length=100,
         verbose_name="Тип закупки",
         choices=PURCHASE_TYPE_CHOICES)
-    funds_allocated = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name="Доведено в текущем году")
     supplier = models.CharField(
         max_length=255,
         verbose_name="Поставщик (Исполнитель, подрядчик)")

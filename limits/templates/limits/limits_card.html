@@ -1,0 +1,22 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+        <title>
+            {{ page_title|title }}
+        </title>
+{% endblock %}
+
+{% block page_content %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Наименование объекта закупки</th>
+                <th>Доведено на 2025 год</th>
+                <th>Поставщика</th>
+                <th>Предмет контракта</th>
+                <th>Номер и дата контракта</th>
+                <th>Не законтрактовано по Объекту закупки</th>
+            </tr>
+        </thead>
+    </table>
+{% endblock %}

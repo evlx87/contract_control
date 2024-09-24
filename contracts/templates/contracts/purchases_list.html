@@ -19,7 +19,6 @@
         <tr>
             <th>Наименование объекта закупки</th>
             <th>Тип закупки</th>
-            <th>Доведено в текущем году</th>
             <th>Поставщик</th>
             <th>Предмет контракта</th>
             <th>Номер контракта</th>
@@ -37,7 +36,6 @@
         <tr>
             <td>{{ purchase.name }}</td>
             <td>{{ purchase.purchase_type }}</td>
-            <td>{{ purchase.funds_allocated }}</td>
             <td>{{ purchase.supplier }}</td>
             <td>{{ purchase.contract_subject }}</td>
             <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
