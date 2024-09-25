@@ -5,6 +5,7 @@ from contracts.models import Contract
 
 # Create your models here.
 class Limit(models.Model):
+
     contract = models.OneToOneField(
         Contract,
         on_delete=models.CASCADE,
