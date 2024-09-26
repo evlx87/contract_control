@@ -7,6 +7,12 @@
 {% endblock %}
 
 {% block page_content %}
-
+<a href="{% url 'limits:add_limit' %}" class="btn btn-primary">Добавить данные о лимитах</a>
+    <h1>Информация о доведенных лимитах:</h1>
+    <ul>
+        {% for limit_item in limit_data %}
+            <li>{{ limit_item }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 

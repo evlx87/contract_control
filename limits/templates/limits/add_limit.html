@@ -1,0 +1,14 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>Add Limit Information</title>
+{% endblock %}
+
+{% block page_content %}
+    <h1>Add Limit Information</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
