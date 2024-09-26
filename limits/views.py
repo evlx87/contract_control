@@ -9,13 +9,14 @@ from .models import Limit
 # def limit_card(request):
 #     limit_data = Limit.objects.all()
 #     limit_info = []
-#     for limit in limit_data:
-#         purchase_obj = PURCHASE_ODJ_CHOICE.get(limit.contract.contract_number, '')
-#         limit_info.append(f"{purchase_obj} - КБК {limit.contract.kbk_type} КОСГУ {limit.contract.kosgu_type}")
+#
 #     return render(request, 'limits/limits_card.html', {'limit_data': limit_info})
 def limit_card(request):
     limits = Limit.objects.all()
-    return render(request, 'limits/limits_card.html', {'limits': limits})
+    limit_info = []
+    for limit in limits:
+       limit_info.append(f"{limit.name} - КБК {limit.kbk_type} КОСГУ {limit.kosgu_type}")
+    return render(request, 'limits/limits_card.html', {'limit_info': limit_info})
 
 
 def add_limit(request):
