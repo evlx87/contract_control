@@ -6,12 +6,18 @@
     </title>
 {% endblock %}
 
+{% block page_header %}
+    <h1>Информация о доведенных лимитах</h1>
+{% endblock %}
+
 {% block page_content %}
-<a href="{% url 'limits:add_limit' %}" class="btn btn-primary">Добавить данные о лимитах</a>
-    <h1>Информация о доведенных лимитах:</h1>
+<div class="button_container">
+    <button><a href="{% url 'limits:add_limit' %}">Добавить</a></button>
+</div>
+<hr>
     <ul>
-        {% for limit_item in limit_data %}
-            <li>{{ limit_item }}</li>
+        {% for limit in limits %}
+            <li>{{ limit }}</li>
         {% endfor %}
     </ul>
 {% endblock %}
