@@ -3,57 +3,20 @@ from decimal import Decimal
 
 from django.db import models
 
+from limits.choice_objects import PURCHASE_TYPE_CHOICES, CONTRACT_TYPE_CHOICES, KBK_TYPE_CHOICES, KOSGU_TYPE_CHOICES, \
+    PURCHASE_ODJ_CHOICE
+
 
 # Create your models here.
 class Contract(models.Model):
-    PURCHASE_TYPE_CHOICES = (
-        ('ТРУ', 'ТРУ'),
-        ('п. 4 ч. 1 ст. 93', 'п. 4 ч. 1 ст. 93'),
-        ('п. 5 ч. 1 ст. 93', 'п. 5 ч. 1 ст. 93'),
-        ('п. 23 ч. 1 ст. 93', 'п. 23 ч. 1 ст. 93')
-    )
-
-    CONTRACT_TYPE_CHOICES = (
-        ('ГК', 'Государственный контракт'),
-        ('Д', 'Договор'),
-        ('ПД', 'Платежный документ'),
-        ('А', 'Авансовый отчет')
-    )
-
-    KBK_TYPE_CHOICES = (
-        ('417 0702 88 9 00 90059 244', '417 0702 88 9 00 90059 244'),
-        ('417 0702 88 9 00 90059 242', '417 0702 88 9 00 90059 242'),
-        ('417 0702 88 9 00 90071 244', '417 0702 88 9 00 90071 244'),
-        ('417 0702 88 9 00 90071 247', '417 0702 88 9 00 90071 247'),
-        ('417 0705 88 9 00 90059 244', '417 0705 88 9 00 90059 244'),
-
-    )
-
-    KOSGU_TYPE_CHOICES = (
-        ('221', '221'),
-        ('222', '222'),
-        ('223', '223'),
-        ('224', '224'),
-        ('225', '225'),
-        ('226', '226'),
-        ('227', '227'),
-        ('310', '310'),
-        ('343', '343'),
-        ('346', '346'),
-        ('349', '349'),
-    )
-
     name = models.CharField(
         max_length=500,
-        verbose_name="Наименование объекта закупки")
+        verbose_name="Наименование объекта закупки",
+        choices=PURCHASE_ODJ_CHOICE)
     purchase_type = models.CharField(
         max_length=100,
         verbose_name="Тип закупки",
         choices=PURCHASE_TYPE_CHOICES)
-    funds_allocated = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name="Доведено в текущем году")
     supplier = models.CharField(
         max_length=255,
         verbose_name="Поставщик (Исполнитель, подрядчик)")

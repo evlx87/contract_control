@@ -10,7 +10,6 @@ class ContractForm(forms.ModelForm):
                   'name',
                   'purchase_type',
                   'contract_type',
-                  'funds_allocated',
                   'supplier',
                   'contract_subject',
                   'contract_number',

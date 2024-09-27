@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'contracts',
     'users',
+    'limits',
 ]
 
 MIDDLEWARE = [

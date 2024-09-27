@@ -1,0 +1,24 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>
+        {{ page_title|title }}
+    </title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Информация о доведенных лимитах</h1>
+{% endblock %}
+
+{% block page_content %}
+<div class="button_container">
+    <button><a href="{% url 'limits:add_limit' %}">Добавить</a></button>
+</div>
+<hr>
+    <ul>
+        {% for limit in limit_info %}
+            <li>{{ limit }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

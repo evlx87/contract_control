@@ -23,10 +23,6 @@ class Command(BaseCommand):
                     purchase_type=contract.get(
                         'Тип закупки',
                         'ТРУ'),
-                    funds_allocated=Decimal(
-                        contract.get(
-                            'Доведено в текущем году',
-                            '0.00')),
                     supplier=contract.get(
                         'Поставщик (Исполнитель, подрядчик)',
                         ''),
