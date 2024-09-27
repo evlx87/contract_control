@@ -7,11 +7,10 @@
 {% endblock %}
 
 {% block page_content %}
-Авторизация
-{% if user.is_authenticated %}
-    <p>Привет, {{ user.username }}!</p>
-    <a href="{% url 'users:logout' %}">Выйти</a>
-{% else %}
-    <a href="{% url 'users:login' %}">Войти</a>
-{% endif %}
+    {% if user.is_authenticated %}
+        <p>Logged in as: {{ user.username }}</p>
+        <a href="{% url 'users:user_logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'users:user_login' %}">Login</a>
+    {% endif %}
 {% endblock %}
