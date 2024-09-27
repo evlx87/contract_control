@@ -6,11 +6,6 @@ from .forms import LimitForm
 from .models import Limit
 
 
-# def limit_card(request):
-#     limit_data = Limit.objects.all()
-#     limit_info = []
-#
-#     return render(request, 'limits/limits_card.html', {'limit_data': limit_info})
 def limit_card(request):
     limits = Limit.objects.all()
     limit_info = []
