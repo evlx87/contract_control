@@ -5,3 +5,6 @@
 2. payment_orders - сканы платежных поручений
 3. payment_docs - сканы платежных документов контрагентов
 4. additional_agreements - сканы дополнительных соглашений к контрактам
+
+mto Qaz123Wsx
+feo feopassword
