@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, TemplateView
-
+from django.contrib import messages
 from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm
 from contracts.models import Contract
 
@@ -68,6 +68,16 @@ def contract_edit(request, contract_id):
         form = ContractForm(instance=contract)
 
     return render(request, 'contracts/contract_edit.html', {'form': form, 'contract': contract})
+
+
+def contract_delete(request, pk):
+    contract = Contract.objects.get(pk=pk)
+    if request.method == 'POST':
+        contract.delete()
+        messages.success(request, 'Данные о закупке были успешно удалены.')
+        return redirect('contracts:purchase_list')
+
+    return render(request, 'contracts/contract_delete.html', {'contract': contract})
 
 
 class AddPaymentDocView(View):

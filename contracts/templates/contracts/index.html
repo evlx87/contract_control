@@ -1,16 +1,32 @@
 {% extends 'contracts/base.html' %}
 
 {% block title %}
-        <title>
+<title xmlns="http://www.w3.org/1999/html">
             {{ page_title|title }}
         </title>
 {% endblock %}
 
+{% block page_header %}
+    <h1>Реестр закупок</h1>
+{% endblock %}
+
+{% block main_menu %}
+
+{% endblock %}
+
 {% block page_content %}
-    {% if user.is_authenticated %}
-        <p>Logged in as: {{ user.username }}</p>
-        <a href="{% url 'users:user_logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'users:user_login' %}">Login</a>
-    {% endif %}
+    <div class="centered_links">
+        <a href="{% url 'contracts:purchase_list' %}"><div class="link_box">Закупки</div></a>
+        <a href="{% url 'limits:limit_card' %}"><div class="link_box">Доведенные лимиты</div></a>
+    </div>
+
+    <div class="auth_box_center">
+        {% if user.is_authenticated %}
+            <p>Вы авторизованы как {{ user.username }}</p>
+            <p></p><a href="{% url 'users:user_logout' %}">Logout</a></p>
+        {% else %}
+            <p>Вы не авторизованы</p>
+            <p><a href="{% url 'users:user_login' %}">Login</a></p>
+        {% endif %}
+    </div>
 {% endblock %}
