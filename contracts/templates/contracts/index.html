@@ -6,6 +6,14 @@
         </title>
 {% endblock %}
 
+{% block page_header %}
+    <h1>Реестр закупок</h1>
+{% endblock %}
+
+{% block main_menu %}
+
+{% endblock %}
+
 {% block page_content %}
     {% if user.is_authenticated %}
         <p>Logged in as: {{ user.username }}</p>
