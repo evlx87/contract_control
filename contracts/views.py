@@ -1,3 +1,5 @@
+import logging
+
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -5,6 +7,9 @@ from django.views.generic import ListView, TemplateView
 from django.contrib import messages
 from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm
 from contracts.models import Contract
+
+# Получаем логгер для файла views.py
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -25,14 +30,21 @@ class IndexView(TemplateView):
 class AddContractView(View):
     def get(self, request):
         form = ContractForm()
+        logger.info("Страница добавления контракта была загружена")
         return render(request, 'contracts/purchase_add.html', {'form': form})
 
     def post(self, request):
         form = ContractForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Контракт успешно добавлен')
+            logger.info("Контракт успешно сохранен")
             return redirect('/contracts/')
-        return render(request, 'contracts/purchase_add.html', {'form': form})
+        else:
+            logger.error("Форма контракта не валидна: %s", form.errors)
+            messages.error(request, 'Ошибка при добавлении контракта. Проверьте введенные данные')
+            return render(request, 'contracts/purchase_add.html', {'form': form})
+        # return render(request, 'contracts/purchase_add.html', {'form': form})
 
 
 class PurchaseListView(ListView):
@@ -61,13 +73,14 @@ def contract_edit(request, contract_id):
         if form.is_valid():
             if 'contract_file' in request.FILES:
                 contract.contract_file = request.FILES['contract_file']
-                
+
             form.save()
             return redirect('contract-detail', pk=contract.id)
     else:
         form = ContractForm(instance=contract)
 
-    return render(request, 'contracts/contract_edit.html', {'form': form, 'contract': contract})
+    return render(request, 'contracts/contract_edit.html',
+                  {'form': form, 'contract': contract})
 
 
 def contract_delete(request, pk):
@@ -77,7 +90,9 @@ def contract_delete(request, pk):
         messages.success(request, 'Данные о закупке были успешно удалены.')
         return redirect('contracts:purchase_list')
 
-    return render(request, 'contracts/contract_delete.html', {'contract': contract})
+    return render(request,
+                  'contracts/contract_delete.html',
+                  {'contract': contract})
 
 
 class AddPaymentDocView(View):
