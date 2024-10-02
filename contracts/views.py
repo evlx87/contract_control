@@ -8,7 +8,6 @@ from django.views.generic import ListView, TemplateView
 from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm
 from contracts.models import Contract
 
-# Получаем логгер для файла views.py
 logger = logging.getLogger(__name__)
 
 
