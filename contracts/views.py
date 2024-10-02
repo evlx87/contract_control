@@ -1,14 +1,13 @@
 import logging
 
-from django.http import Http404
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, TemplateView
-from django.contrib import messages
+
 from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm
 from contracts.models import Contract
 
-# Получаем логгер для файла views.py
 logger = logging.getLogger(__name__)
 
 
@@ -44,7 +43,6 @@ class AddContractView(View):
             logger.error("Форма контракта не валидна: %s", form.errors)
             messages.error(request, 'Ошибка при добавлении контракта. Проверьте введенные данные')
             return render(request, 'contracts/purchase_add.html', {'form': form})
-        # return render(request, 'contracts/purchase_add.html', {'form': form})
 
 
 class PurchaseListView(ListView):
@@ -75,6 +73,7 @@ def contract_edit(request, contract_id):
                 contract.contract_file = request.FILES['contract_file']
 
             form.save()
+            logger.info(f"Контракт с ID {contract.id} успешно отредактирован")
             return redirect('contract-detail', pk=contract.id)
     else:
         form = ContractForm(instance=contract)
@@ -88,6 +87,7 @@ def contract_delete(request, pk):
     if request.method == 'POST':
         contract.delete()
         messages.success(request, 'Данные о закупке были успешно удалены.')
+        logger.info(f"Контракт с ID {pk} был удален")
         return redirect('contracts:purchase_list')
 
     return render(request,
@@ -108,6 +108,7 @@ class AddPaymentDocView(View):
             form = PaymentDocumentForm(initial={'contract': contract})
         else:
             form = PaymentDocumentForm()
+        logger.info('Запрошена страница для добавления документа оплаты')
         return render(
             request, self.template_name, {
                 'form': form, 'contract': contract})
@@ -119,9 +120,13 @@ class AddPaymentDocView(View):
             payment_document = form.save(commit=False)
             payment_document.contract = contract
             payment_document.save()
+            logger.info(f"Создан новый документ оплаты для контракта с ID {contract_id}")
             return redirect(
                 'contracts:contract-detail',
                 contract_number=contract.contract_number)
+        else:
+            logger.warning('Форма документа оплаты содержит ошибки')
+
         return render(
             request, self.template_name, {
                 'form': form, 'contract': contract})
@@ -133,6 +138,7 @@ class AddPaymentOrderView(View):
     def get(self, request, contract_id=None):
         contract = get_object_or_404(Contract, id=contract_id)
         form = PaymentOrderForm(initial={'contract': contract})
+        logger.info(f"Отображена страница для добавления платежного поручения для контракта с ID {contract_id}")
         return render(
             request, self.template_name, {
                 'form': form, 'contract': contract})
@@ -144,9 +150,13 @@ class AddPaymentOrderView(View):
             payment_order = form.save(commit=False)
             payment_order.contract = contract
             payment_order.save()
+            logger.info(f"Создано новое платежное поручение для контракта с ID {contract_id}")
             return redirect(
                 'contracts:contract-detail',
                 contract_number=contract.contract_number)
+        else:
+            logger.warning('Форма платежного поручения содержит ошибки')
+
         return render(
             request, self.template_name, {
                 'form': form, 'contract': contract})
