@@ -15,18 +15,18 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="centered_links">
-        <a href="{% url 'contracts:purchase_list' %}"><div class="link_box">Закупки</div></a>
-        <a href="{% url 'limits:limit_card' %}"><div class="link_box">Доведенные лимиты</div></a>
+    <div class="button_container">
+        <a class="pp_button" href="{% url 'contracts:purchase_list' %}">Закупки</a>
+        <a class="pp_button" href="{% url 'limits:limit_card' %}">Доведенные лимиты</a>
     </div>
 
     <div class="auth_box_center">
         {% if user.is_authenticated %}
             <p>Вы авторизованы как {{ user.username }}</p>
-            <p></p><a href="{% url 'users:user_logout' %}">Logout</a></p>
+            <p></p><a class="pp_button" href="{% url 'users:user_logout' %}">Logout</a></p>
         {% else %}
             <p>Вы не авторизованы</p>
-            <p><a href="{% url 'users:user_login' %}">Login</a></p>
+            <p><a class="pp_button" href="{% url 'users:user_login' %}">Login</a></p>
         {% endif %}
     </div>
 {% endblock %}
