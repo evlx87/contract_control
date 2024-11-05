@@ -154,7 +154,8 @@ class AddPaymentOrderView(View):
             logger.info(f"Создано новое платежное поручение для контракта с ID {contract_id}")
             return redirect(
                 'contracts:contract-detail',
-                contract_number=contract.contract_number)
+                # contract_number=contract.contract_number)
+                pk = contract.id)
         else:
             logger.warning('Форма платежного поручения содержит ошибки')
 
