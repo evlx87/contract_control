@@ -15,15 +15,16 @@
      <form id="paymentDocForm" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        </form>
         <div class="btn-container">
             <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" id="savePaymentDocBtn">Сохранить</a>
             <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" >Отмена</a>
         </div>
+     </form>
     </div>
 
 <script>
-    document.getElementById('savePaymentDocBtn').addEventListener('click', function() {
+    document.getElementById('savePaymentDocBtn').addEventListener('click', function(event) {
+        event.preventDefault();
         document.getElementById('paymentDocForm').submit();
     });
 </script>

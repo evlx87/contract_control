@@ -123,7 +123,8 @@ class AddPaymentDocView(View):
             logger.info(f"Создан новый документ оплаты для контракта с ID {contract_id}")
             return redirect(
                 'contracts:contract-detail',
-                contract_number=contract.contract_number)
+                # contract_number=contract.contract_number)
+                pk=contract.id)
         else:
             logger.warning('Форма документа оплаты содержит ошибки')
 
