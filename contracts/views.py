@@ -50,6 +50,10 @@ class PurchaseListView(ListView):
     template_name = 'contracts/purchases_list.html'
     context_object_name = 'purchases'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by('contract_date')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Закупки'
@@ -162,3 +166,17 @@ class AddPaymentOrderView(View):
         return render(
             request, self.template_name, {
                 'form': form, 'contract': contract})
+
+class JournalListView(ListView):
+    model = Contract
+    template_name = 'contracts/journal_list.html'
+    context_object_name = 'purchases'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by('contract_date')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Журнал регистрации контрактов'
+        return context

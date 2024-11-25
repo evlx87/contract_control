@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block page_header %}
-    <h1>Реестр закупок</h1>
+    <h1>Журнал регистрации контрактов</h1>
 {% endblock %}
 
 {% block page_content %}
@@ -17,35 +17,29 @@
 <table border="1" cellpadding="2" cellspacing="0" class="display compact" id="details">
     <thead>
         <tr>
-            <th>Наименование объекта закупки</th>
-            <th>Тип закупки</th>
+            <th>Дата контракта</th>
+            <th>Номер контракта</th>
             <th>Контрагент</th>
             <th>Предмет контракта</th>
-            <th>Номер контракта</th>
-            <th>Дата контракта</th>
             <th>Срок действия контракта</th>
             <th>Дата начала услуг/поставки</th>
             <th>Дата окончания услуг/поставки</th>
             <th>Сумма контракта</th>
-            <th>Сумма оплаты</th>
-            <th>Процент оплаты</th>
+            <th>Тип закупки</th>
         </tr>
     </thead>
     <tbody>
         {% for purchase in purchases %}
         <tr>
-            <td>{{ purchase.name }}</td>
-            <td>{{ purchase.purchase_type }}</td>
+            <td>{{ purchase.contract_date|date:"d.m.Y" }}</td>
+            <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
             <td>{{ purchase.supplier }}</td>
             <td>{{ purchase.contract_subject }}</td>
-            <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
-            <td>{{ purchase.contract_date|date:"d.m.Y" }}</td>
             <td>{{ purchase.contract_duration|date:"d.m.Y" }}</td>
             <td>{{ purchase.service_start_date|date:"d.m.Y" }}</td>
             <td>{{ purchase.service_end_date|date:"d.m.Y" }}</td>
             <td>{{ purchase.contract_amount }}</td>
-            <td>{{ purchase.total_pp_issued_amount }}</td>
-            <td>{{ purchase.calculate_payment_percent  }}</td>
+            <td>{{ purchase.purchase_type}}</td>
         </tr>
         {% endfor %}
     </tbody>

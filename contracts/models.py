@@ -6,13 +6,14 @@ from django.db import models
 from limits.choice_objects import PURCHASE_TYPE_CHOICES, CONTRACT_TYPE_CHOICES, KBK_TYPE_CHOICES, KOSGU_TYPE_CHOICES, \
     PURCHASE_ODJ_CHOICE
 
+sorted_purchase_odj_choice = dict(sorted(PURCHASE_ODJ_CHOICE.items(), key=lambda x: x[1]))
 
 # Create your models here.
 class Contract(models.Model):
     name = models.CharField(
         max_length=500,
         verbose_name="Наименование объекта закупки",
-        choices=PURCHASE_ODJ_CHOICE)
+        choices=sorted_purchase_odj_choice)
     purchase_type = models.CharField(
         max_length=100,
         verbose_name="Тип закупки",
