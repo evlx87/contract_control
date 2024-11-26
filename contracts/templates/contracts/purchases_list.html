@@ -13,12 +13,21 @@
 {% block page_content %}
 <div class="button_container">
     <a class="pp_button" href="{% url 'contracts:add_contract' %}">Добавить</a>
+</div>
+<div class="button_container">
     <form method="get">
     <label for="year">Выберите год:</label>
     <select name="year" id="year">
         <option value="" {% if not selected_year %}selected{% endif %}>Все</option>
         {% for year in years %}
             <option value="{{ year|date:'Y' }}" {% if selected_year == year|date:'Y' %}selected{% endif %}>{{ year|date:'Y' }}</option>
+        {% endfor %}
+    </select>
+    <label for="subject">Выберите предмет контракта:</label>
+    <select name="subject" id="subject">
+        <option value="" {% if not selected_subject %}selected{% endif %}>Все</option>
+        {% for subject in subjects %}
+            <option value="{{ subject }}" {% if selected_subject == subject %}selected{% endif %}>{{ subject }}</option>
         {% endfor %}
     </select>
     <button type="submit">Применить</button>
