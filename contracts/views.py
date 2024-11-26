@@ -56,11 +56,16 @@ class PurchaseListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        year = self.request.GET.get('year')
+        if year:
+            queryset = queryset.filter(contract_date__year=year)
         return queryset.order_by('contract_date')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Закупки'
+        context['years'] = Contract.objects.order_by('contract_date').dates('contract_date', 'year', order='ASC')
+        context['selected_year'] = self.request.GET.get('year', '')
         return context
 
 
