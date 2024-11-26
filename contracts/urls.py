@@ -1,7 +1,7 @@
 from django.urls import path
 
 from contracts.views import PurchaseListView, IndexView, AddContractView, contract_detail, AddPaymentDocView, \
-    AddPaymentOrderView, contract_edit, contract_delete, JournalListView
+    AddPaymentOrderView, contract_edit, contract_delete, JournalListView, export_to_excel
 
 app_name = 'contracts'
 
@@ -14,5 +14,6 @@ urlpatterns = [
     path('contract/<int:contract_id>/edit/', contract_edit, name='contract-edit'),
     path('contract/<int:pk>/delete/', contract_delete, name='contract-delete'),
     path('contract/<int:contract_id>/add_doc', AddPaymentDocView.as_view(), name='add_payment_doc'),
-    path('contract/<int:contract_id>/add_order', AddPaymentOrderView.as_view(), name='add_payment_order')
+    path('contract/<int:contract_id>/add_order', AddPaymentOrderView.as_view(), name='add_payment_order'),
+    path('export-excel/', export_to_excel, name='export_excel'),
 ]

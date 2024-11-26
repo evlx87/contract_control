@@ -1,9 +1,13 @@
+import io
 import logging
 
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, TemplateView
+from openpyxl.utils import get_column_letter
+from openpyxl.workbook import Workbook
 
 from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm
 from contracts.models import Contract
@@ -180,3 +184,62 @@ class JournalListView(ListView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Журнал регистрации контрактов'
         return context
+
+
+# Представление для экспорта в Excel
+def export_to_excel(request):
+    purchases = Contract.objects.all().order_by('-id')  # Получение всех объектов модели контракта
+
+    # Данные для заполнения таблицы
+    data = [['Дата контракта', 'Номер контракта', 'Контрагент', 'Предмет контракта',
+             'Срок действия контракта', 'Дата начала услуг/поставки', 'Дата окончания услуг/поставки',
+             'Сумма контракта', 'Тип закупки']]
+
+    for purchase in purchases:
+        data.append([
+            purchase.contract_date.strftime('%d.%m.%Y'),  # Преобразуем дату в нужный формат
+            purchase.contract_number,
+            purchase.supplier,
+            purchase.contract_subject,
+            purchase.contract_duration.strftime('%d.%m.%Y'),
+            purchase.service_start_date.strftime('%d.%m.%Y'),
+            purchase.service_end_date.strftime('%d.%m.%Y'),
+            purchase.contract_amount,
+            purchase.purchase_type
+        ])
+
+    # Создание новой рабочей книги
+    wb = Workbook()
+    ws = wb.active
+
+    # Заполнение данными
+    for row in data:
+        ws.append(row)
+
+    # Установка ширины колонок
+    dim_holder = {}
+    for col in range(len(data[0])):
+        for row in range(1, len(data) + 1):
+            column_letter = get_column_letter(col + 1)
+            cell_value = str(ws.cell(row=row, column=col + 1).value)
+            try:
+                dim_holder[column_letter].append(len(cell_value))
+            except KeyError:
+                dim_holder[column_letter] = [len(cell_value)]
+
+    for col, widths in dim_holder.items():
+        max_width = max(widths)
+        ws.column_dimensions[col].width = max_width + 3
+
+    # Сохранение файла в память
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    # Отправка файла пользователю
+    response = HttpResponse(
+        content=output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+    response['Content-Disposition'] = 'attachment; filename="journal.xlsx"'
+    return response
