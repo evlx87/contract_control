@@ -67,7 +67,8 @@ class PurchaseListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Закупки'
-        context['years'] = Contract.objects.order_by('contract_date').dates('contract_date', 'year', order='ASC')
+        # context['years'] = Contract.objects.order_by('contract_date').dates('contract_date', 'year', order='ASC')
+        context['years'] = Contract.objects.order_by('contract_duration').dates('contract_duration', 'year', order='ASC')
         context['selected_year'] = self.request.GET.get('year', '')
         context['subjects'] = Contract.objects.values_list('contract_subject', flat=True).distinct()
         context['selected_subject'] = self.request.GET.get('subject', '')
@@ -207,7 +208,7 @@ def export_to_excel(request):
 
     for purchase in purchases:
         data.append([
-            purchase.contract_date.strftime('%d.%m.%Y'),  # Преобразуем дату в нужный формат
+            purchase.contract_date.strftime('%d.%m.%Y'),
             purchase.contract_number,
             purchase.supplier,
             purchase.contract_subject,
