@@ -58,17 +58,17 @@ class PurchaseListView(ListView):
         queryset = super().get_queryset()
         year = self.request.GET.get('year')
         if year:
-            queryset = queryset.filter(contract_duration__year=year)
+            queryset = queryset.filter(service_end_date__year=year)
         subject = self.request.GET.get('subject')
         if subject:
-            queryset = queryset.filter(contract_subject=subject)
-        return queryset.order_by('contract_duration')
+            queryset = queryset.filter(service_end_date=subject)
+        return queryset.order_by('service_end_date')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Закупки'
         # context['years'] = Contract.objects.order_by('contract_date').dates('contract_date', 'year', order='ASC')
-        context['years'] = Contract.objects.order_by('contract_duration').dates('contract_duration', 'year', order='ASC')
+        context['years'] = Contract.objects.order_by('service_end_date').dates('service_end_date', 'year', order='ASC')
         context['selected_year'] = self.request.GET.get('year', '')
         context['subjects'] = Contract.objects.values_list('contract_subject', flat=True).distinct()
         context['selected_subject'] = self.request.GET.get('subject', '')
