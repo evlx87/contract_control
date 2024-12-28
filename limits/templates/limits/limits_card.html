@@ -1,9 +1,7 @@
 {% extends 'contracts/base.html' %}
 
 {% block title %}
-    <title>
-        {{ page_title|title }}
-    </title>
+    <title>Информация о доведенных лимитах</title>
 {% endblock %}
 
 {% block page_header %}
@@ -11,16 +9,17 @@
 {% endblock %}
 
 {% block page_content %}
-{% if user.is_authenticated %}
-<div class="button_container">
-    <a class="pp_button" href="{% url 'limits:add_limit' %}">Добавить</a>
-</div>
-{% endif %}
-<hr>
+    {% if user.is_authenticated %}
+    <div class="button_container">
+        <a class="pp_button" href="{% url 'limits:add_limit' %}">Добавить</a>
+    </div>
+    {% endif %}
+    <hr>
     <ul>
-        {% for limit in limit_info %}
-            <li>{{ limit }}</li>
+        {% for limit in limits %}
+            <li>{{ limit.name }} - КБК: {{ limit.kbk }} КОСГУ: {{ limit.kosgu }} Год: {{ limit.year }}</li>
         {% endfor %}
     </ul>
+    <br>
+    <a href="/">Вернуться на главную страницу</a>
 {% endblock %}
-

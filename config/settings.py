@@ -173,3 +173,4 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = 'contracts:index'
+AUTH_USER_MODEL = 'users.User'

@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -24,3 +26,10 @@ class User(AbstractUser):
         related_name="custom_user_permissions_set",
         related_query_name="user_permission",
     )
+
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     current_year = models.PositiveIntegerField(default=datetime.datetime.now().year)
+#
+#     def __str__(self):
+#         return self.user.username

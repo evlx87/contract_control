@@ -1,45 +1,49 @@
-import logging
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView
 
-from django.shortcuts import render, redirect
-
-from contracts.models import Contract
 from .forms import LimitForm
 from .models import Limit
 
-logger = logging.getLogger(__name__)
 
+class LimitCardView(TemplateView):
+    model = Limit
+    template_name = 'limits/limits_card.html'
+    context_object_name = 'limits'
 
-def limit_card(request):
-    limits = Limit.objects.all()
-    limit_info = []
-    for limit in limits:
-        limit_info.append(
-            f"{limit.name} - КБК {limit.kbk_type} КОСГУ {limit.kosgu_type}")
-    return render(request,
-                  'limits/limits_card.html',
-                  {'limit_info': limit_info})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Доведенные лимиты'
+        return context
 
+class AddLimitView(CreateView):
+    model = Limit
+    form_class = LimitForm
+    template_name = 'limits/add_limit.html'
+    success_url = '/limits/'
 
-def add_limit(request):
-    if request.method == 'POST':
-        form = LimitForm(request.POST)
-        if form.is_valid():
-            limit = form.save(commit=False)
-            # Найдем все контракты с соответствующим КБК и КОСГУ
-            contracts = Contract.objects.filter(
-                kbk_type=limit.kbk_type, kosgu_type=limit.kosgu_type)
-            # Вычитаем суммы контрактов из доведенных лимитов
-            total_contract_amount = sum(
-                contract.amount for contract in contracts)
-            remaining_limit = limit.amount - total_contract_amount
-            limit.remaining_limit = remaining_limit
-            limit.save()
-            logger.info(f"Лимит успешно добавлен: {limit.name}")
-            logger.debug(
-                f"Информация: КБК - {limit.kbk_type}, КОСГУ - {limit.kosgu_type}, Остаток лимита - {remaining_limit}")
-            logger.debug(
-                f"Сумма контрактов для КБК {limit.kbk_type} и КОСГУ {limit.kosgu_type}: {total_contract_amount}")
-            return redirect('limits:limit_card')
-    else:
-        form = LimitForm()
-    return render(request, 'limits/add_limit.html', {'form': form})
+    def form_valid(self, form):
+        limit = form.save(commit=False)
+        limit.save()
+        messages.success(self.request, 'Лимит успешно создан!')
+        return HttpResponseRedirect(self.success_url)
+
+class UpdateLimitView(UpdateView):
+    model = Limit
+    form_class = LimitForm
+    template_name = 'limits/update_limit.html'
+    success_url = '/limits/'
+
+    def form_valid(self, form):
+        limit = form.save(commit=False)
+        limit.save()
+        messages.success(self.request, 'Лимит успешно изменен!')
+        return HttpResponseRedirect(self.success_url)
+
+class DeleteLimitView(DeleteView):
+    model = Limit
+    success_url = '/limits/'
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, 'Лимит удалён.')
+        return super().delete(*args, **kwargs)

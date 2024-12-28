@@ -67,7 +67,6 @@ class PurchaseListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Закупки'
-        # context['years'] = Contract.objects.order_by('contract_date').dates('contract_date', 'year', order='ASC')
         context['years'] = Contract.objects.order_by('service_end_date').dates('service_end_date', 'year', order='ASC')
         context['selected_year'] = self.request.GET.get('year', '')
         context['subjects'] = Contract.objects.values_list('contract_subject', flat=True).distinct()
@@ -142,7 +141,6 @@ class AddPaymentDocView(View):
             logger.info(f"Создан новый документ оплаты для контракта с ID {contract_id}")
             return redirect(
                 'contracts:contract-detail',
-                # contract_number=contract.contract_number)
                 pk=contract.id)
         else:
             logger.warning('Форма документа оплаты содержит ошибки')
@@ -173,7 +171,6 @@ class AddPaymentOrderView(View):
             logger.info(f"Создано новое платежное поручение для контракта с ID {contract_id}")
             return redirect(
                 'contracts:contract-detail',
-                # contract_number=contract.contract_number)
                 pk = contract.id)
         else:
             logger.warning('Форма платежного поручения содержит ошибки')
