@@ -11,9 +11,11 @@
 {% endblock %}
 
 {% block page_content %}
+{% if user.is_authenticated %}
 <div class="button_container">
     <a class="pp_button" href="{% url 'contracts:add_contract' %}">Добавить</a>
 </div>
+{% endif %}
 <div class="button_container">
     <form method="get">
     <label for="year">Выберите год:</label>

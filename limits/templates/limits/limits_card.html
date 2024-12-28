@@ -11,9 +11,11 @@
 {% endblock %}
 
 {% block page_content %}
+{% if user.is_authenticated %}
 <div class="button_container">
     <a class="pp_button" href="{% url 'limits:add_limit' %}">Добавить</a>
 </div>
+{% endif %}
 <hr>
     <ul>
         {% for limit in limit_info %}
