@@ -23,10 +23,15 @@
     <div class="auth_box_center">
         {% if user.is_authenticated %}
             <p>Вы авторизованы как {{ user.username }}</p>
-            <p></p><a class="pp_button" href="{% url 'users:user_logout' %}">Logout</a></p>
+            <p><a class="pp_button" onclick="document.getElementById('logout-form').submit();">Выход</a>
+                <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display:none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                </form>
+            </p>
         {% else %}
             <p>Вы не авторизованы</p>
-            <p><a class="pp_button" href="{% url 'users:user_login' %}">Login</a></p>
+            <p><a class="pp_button" href="{% url 'login' %}">Login</a></p>
         {% endif %}
     </div>
 {% endblock %}

@@ -171,3 +171,5 @@ LOGGING = {
         },
     }
 }
+
+LOGIN_REDIRECT_URL = 'contracts:index'

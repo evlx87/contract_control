@@ -22,6 +22,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('contracts.urls', namespace='contracts')),
-    path('', include('users.urls', namespace='users')),
+    path('accounts/', include('django.contrib.auth.urls')),  # Добавляем стандартные маршруты для auth
     path('', include('limits.urls', namespace='limits')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

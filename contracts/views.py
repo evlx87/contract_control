@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'contracts/index.html'
-    login_url = 'users:login'
+    login_url = 'registration:login'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
