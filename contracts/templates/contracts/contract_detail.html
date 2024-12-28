@@ -24,14 +24,15 @@
             <p>Дополнительные соглашения</p>
         </div>
     </div>
+    {% if user.is_authenticated %}
     <hr>
-
     <div class="button_container">
         <a class="pp_button" href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить платежный документ</a>
         <a class="pp_button" href="{% url 'contracts:add_payment_order' contract_id=contract_detail.id %}">Добавить платежное поручение</a>
         <a class="pp_button" href="#">Добавить доп.соглашение</a>
         <a class="pp_button" href="{% url 'contracts:contract-edit' contract_id=contract_detail.id %}">Редактировать данные контракта</a>
     </div>
+    {% endif %}
     <hr>
     <table border="1">
         <thead>
