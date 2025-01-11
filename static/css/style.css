@@ -147,6 +147,23 @@ button:hover {
     border-radius: 5px;
 }
 
+.pp_button_index {
+    display: flex;            /* Используем Flexbox */
+    justify-content: center;  /* Центрирование по горизонтали */
+    align-items: center;      /* Центрирование по вертикали */
+    padding: 10px;            /* Можно настроить отступы по вкусу */
+    font-size: 14px;
+    background-color: #007BFF;
+    height: 80px;
+    width: 150px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    word-wrap: break-word;    /* Перенос длинных слов */
+    white-space: normal;      /* Нормальное форматирование текста */
+}
+
 .auth_box_center {
     justify-content: center;
     text-align: center;

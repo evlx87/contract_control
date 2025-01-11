@@ -16,8 +16,9 @@
 
 {% block page_content %}
     <div class="button_container">
-        <a class="pp_button" href="{% url 'contracts:purchase_list' %}">Закупки</a>
-        <a class="pp_button" href="{% url 'limits:limit_card' %}">Доведенные лимиты</a>
+        <a class="pp_button_index" href="{% url 'contracts:purchase_list' %}">Закупки</a>
+        <a class="pp_button_index" href="{% url 'contracts:journal_list' %}">Журнал регистрации контрактов</a>
+        <a class="pp_button_index" href="{% url 'limits:limit_card' %}">Доведенные лимиты</a>
     </div>
 
     <div class="auth_box_center">
