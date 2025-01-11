@@ -164,6 +164,21 @@ button:hover {
     white-space: normal;      /* Нормальное форматирование текста */
 }
 
+.pp_button_menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #007BFF;
+    height: 50px;
+    width: 100px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    word-wrap: break-word;    /* Перенос длинных слов */
+    white-space: normal;      /* Нормальное форматирование текста */
+}
 .auth_box_center {
     justify-content: center;
     text-align: center;
