@@ -17,9 +17,7 @@
     <hr>
     <ul>
         {% for limit in limits %}
-            <li>{{ limit.name }} - КБК: {{ limit.kbk }} КОСГУ: {{ limit.kosgu }} Год: {{ limit.year }}</li>
+            <li><div class="limit_info">{{ limit.name }} - КБК: {{ limit.kbk }} КОСГУ: {{ limit.kosgu }} Год: {{ limit.year }}</div></li>
         {% endfor %}
     </ul>
-    <br>
-    <a href="/">Вернуться на главную страницу</a>
 {% endblock %}
