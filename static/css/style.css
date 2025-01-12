@@ -187,15 +187,18 @@ button:hover {
     width: 440px;
 }
 
-
-.limit_info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    padding: 10px;
-    background-color: #007BFF;
-    height: 150px;
-    width: 300px;
-    border: 1px solid black;
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
