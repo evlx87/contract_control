@@ -8,9 +8,9 @@ from .forms import LimitForm
 from .models import Limit
 
 
-class LimitCardView(ListView):
+class LimitListView(ListView):
     model = Limit
-    template_name = 'limits/limits_card.html'
+    template_name = 'limits/limits_list.html'
     context_object_name = 'limits'
 
     def get_context_data(self, **kwargs):
@@ -23,7 +23,7 @@ class AddLimitView(CreateView):
     model = Limit
     form_class = LimitForm
     template_name = 'limits/add_limit.html'
-    success_url = reverse_lazy('limits:limit_card')
+    success_url = reverse_lazy('limits:limits_list')
 
     def form_valid(self, form):
         print(form.cleaned_data)
@@ -36,7 +36,7 @@ class UpdateLimitView(UpdateView):
     model = Limit
     form_class = LimitForm
     template_name = 'limits/update_limit.html'
-    success_url = reverse_lazy('limits:limit_card')
+    success_url = reverse_lazy('limits:limits_list')
 
     def form_valid(self, form):
         limit = form.save(commit=False)
@@ -47,7 +47,7 @@ class UpdateLimitView(UpdateView):
 
 class DeleteLimitView(DeleteView):
     model = Limit
-    success_url = reverse_lazy('limits:limit_card')
+    success_url = reverse_lazy('limits:limits_list')
 
     def delete(self, *args, **kwargs):
         messages.success(self.request, 'Лимит удалён.')
