@@ -20,16 +20,22 @@
     <form method="get">
     <label for="year">Выберите год:</label>
     <select name="year" id="year">
-        <option value="" {% if not selected_year %}selected{% endif %}>Все</option>
+        <option value="">Все</option>
         {% for year in years %}
-            <option value="{{ year|date:'Y' }}" {% if selected_year == year|date:'Y' %}selected{% endif %}>{{ year|date:'Y' }}</option>
+            <option value="{{ year.year }}"
+                {% if selected_year == year.year %}selected{% endif %}>
+                {{ year.year }}
+            </option>
         {% endfor %}
-    </select>
+        </select>
     <label for="subject">Выберите предмет контракта:</label>
     <select name="subject" id="subject">
-        <option value="" {% if not selected_subject %}selected{% endif %}>Все</option>
+        <option value="">Все</option>
         {% for subject in subjects %}
-            <option value="{{ subject }}" {% if selected_subject == subject %}selected{% endif %}>{{ subject }}</option>
+            <option value="{{ subject }}"
+                {% if selected_subject == subject %}selected{% endif %}>
+                {{ subject }}
+            </option>
         {% endfor %}
     </select>
     <button type="submit">Применить</button>

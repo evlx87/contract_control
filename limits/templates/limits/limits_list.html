@@ -1,0 +1,54 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>{{ page_title|title }}</title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Информация о доведенных лимитах</h1>
+{% endblock %}
+
+{% block page_content %}
+    {% if user.is_authenticated %}
+    <div class="button_container">
+        <a class="pp_button" href="{% url 'limits:add_limit' %}">Добавить</a>
+    </div>
+    {% endif %}
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Год</th>
+                <th>Наименование объекта закупки</th>
+                <th>КБК / КОСГУ</th>
+                <th>Сумма доведенного лимита</th>
+                <th>Законтрактовано</th>
+                <th>Остаток</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for limit in limits %}
+            <tr>
+                <td>{{ limit.year }}</td>
+                <td>
+                    {% for key, value in PURCHASE_ODJ_CHOICE.items %}
+                        {% if key == limit.name %}
+                            {{ key }} / {{ value }}
+                        {% endif %}
+                    {% empty %}
+                        Нет информации
+                    {% endfor %}
+                </td>
+                <td>{{ limit.kbk.code }} / {{ limit.kosgu.code }}</td>
+                <td>{{ limit.amount }}</td>
+                <td>empty</td>
+                <td>empty</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Нет данных о лимитах.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -147,6 +147,38 @@ button:hover {
     border-radius: 5px;
 }
 
+.pp_button_index {
+    display: flex;            /* Используем Flexbox */
+    justify-content: center;  /* Центрирование по горизонтали */
+    align-items: center;      /* Центрирование по вертикали */
+    padding: 10px;            /* Можно настроить отступы по вкусу */
+    font-size: 14px;
+    background-color: #007BFF;
+    height: 80px;
+    width: 150px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    word-wrap: break-word;    /* Перенос длинных слов */
+    white-space: normal;      /* Нормальное форматирование текста */
+}
+
+.pp_button_menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #007BFF;
+    height: 50px;
+    width: 100px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    word-wrap: break-word;    /* Перенос длинных слов */
+    white-space: normal;      /* Нормальное форматирование текста */
+}
 .auth_box_center {
     justify-content: center;
     text-align: center;
@@ -154,3 +186,19 @@ button:hover {
     margin: auto;
     width: 440px;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
