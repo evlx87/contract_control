@@ -1,0 +1,20 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>Добавление данных о доведенных лимитах</title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Добавление данных о доведенных лимитах</h1>
+{% endblock %}
+
+{% block page_content %}
+<div class="add_form">
+       <form method="post">
+           {% csrf_token %}
+           {{ form.as_p }}
+           <button type="submit">Save</button>
+       </form>
+   </div>
+{% endblock %}
+
