@@ -9,11 +9,37 @@
 {% endblock %}
 
 {% block page_content %}
-    <ul>
-        {% for contract in contracts %}
-            <li>{{ contract.name }}: {{ contract.description }}</li>
-        {% empty %}
+    <div class="contract-list">
+        {% if contracts %}
+            <table class="contract-table" border="1" cellpadding="2" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Наименование</th>
+                        <th>Описание</th>
+                        <th>Номер Контракта</th>
+                        <th>Дата Контракта</th>
+                        <th>Сумма Контракта</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contract in contracts %}
+                    <tr>
+                        <td>{{ contract.name }}</td>
+                        <td>{{ contract.description }}</td>
+                        <td><a href="{% url 'contracts:contract-detail' contract.id %}">{{ contract.contract_number }}</a></td>
+                        <td>{{ contract.contract_date|date:"d.m.Y" }}</td>
+                        <td>{{ contract.contract_amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">Контрактов с такими параметрами нет. Проверьте КБК: {{ kbk }} и КОСГУ: {{ kosgu }}.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
             <p>Контрактов с такими параметрами нет.</p>
-        {% endfor %}
-    </ul>
+        {% endif %}
+    </div>
 {% endblock %}
+

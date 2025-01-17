@@ -202,3 +202,45 @@ th {
     background-color: #f2f2f2;
 }
 
+.contract-list {
+    margin: 20px 0;
+}
+
+.contract-list ul {
+    list-style-type: none; /* Убираем стандартные маркеры списка */
+    padding: 0;
+}
+
+.contract-list li {
+    border: 1px solid #ccc; /* Граница для отделения каждого контракта */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px; /* Закругленные углы */
+    background-color: #f9f9f9; /* Легкий фон */
+}
+
+.contract-list h2 {
+    margin: 0;
+    font-size: 1.5em; /* Увеличение размера заголовка */
+}
+
+.contract-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.contract-table th, .contract-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.contract-table th {
+    background-color: #f2f2f2;
+}
+
+.contract-list p {
+    color: #666;
+    font-style: italic;
+}
+

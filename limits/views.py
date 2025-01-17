@@ -64,7 +64,7 @@ def get_kbk_value(kbk):
 
 def get_kosgu_value(kosgu):
     try:
-        return next(choice[0] for choice in KOSGU_TYPE_CHOICES if choice[1] == kosgu)
+        return next(choice[0] for choice in KOSGU_TYPE_CHOICES if choice[0] == str(kosgu))  # Приводим к строке
     except StopIteration:
         return None
 
@@ -75,21 +75,23 @@ class CardLimitView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Получаем значения КБК и КОСГУ из URL
         kbk = self.kwargs['kbk']
-        kosgu = self.kwargs['kosgu']
+        kosgu = str(self.kwargs['kosgu'])  # Приведение к строке
 
-        # Преобразуем значения КБК и КОСГУ в строки, подходящие для поиска по полю CharField
         kbk_value = get_kbk_value(kbk)
         kosgu_value = get_kosgu_value(kosgu)
 
-        # Если найдены соответствия, выполняем поиск контрактов
-        if kbk_value is not None and kosgu_value is not None:
-            contracts = Contract.objects.filter(kbk_type=kbk_value, kosgu_type=kosgu_value)
-        else:
-            contracts = []
+        # Отладочная информация
+        print(f"Запрашиваемый КБК: {kbk}, полученный КБК: {kbk_value}")
+        print(f"Запрашиваемый КОСГУ: {kosgu}, полученный КОСГУ: {kosgu_value}")
 
-        # Добавляем контракты в контекст
+        # Поиск контрактов
+        contracts = Contract.objects.filter(kbk_type=kbk_value, kosgu_type=kosgu_value)
+
+        print(f"Найдено контрактов: {contracts.count()}")  # Выводим количество найденных контрактов
+
         context['contracts'] = contracts
+        context['kbk'] = kbk
+        context['kosgu'] = kosgu
 
         return context
