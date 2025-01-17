@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView, TemplateView
 
-from .choice_objects import PURCHASE_ODJ_CHOICE
+from contracts.models import Contract
+from .choice_objects import PURCHASE_ODJ_CHOICE, KBK_TYPE_CHOICES, KOSGU_TYPE_CHOICES
 from .forms import LimitForm
 from .models import Limit
 
@@ -52,3 +53,43 @@ class DeleteLimitView(DeleteView):
     def delete(self, *args, **kwargs):
         messages.success(self.request, 'Лимит удалён.')
         return super().delete(*args, **kwargs)
+
+
+def get_kbk_value(kbk):
+    try:
+        return next(choice[0] for choice in KBK_TYPE_CHOICES if choice[1] == kbk)
+    except StopIteration:
+        return None
+
+
+def get_kosgu_value(kosgu):
+    try:
+        return next(choice[0] for choice in KOSGU_TYPE_CHOICES if choice[1] == kosgu)
+    except StopIteration:
+        return None
+
+
+class CardLimitView(TemplateView):
+    template_name = 'limits/card_limit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Получаем значения КБК и КОСГУ из URL
+        kbk = self.kwargs['kbk']
+        kosgu = self.kwargs['kosgu']
+
+        # Преобразуем значения КБК и КОСГУ в строки, подходящие для поиска по полю CharField
+        kbk_value = get_kbk_value(kbk)
+        kosgu_value = get_kosgu_value(kosgu)
+
+        # Если найдены соответствия, выполняем поиск контрактов
+        if kbk_value is not None and kosgu_value is not None:
+            contracts = Contract.objects.filter(kbk_type=kbk_value, kosgu_type=kosgu_value)
+        else:
+            contracts = []
+
+        # Добавляем контракты в контекст
+        context['contracts'] = contracts
+
+        return context

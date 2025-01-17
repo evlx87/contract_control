@@ -1,0 +1,19 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>Контракты по КБК/КОСГУ</title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Контракты с КБК {{ kbk }} и КОСГУ {{ kosgu }}</h1>
+{% endblock %}
+
+{% block page_content %}
+    <ul>
+        {% for contract in contracts %}
+            <li>{{ contract.name }}: {{ contract.description }}</li>
+        {% empty %}
+            <p>Контрактов с такими параметрами нет.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
