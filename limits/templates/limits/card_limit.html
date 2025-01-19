@@ -14,10 +14,11 @@
             <table class="contract-table" border="1" cellpadding="2" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Наименование</th>
-                        <th>Описание</th>
-                        <th>Номер Контракта</th>
-                        <th>Дата Контракта</th>
+                        <th>Наименование объекта закупки</th>
+                        <th>Контрагент</th>
+                        <th>Номер контракта</th>
+                        <th>Дата заключения контракта</th>
+                        <th>Срок действия контракта</th>
                         <th>Сумма Контракта</th>
                     </tr>
                 </thead>
@@ -25,9 +26,10 @@
                     {% for contract in contracts %}
                     <tr>
                         <td>{{ contract.name }}</td>
-                        <td>{{ contract.description }}</td>
+                        <td>{{ contract.supplier }}</td>
                         <td><a href="{% url 'contracts:contract-detail' contract.id %}">{{ contract.contract_number }}</a></td>
                         <td>{{ contract.contract_date|date:"d.m.Y" }}</td>
+                        <td>{{ contract.service_start_date|date:"d.m.Y" }} -  {{ contract.service_end_date|date:"d.m.Y" }}</td>
                         <td>{{ contract.contract_amount }}</td>
                     </tr>
                     {% empty %}

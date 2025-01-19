@@ -77,6 +77,7 @@ class CardLimitView(TemplateView):
 
         kbk = self.kwargs['kbk']
         kosgu = str(self.kwargs['kosgu'])  # Приведение к строке
+        year = self.kwargs['year']
 
         kbk_value = get_kbk_value(kbk)
         kosgu_value = get_kosgu_value(kosgu)
@@ -84,14 +85,16 @@ class CardLimitView(TemplateView):
         # Отладочная информация
         print(f"Запрашиваемый КБК: {kbk}, полученный КБК: {kbk_value}")
         print(f"Запрашиваемый КОСГУ: {kosgu}, полученный КОСГУ: {kosgu_value}")
+        print(f"Запрашиваемый год: {year}")
 
         # Поиск контрактов
-        contracts = Contract.objects.filter(kbk_type=kbk_value, kosgu_type=kosgu_value)
+        contracts = Contract.objects.filter(kbk_type=kbk_value, kosgu_type=kosgu_value, contract_date__year=year)
 
         print(f"Найдено контрактов: {contracts.count()}")  # Выводим количество найденных контрактов
 
         context['contracts'] = contracts
         context['kbk'] = kbk
         context['kosgu'] = kosgu
+        context['year'] = year
 
         return context

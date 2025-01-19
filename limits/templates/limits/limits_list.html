@@ -39,7 +39,7 @@
                         Нет информации
                     {% endfor %}
                 </td>
-                <td><a href="{% url 'limits:card_limit' kbk=limit.kbk.code kosgu=limit.kosgu.code %}">{{ limit.kbk.code }} / {{ limit.kosgu.code }}</a></td>
+                <td><a href="{% url 'limits:card_limit' kbk=limit.kbk.code kosgu=limit.kosgu.code year=limit.year %}">{{ limit.kbk.code }} / {{ limit.kosgu.code }}</a></td>
                 <td>{{ limit.amount }}</td>
                 <td>empty</td>
                 <td>empty</td>
