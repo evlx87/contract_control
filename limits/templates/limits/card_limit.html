@@ -9,13 +9,25 @@
 {% endblock %}
 
 {% block page_content %}
+    <div class="summary">
+        <p>Общая сумма доведенного лимита: <strong>{{ total_limit_amount }}</strong></p>
+        <p>Сумма контрактов: <strong>{{ total_contract_amount }}</strong></p>
+        <p>Остаток по КБК и КОСГУ: <strong>{{ remaining_amount }}</strong></p>
+    </div>
+
+    {% if limit_exceeded %}
+        <div class="alert alert-danger">
+            <strong>Превышение доведенного лимита по КБК и КОСГУ!</strong>
+        </div>
+    {% endif %}
+
     <div class="contract-list">
         {% if contracts %}
             <table class="contract-table" border="1" cellpadding="2" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Наименование объекта закупки</th>
                         <th>Контрагент</th>
+                        <th>Предмет контракта</th>
                         <th>Номер контракта</th>
                         <th>Дата заключения контракта</th>
                         <th>Срок действия контракта</th>
@@ -25,8 +37,8 @@
                 <tbody>
                     {% for contract in contracts %}
                     <tr>
-                        <td>{{ contract.name }}</td>
                         <td>{{ contract.supplier }}</td>
+                        <td>{{ contract.contract_subject }}</td>
                         <td><a href="{% url 'contracts:contract-detail' contract.id %}">{{ contract.contract_number }}</a></td>
                         <td>{{ contract.contract_date|date:"d.m.Y" }}</td>
                         <td>{{ contract.service_start_date|date:"d.m.Y" }} -  {{ contract.service_end_date|date:"d.m.Y" }}</td>
