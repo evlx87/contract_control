@@ -1,0 +1,59 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+    <title>Контракты по КБК/КОСГУ</title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Контракты с КБК {{ kbk }} и КОСГУ {{ kosgu }}</h1>
+{% endblock %}
+
+{% block page_content %}
+    <div class="summary">
+        <p>Общая сумма доведенного лимита: <strong>{{ total_limit_amount }}</strong></p>
+        <p>Сумма контрактов: <strong>{{ total_contract_amount }}</strong></p>
+        <p>Остаток по КБК и КОСГУ: <strong>{{ remaining_amount }}</strong></p>
+    </div>
+
+    {% if limit_exceeded %}
+        <div class="alert alert-danger">
+            <strong>Превышение доведенного лимита по КБК и КОСГУ!</strong>
+        </div>
+    {% endif %}
+
+    <div class="contract-list">
+        {% if contracts %}
+            <table class="contract-table" border="1" cellpadding="2" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Контрагент</th>
+                        <th>Предмет контракта</th>
+                        <th>Номер контракта</th>
+                        <th>Дата заключения контракта</th>
+                        <th>Срок действия контракта</th>
+                        <th>Сумма Контракта</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contract in contracts %}
+                    <tr>
+                        <td>{{ contract.supplier }}</td>
+                        <td>{{ contract.contract_subject }}</td>
+                        <td><a href="{% url 'contracts:contract-detail' contract.id %}">{{ contract.contract_number }}</a></td>
+                        <td>{{ contract.contract_date|date:"d.m.Y" }}</td>
+                        <td>{{ contract.service_start_date|date:"d.m.Y" }} -  {{ contract.service_end_date|date:"d.m.Y" }}</td>
+                        <td>{{ contract.contract_amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">Контрактов с такими параметрами нет. Проверьте КБК: {{ kbk }} и КОСГУ: {{ kosgu }}.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Контрактов с такими параметрами нет.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
