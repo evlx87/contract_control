@@ -76,6 +76,11 @@ class Contract(models.Model):
         max_length=100,
         verbose_name="КОСГУ",
         choices=KOSGU_TYPE_CHOICES)
+    contract_year = models.PositiveIntegerField(
+        verbose_name="Год контрактации",
+        null=True,
+        blank=True
+    )
 
     def save(self, *args, **kwargs):
         if self.contract_file:

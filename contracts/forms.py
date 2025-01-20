@@ -18,13 +18,16 @@ class ContractForm(forms.ModelForm):
                   'service_start_date',
                   'service_end_date',
                   'contract_amount',
-                  'contract_file')
+                  'contract_file',
+                  'contract_year')
 
         widgets = {
             'contract_date': forms.DateInput(format='d.m.y', attrs={'type': 'date'}),
             'contract_duration': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
             'service_start_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
-            'service_end_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}), }
+            'service_end_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'contract_year': forms.NumberInput(attrs={'min': 1900, 'max': 2100})
+        }
 
 
 class PaymentDocumentForm(forms.ModelForm):
