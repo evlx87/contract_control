@@ -1,11 +1,13 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from limits.choice_objects import PURCHASE_ODJ_CHOICE  # Импортируем словарь
-from limits.models import KBK, KOSGU, Limit  # Импортируем лимит
+
+from lib_ccportal.models import KBK, KOSGU, PurchaseObject
+from limits.models import Limit
+
 
 class LimitForm(forms.ModelForm):
     name = forms.ChoiceField(  # Используем ChoiceField для наименования объекта закупки
-        choices=[(key, value) for key, value in PURCHASE_ODJ_CHOICE.items()],
+        choices=[],  # Сначала оставляем пустым
         label=_("Наименование объекта закупки")
     )
 
@@ -25,6 +27,11 @@ class LimitForm(forms.ModelForm):
         model = Limit  # Указываем модель, с которой работает форма
         fields = ['name', 'kbk', 'kosgu', 'amount']  # Указываем поля, которые будут включены в форму
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Заполняем choices для поля name на основе данных из модели PurchaseObject
+        self.fields['name'].choices = [(purchase.code, purchase.description) for purchase in
+                                       PurchaseObject.objects.all()]
     def clean(self):
         cleaned_data = super().clean()
         kbk_code = cleaned_data.get("kbk")

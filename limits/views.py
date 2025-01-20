@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, TemplateView
 
 from contracts.models import Contract
-from .choice_objects import PURCHASE_ODJ_CHOICE, KBK_TYPE_CHOICES, KOSGU_TYPE_CHOICES
+from lib_ccportal.models import PurchaseObject, KBK, KOSGU
 from .forms import LimitForm
 from .models import Limit
 
@@ -49,7 +49,7 @@ class LimitListView(ListView):
         # Передаем в контекст
         context['summary'] = summary
         context['page_title'] = 'Доведенные лимиты'
-        context['PURCHASE_ODJ_CHOICE'] = PURCHASE_ODJ_CHOICE
+        context['PURCHASE_ODJ_CHOICE'] = PurchaseObject
 
         return context
 
@@ -90,14 +90,14 @@ class DeleteLimitView(DeleteView):
 
 def get_kbk_value(kbk):
     try:
-        return next(choice[0] for choice in KBK_TYPE_CHOICES if choice[1] == kbk)
+        return next(choice[0] for choice in KBK if choice[1] == kbk)
     except StopIteration:
         return None
 
 
 def get_kosgu_value(kosgu):
     try:
-        return next(choice[0] for choice in KOSGU_TYPE_CHOICES if choice[0] == str(kosgu))  # Приводим к строке
+        return next(choice[0] for choice in KOSGU if choice[0] == str(kosgu))  # Приводим к строке
     except StopIteration:
         return None
 

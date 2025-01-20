@@ -3,21 +3,30 @@ from decimal import Decimal
 
 from django.db import models
 
-from limits.choice_objects import PURCHASE_TYPE_CHOICES, CONTRACT_TYPE_CHOICES, KBK_TYPE_CHOICES, KOSGU_TYPE_CHOICES, \
-    PURCHASE_ODJ_CHOICE
+from lib_ccportal.models import PurchaseObject, PurchaseType, ContractType, KBK, KOSGU
 
-sorted_purchase_odj_choice = dict(sorted(PURCHASE_ODJ_CHOICE.items(), key=lambda x: x[1]))
+
+# sorted_purchase_odj_choice = dict(
+#     sorted(
+#         PURCHASE_ODJ_CHOICE.items(),
+#         key=lambda x: x[1]))
+
 
 # Create your models here.
+# Модель для объектов закупки
+
+
 class Contract(models.Model):
-    name = models.CharField(
-        max_length=500,
-        verbose_name="Наименование объекта закупки",
-        choices=sorted_purchase_odj_choice)
-    purchase_type = models.CharField(
-        max_length=100,
+    name = models.ForeignKey(
+        PurchaseObject,
+        on_delete=models.CASCADE,
+        verbose_name="Наименование объекта закупки"
+    )
+    purchase_type = models.ForeignKey(
+        PurchaseType,
+        on_delete=models.CASCADE,
         verbose_name="Тип закупки",
-        choices=PURCHASE_TYPE_CHOICES)
+    )
     supplier = models.CharField(
         max_length=255,
         verbose_name="Поставщик (Исполнитель, подрядчик)")
@@ -28,8 +37,8 @@ class Contract(models.Model):
         max_length=50,
         verbose_name="Номер контракта")
     contract_date = models.DateField(
-        verbose_name="Дата контракта", 
-        null=True, 
+        verbose_name="Дата контракта",
+        null=True,
         blank=True)
     contract_duration = models.DateField(
         verbose_name="Срок действия контракта",
@@ -64,18 +73,19 @@ class Contract(models.Model):
         null=True,
         blank=True
     )
-    contract_type = models.CharField(
-        max_length=100,
-        verbose_name="Тип контракта",
-        choices=CONTRACT_TYPE_CHOICES)
-    kbk_type = models.CharField(
-        max_length=100,
-        verbose_name="КБК",
-        choices=KBK_TYPE_CHOICES)
-    kosgu_type = models.CharField(
-        max_length=100,
-        verbose_name="КОСГУ",
-        choices=KOSGU_TYPE_CHOICES)
+    contract_type = models.ForeignKey(
+        ContractType,
+        on_delete=models.CASCADE,
+        verbose_name="Тип контракта"
+    )
+    kbk_type = models.ForeignKey(
+        KBK,
+        on_delete=models.CASCADE,
+        verbose_name="КБК")
+    kosgu_type = models.ForeignKey(
+        KOSGU,
+        on_delete=models.CASCADE,
+        verbose_name="КОСГУ")
     contract_year = models.PositiveIntegerField(
         verbose_name="Год контрактации",
         null=True,
@@ -103,7 +113,7 @@ class Contract(models.Model):
 
     def __str__(self):
         return self.contract_number
-    
+
     def total_issued_amount(self):
         """ Возвращает сумму всех платежных документов, связанных с этим контрактом """
         return self.payments.aggregate(total=models.Sum('amount'))[
@@ -111,8 +121,9 @@ class Contract(models.Model):
 
     def total_pp_issued_amount(self):
         """ Возвращает сумму всех оплат по платежным поручениям, связанным с этим контрактом """
-        return sum(payment_order.pp_amount for payment_order in self.payment_orders.all())
-    
+        return sum(
+            payment_order.pp_amount for payment_order in self.payment_orders.all())
+
     def total_balance(self):
         return self.contract_amount - self.total_pp_issued_amount()
 
@@ -154,7 +165,8 @@ class PaymentDocument(models.Model):
             original_filename = os.path.basename(self.payment_file.name)
             document_name_cleaned = self.document_name.replace('/', '_')
             new_filename = f"{document_name_cleaned} от {self.date_issued}.pdf"
-            self.payment_file.name = os.path.join(os.path.dirname(original_filename), new_filename)
+            self.payment_file.name = os.path.join(
+                os.path.dirname(original_filename), new_filename)
         super().save(*args, **kwargs)
 
     @property
