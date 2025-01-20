@@ -1,14 +1,16 @@
+from datetime import datetime
+from decimal import Decimal
+
 from django.contrib import messages
+from django.db import models
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.db import models
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, TemplateView
-from datetime import datetime, timedelta
+
 from contracts.models import Contract
 from .choice_objects import PURCHASE_ODJ_CHOICE, KBK_TYPE_CHOICES, KOSGU_TYPE_CHOICES
 from .forms import LimitForm
 from .models import Limit
-from decimal import Decimal
 
 
 class LimitListView(ListView):
@@ -39,6 +41,7 @@ class LimitListView(ListView):
                 'kbk': limit.kbk,
                 'kosgu': limit.kosgu,
                 'year': limit.year,
+                'amount': limit.amount,
                 'total_contract_amount': total_contract_amount,
                 'remaining_amount': remaining_amount,
             })
@@ -47,6 +50,7 @@ class LimitListView(ListView):
         context['summary'] = summary
         context['page_title'] = 'Доведенные лимиты'
         context['PURCHASE_ODJ_CHOICE'] = PURCHASE_ODJ_CHOICE
+
         return context
 
 class AddLimitView(CreateView):

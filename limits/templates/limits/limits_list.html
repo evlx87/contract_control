@@ -27,22 +27,22 @@
             </tr>
         </thead>
         <tbody>
-            {% for limit in limits %}
+            {% for item in summary %}
             <tr>
-                <td>{{ limit.year }}</td>
+                <td>{{ item.year }}</td>
                 <td>
                     {% for key, value in PURCHASE_ODJ_CHOICE.items %}
-                        {% if key == limit.name %}
+                        {% if key == item.kbk.code %}
                             {{ key }} / {{ value }}
                         {% endif %}
                     {% empty %}
                         Нет информации
                     {% endfor %}
                 </td>
-                <td><a href="{% url 'limits:card_limit' kbk=limit.kbk.code kosgu=limit.kosgu.code year=limit.year %}">{{ limit.kbk.code }} / {{ limit.kosgu.code }}</a></td>
-                <td>{{ limit.amount }}</td>
-                <td>{{ limit.total_contract_amount }}</td>
-                <td>{{ limit.remaining_amount }}</td>
+                <td><a href="{% url 'limits:card_limit' kbk=item.kbk.code kosgu=item.kosgu.code year=item.year %}">{{ item.kbk.code }} / {{ item.kosgu.code }}</a></td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.total_contract_amount }}</td>
+                <td>{{ item.remaining_amount }}</td>
             </tr>
             {% empty %}
             <tr>
