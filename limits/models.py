@@ -5,26 +5,10 @@ from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
-from contracts.models import Contract
+from lib_ccportal.models import KBK, KOSGU
 
 
 # Create your models here.
-class KBK(models.Model):
-    code = models.CharField(max_length=30, unique=True)
-    description = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.code
-
-
-class KOSGU(models.Model):
-    code = models.CharField(max_length=6, unique=True)
-    description = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.code
-
-
 class Limit(models.Model):
     name = models.CharField(max_length=300)
     kbk = models.ForeignKey(KBK, on_delete=models.PROTECT, related_name='limits')
@@ -39,7 +23,7 @@ class Limit(models.Model):
 
 
 # Сигнал для обновления остатка лимита при создании контракта
-@receiver(post_save, sender=Contract)
+@receiver(post_save, sender='contracts.Contract')
 def update_remaining_limit(sender, instance, created, **kwargs):
     if created:
         try:
@@ -54,9 +38,7 @@ def update_remaining_limit(sender, instance, created, **kwargs):
             pass
 
 # Сигнал для проверки превышения лимита при сохранении контракта
-
-
-@receiver(pre_save, sender=Contract)
+@receiver(pre_save, sender='contracts.Contract')
 def check_limit_exceeded(sender, instance, **kwargs):
     try:
         limit = Limit.objects.get(

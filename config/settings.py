@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'contracts',
     'users',
     'limits',
+    'lib_ccportal',
 ]
 
 MIDDLEWARE = [

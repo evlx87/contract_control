@@ -39,10 +39,10 @@ class AddContractView(View):
 
     def post(self, request):
         form = ContractForm(request.POST, request.FILES)
+        logger.debug("Отправленные данные формы: %s", request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Контракт успешно добавлен')
-            logger.info("Контракт успешно сохранен")
             return redirect('/contracts/')
         else:
             logger.error("Форма контракта не валидна: %s", form.errors)
