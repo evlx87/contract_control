@@ -2,6 +2,7 @@ import io
 import logging
 
 from django.contrib import messages
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -46,8 +47,12 @@ class AddContractView(View):
             return redirect('/contracts/')
         else:
             logger.error("Форма контракта не валидна: %s", form.errors)
-            messages.error(request, 'Ошибка при добавлении контракта. Проверьте введенные данные')
-            return render(request, 'contracts/purchase_add.html', {'form': form})
+            messages.error(
+                request,
+                'Ошибка при добавлении контракта. Проверьте введенные данные')
+            return render(request,
+                          'contracts/purchase_add.html',
+                          {'form': form})
 
 
 class PurchaseListView(ListView):
@@ -84,7 +89,8 @@ class PurchaseListView(ListView):
 
         # Если год не был передан через GET запрос, используем текущий год
         context['selected_year'] = self.request.GET.get('year', current_year)
-        context['subjects'] = Contract.objects.values_list('contract_subject', flat=True).distinct()
+        context['subjects'] = Contract.objects.values_list(
+            'contract_subject', flat=True).distinct()
         context['selected_subject'] = self.request.GET.get('subject', '')
         return context
 
@@ -149,20 +155,20 @@ class AddPaymentDocView(View):
     def post(self, request, contract_id):
         contract = self.get_contract(contract_id)
         form = PaymentDocumentForm(request.POST, request.FILES)
+
         if form.is_valid():
             payment_document = form.save(commit=False)
             payment_document.contract = contract
-            payment_document.save()
-            logger.info(f"Создан новый документ оплаты для контракта с ID {contract_id}")
-            return redirect(
-                'contracts:contract-detail',
-                pk=contract.id)
+            try:
+                payment_document.save()
+                logger.info(f"Создан новый документ оплаты для контракта с ID {contract_id}")
+                return redirect('contracts:contract-detail', pk=contract.id)
+            except IntegrityError as e:
+                logger.error(f"Ошибка при сохранении документа: {str(e)}")
         else:
-            logger.warning('Форма документа оплаты содержит ошибки')
+            logger.warning('Форма документа оплаты содержит ошибки: %s', form.errors)
 
-        return render(
-            request, self.template_name, {
-                'form': form, 'contract': contract})
+        return render(request, self.template_name, {'form': form, 'contract': contract})
 
 
 class AddPaymentOrderView(View):
@@ -171,7 +177,8 @@ class AddPaymentOrderView(View):
     def get(self, request, contract_id=None):
         contract = get_object_or_404(Contract, id=contract_id)
         form = PaymentOrderForm(initial={'contract': contract})
-        logger.info(f"Отображена страница для добавления платежного поручения для контракта с ID {contract_id}")
+        logger.info(
+            f"Отображена страница для добавления платежного поручения для контракта с ID {contract_id}")
         return render(
             request, self.template_name, {
                 'form': form, 'contract': contract})
@@ -183,16 +190,18 @@ class AddPaymentOrderView(View):
             payment_order = form.save(commit=False)
             payment_order.contract = contract
             payment_order.save()
-            logger.info(f"Создано новое платежное поручение для контракта с ID {contract_id}")
+            logger.info(
+                f"Создано новое платежное поручение для контракта с ID {contract_id}")
             return redirect(
                 'contracts:contract-detail',
-                pk = contract.id)
+                pk=contract.id)
         else:
             logger.warning('Форма платежного поручения содержит ошибки')
 
         return render(
             request, self.template_name, {
                 'form': form, 'contract': contract})
+
 
 class JournalListView(ListView):
     model = Contract
@@ -211,12 +220,19 @@ class JournalListView(ListView):
 
 # Представление для экспорта в Excel
 def export_to_excel(request):
-    purchases = Contract.objects.all().order_by('-id')  # Получение всех объектов модели контракта
+    # Получение всех объектов модели контракта
+    purchases = Contract.objects.all().order_by('-id')
 
     # Данные для заполнения таблицы
-    data = [['Дата контракта', 'Номер контракта', 'Контрагент', 'Предмет контракта',
-             'Срок действия контракта', 'Дата начала услуг/поставки', 'Дата окончания услуг/поставки',
-             'Сумма контракта', 'Тип закупки']]
+    data = [['Дата контракта',
+             'Номер контракта',
+             'Контрагент',
+             'Предмет контракта',
+             'Срок действия контракта',
+             'Дата начала услуг/поставки',
+             'Дата окончания услуг/поставки',
+             'Сумма контракта',
+             'Тип закупки']]
 
     for purchase in purchases:
         data.append([
