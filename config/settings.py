@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import time
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -158,15 +160,23 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         },
+        'file': {
+            'level': 'DEBUG',  # Уровень логирования для файла
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', f'{time.strftime("%Y-%m-%d")}.log'),  # путь к лог-файлу
+            'when': 'midnight',
+            'backupCount': 20,  # Сохранять 20 старых файлов
+            'formatter': 'verbose',
+        },
     },
     'loggers': {
         '': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],  # Используем оба обработчика
             'level': 'DEBUG',
             'propagate': True,
         },
         'django': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],  # Также используем файл для логов Django
             'level': 'INFO',
             'propagate': False,
         },
