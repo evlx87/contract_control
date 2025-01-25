@@ -12,14 +12,17 @@
 
 {% block page_content %}
 <div class="add_form">
-     <form id="paymentDocForm" method="post" enctype="multipart/form-data">
+    <form id="paymentDocForm" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        {% if form.payment_file.errors %}
+            <div class="error">{{ form.payment_file.errors }}</div>
+        {% endif %}
         <div class="btn-container">
-            <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" id="savePaymentDocBtn">Сохранить</a>
-            <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" >Отмена</a>
+            <button type="submit">Сохранить</button>
+            <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}">Отмена</a>
         </div>
-     </form>
+    </form>
     </div>
 
 <script>
