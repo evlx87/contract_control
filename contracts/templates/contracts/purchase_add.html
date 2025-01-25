@@ -16,7 +16,9 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-
+        {% if form.contract_file.errors %}
+            <div class="error">{{ form.contract_file.errors }}</div>
+        {% endif %}
         <div class="button_container">
             <button type="submit">Сохранить</button>
             <button id="buttonId">Отмена</button>
