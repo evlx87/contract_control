@@ -165,9 +165,11 @@ class AddPaymentDocView(View):
                 return redirect('contracts:contract-detail', pk=contract.id)
             except IntegrityError as e:
                 logger.error(f"Ошибка при сохранении документа: {str(e)}")
+                form.add_error(None, 'Произошла ошибка при сохранении документа. Пожалуйста, попробуйте снова.')  # Добавить общее сообщение об ошибке
         else:
             logger.warning('Форма документа оплаты содержит ошибки: %s', form.errors)
 
+        # Если форма невалидна, отображаем ее снова с ошибками
         return render(request, self.template_name, {'form': form, 'contract': contract})
 
 

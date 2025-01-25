@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from .models import PaymentDocument, Contract, PaymentOrder
 
@@ -61,6 +62,12 @@ class PaymentDocumentForm(forms.ModelForm):
                 "Сумма должна быть положительной числом.")
         return amount
 
+    def clean_payment_file(self):
+        file = self.cleaned_data.get('payment_file')
+        if file:
+            if not file.name.endswith('.pdf'):
+                raise ValidationError("Файл не подходящего формата. Загрузите скан документа в формате PDF.")
+        return file
 
 class PaymentOrderForm(forms.ModelForm):
     class Meta:
