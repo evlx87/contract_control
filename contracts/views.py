@@ -191,7 +191,14 @@ class AddPaymentOrderView(View):
         if form.is_valid():
             payment_order = form.save(commit=False)
             payment_order.contract = contract
-            payment_order.save()
+            try:
+                payment_order.save()
+                logger.info(f"Создан новый документ платежного поручения для контракта с ID {contract_id}")
+                return redirect('contracts:contract-detail', pk=contract.id)
+            except IntegrityError as e:
+                logger.error(f"Ошибка при сохранении документа: {str(e)}")
+                form.add_error(None,
+                               'Произошла ошибка при сохранении документа. Пожалуйста, попробуйте снова.')  # Добавить общее сообщение об ошибке
             logger.info(
                 f"Создано новое платежное поручение для контракта с ID {contract_id}")
             return redirect(

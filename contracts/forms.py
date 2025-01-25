@@ -31,6 +31,13 @@ class ContractForm(forms.ModelForm):
             'service_end_date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
             'contract_year': forms.NumberInput(attrs={'min': 1900, 'max': 2100})}
 
+    def clean_contract_file(self):
+        file = self.cleaned_data.get('contract_file')
+        if file:
+            if not file.name.endswith('.pdf'):
+                raise ValidationError("Файл не подходящего формата. Загрузите скан документа в формате PDF.")
+        return file
+
 
 class PaymentDocumentForm(forms.ModelForm):
     class Meta:
@@ -86,3 +93,10 @@ class PaymentOrderForm(forms.ModelForm):
             'pp_amount': 'Оплаченная сумма',
         }
         exclude = ['contract']
+
+    def clean_pp_file(self):
+        file = self.cleaned_data.get('pp_file')
+        if file:
+            if not file.name.endswith('.pdf'):
+                raise ValidationError("Файл не подходящего формата. Загрузите скан документа в формате PDF.")
+        return file
