@@ -32,7 +32,77 @@
             </p>
         {% else %}
             <p>Вы не авторизованы</p>
-            <p><a class="pp_button" href="{% url 'login' %}">Login</a></p>
+            <p><a class="pp_button" id="loginBtn">Вход</a></p>
         {% endif %}
     </div>
+
+    <!-- Модальное окно -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div id="errorMessage" style="color: red; display: none;"></div> <!-- Сообщение об ошибке -->
+            <form id="loginForm" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Логин:</label>
+                    <input type="text" name="username" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" name="password" required>
+                </div>
+                <a class="pp_button_modal_login" id="submitLogin">Вход</a>
+                <a class="pp_button_modal_login" id="cancelLogin">Отмена</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+// Получаем элементы модального окна
+var modal = document.getElementById("loginModal");
+var btn = document.getElementById("loginBtn");
+
+// Когда пользователь нажимает на кнопку, открыть модальное окно
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Обработка нажатия кнопки "Отмена"
+document.getElementById('cancelLogin').onclick = function() {
+    modal.style.display = "none"; // Закрытие модального окна
+}
+
+// Когда пользователь кликает вне модального окна, закрыть его
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none"; // Закрытие модального окна
+    }
+}
+
+// Обработка отправки формы
+document.getElementById('submitLogin').onclick = function() {
+    var form = document.getElementById('loginForm');
+    var formData = new FormData(form);
+
+    fetch("{% url 'login' %}", {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        if (data.includes("Пожалуйста, введите правильные имя пользователя и пароль.")) {
+            // Если есть ошибка, выводим сообщение
+            document.getElementById('errorMessage').innerText = 'Пожалуйста, введите правильные имя пользователя и пароль.';
+            document.getElementById('errorMessage').style.display = 'block';
+        } else {
+            // Если всё хорошо, перезагружаем страницу
+            window.location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+}
+</script>
 {% endblock %}

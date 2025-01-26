@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('contracts.urls', namespace='contracts')),
     path('accounts/', include('django.contrib.auth.urls')),  # Добавляем стандартные маршруты для auth
     path('', include('limits.urls', namespace='limits')),
+    path('', include('users.urls', namespace='users')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

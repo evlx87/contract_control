@@ -6,16 +6,7 @@ from django.db import models
 from lib_ccportal.models import PurchaseObject, PurchaseType, ContractType, KBK, KOSGU
 
 
-# sorted_purchase_odj_choice = dict(
-#     sorted(
-#         PURCHASE_ODJ_CHOICE.items(),
-#         key=lambda x: x[1]))
-
-
-# Create your models here.
 # Модель для объектов закупки
-
-
 class Contract(models.Model):
     name = models.ForeignKey(
         PurchaseObject,
