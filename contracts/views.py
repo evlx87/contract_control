@@ -72,7 +72,6 @@ class PurchaseListView(ListView):
         if subject:
             queryset = queryset.filter(contract_subject=subject)
 
-        # return queryset.order_by('service_end_date')
         return queryset.order_by('-contract_date')
 
     def get_context_data(self, **kwargs):
