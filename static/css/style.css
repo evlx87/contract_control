@@ -162,6 +162,17 @@ button {
     height: 50px;
     width: 100px;
 }
+.pp_button_modal_login {
+    display: inline-block;
+    width: 70px;
+    padding: 10px 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
 .btn,
 .dataTables_filter,
 .text-nowrap {
@@ -9885,21 +9896,7 @@ input[type="search"] {
     margin: 15% auto; /* 15% от верхней и центрирование */
     padding: 20px;
     border: 1px solid #888;
-    width: 250px; /* Можно задать ширину */
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+    width: 200px; /* Можно задать ширину */
 }
 
 /* Дополнительные стили для формы, при желании */
