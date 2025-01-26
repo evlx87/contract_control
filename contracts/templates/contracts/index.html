@@ -32,7 +32,53 @@
             </p>
         {% else %}
             <p>Вы не авторизованы</p>
-            <p><a class="pp_button" href="{% url 'login' %}">Login</a></p>
+            <p><a class="pp_button" id="loginBtn">Вход</a></p>
         {% endif %}
     </div>
+
+    <!-- Модальное окно -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Вход</h2>
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Имя пользователя:</label>
+                    <input type="text" name="username" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit">Войти</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+// Получаем элементы модального окна
+var modal = document.getElementById("loginModal");
+var btn = document.getElementById("loginBtn");
+var span = document.getElementById("closeModal");
+
+// Когда пользователь нажимает на кнопку, открыть модальное окно
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Когда пользователь нажимает на <span> (x), закрыть модальное окно
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Когда пользователь кликает вне модального окна, закрыть его
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
 {% endblock %}
