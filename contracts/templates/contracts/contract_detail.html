@@ -21,17 +21,47 @@
             {% else %}
                 <p>Скан контракта не загружен</p>
             {% endif %}
-            <p>Дополнительные соглашения</p>
+            {% if contract_detail.additional_agreements.all %}
+                <p>Дополнительные соглашения ({{ contract_detail.additional_agreements.count }}):</p>
+                <ul>
+                    {% for agreement in contract_detail.additional_agreements.all %}
+                        <li>
+                            {{ agreement }}
+                            {% if agreement.agreement_file %}
+                                <a href="{{ agreement.agreement_file.url }}" target="_blank">Скачать</a>
+                            {% else %}
+                                <span>Файл не загружен</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Дополнительные соглашения отсутствуют</p>
+            {% endif %}
         </div>
     </div>
+    <!-- Модальное окно для отображения дополнительных соглашений -->
+<div id="agreeModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Дополнительные соглашения</h2>
+        <ul>
+            {% for agreement in additional_agreements %}
+                <li>{{ agreement }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
     {% if user.is_authenticated %}
     <hr>
     <div class="button_container">
         <a class="pp_button" href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить платежный документ</a>
         <a class="pp_button" href="{% url 'contracts:add_payment_order' contract_id=contract_detail.id %}">Добавить платежное поручение</a>
-        <a class="pp_button" href="#">Добавить доп.соглашение</a>
+        <a class="pp_button" href="{% url 'contracts:add_additional_agreement' contract_id=contract_detail.id %}">Добавить доп.соглашение</a>
         <a class="pp_button" href="{% url 'contracts:contract-edit' contract_id=contract_detail.id %}">Редактировать данные контракта</a>
     </div>
+</div>
     {% endif %}
     <hr>
     <table border="1">
@@ -78,4 +108,47 @@
         </tbody>
     </table>
 </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+    // Скрипты для управления модальным окном
+    var modal = document.getElementById("agreeModal");
+    var btn = document.getElementById("viewAgreeModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    var addAgreementModal = document.getElementById("addAgreementModal");
+    var addAgreementBtn = document.getElementById("addAgreementBtn");
+    var closeButtons = addAgreementModal.getElementsByClassName("close");
+
+    addAgreementBtn.onclick = function() {
+        addAgreementModal.style.display = "block";
+    }
+
+    Array.from(closeButtons).forEach(function(button) {
+        button.onclick = function() {
+            addAgreementModal.style.display = "none";
+        }
+    });
+
+    window.onclick = function(event) {
+        if (event.target == addAgreementModal) {
+            addAgreementModal.style.display = "none";
+        }
+    }
+</script>
 {% endblock %}

@@ -210,3 +210,45 @@ class PaymentOrder(models.Model):
 
     def __str__(self):
         return f"{self.pp_name} - {self.pp_amount}"
+
+
+class AdditionalAgreement(models.Model):
+    contract = models.ForeignKey(
+        Contract,
+        on_delete=models.CASCADE,
+        related_name='additional_agreements'
+    )
+    date = models.DateField(
+        verbose_name="Дата соглашения"
+    )
+    number = models.CharField(
+        max_length=50,
+        verbose_name="Номер соглашения"
+    )
+    agreement_file = models.FileField(
+        upload_to='agreements/',
+        verbose_name="Файл соглашения",
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return f"Доп.соглашение от {self.date.strftime('%d.%m.%Y')} №{self.number}"
+
+    def save(self, *args, **kwargs):
+        # Вызываем родительский метод save, чтобы получить значение поля agreement_file
+        super().save(*args, **kwargs)
+
+        # Если файл загружен, переименуем его
+        if self.agreement_file:
+            # Создаем новое имя файла
+            contract_type = self.contract.contract_number  # Предположим, что у вас есть contract_number
+            date_str = self.date.strftime('%d.%m.%Y')   # Приводим дату к строке в нужном формате
+            new_filename = f"ДС_{self.number}_{date_str}_{contract_type}.pdf"  # Предположим, что файл pdf
+            new_file_path = os.path.join('agreements', new_filename)  # Путь к новому файлу
+
+            # Переименуем файл
+            self.agreement_file.name = new_file_path
+
+            # Сохраняем объект заново с новым именем файла
+            super().save(update_fields=['agreement_file'])
