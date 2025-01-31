@@ -236,7 +236,7 @@ class AdditionalAgreement(models.Model):
         return f"Доп.соглашение от {self.date.strftime('%d.%m.%Y')} №{self.number}"
 
     def save(self, *args, **kwargs):
-        # Вызываем родительский метод save, чтобы получить значение поля agreement_file
+        # Сначала сохраняем объект, чтобы получить имя файла
         super().save(*args, **kwargs)
 
         # Если файл загружен, переименуем его
@@ -245,10 +245,15 @@ class AdditionalAgreement(models.Model):
             contract_type = self.contract.contract_number  # Предположим, что у вас есть contract_number
             date_str = self.date.strftime('%d.%m.%Y')   # Приводим дату к строке в нужном формате
             new_filename = f"ДС_{self.number}_{date_str}_{contract_type}.pdf"  # Предположим, что файл pdf
-            new_file_path = os.path.join('agreements', new_filename)  # Путь к новому файлу
 
-            # Переименуем файл
+            # Путь к новому файлу
+            new_file_path = os.path.join('agreements', new_filename)
+
+            # Изменяем имя файла
             self.agreement_file.name = new_file_path
+
+            # Сохраняем объект заново с новым именем файла
+            super().save(update_fields=['agreement_file'])
 
             # Сохраняем объект заново с новым именем файла
             super().save(update_fields=['agreement_file'])
