@@ -1,0 +1,31 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+        <title>
+            {{ page_title|title }}
+        </title>
+{% endblock %}
+
+{% block page_header %}
+    <h1>Добавить доп.соглашение</h1>
+{% endblock %}
+
+{% block page_content %}
+    <div class="add_form">
+       <form method="post" enctype="multipart/form-data">
+           {% csrf_token %}
+           {{ form.as_p }}
+           <div class="btn-container">
+               <button type="submit">Сохранить</button>
+               <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}">Отмена</a>
+           </div>
+       </form>
+   </div>
+
+<script>
+    document.getElementById('savePaymentDocBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('paymentDocForm').submit();
+    });
+</script>
+{% endblock %}

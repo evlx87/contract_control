@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import PaymentDocument, Contract, PaymentOrder
+from .models import PaymentDocument, Contract, PaymentOrder, AdditionalAgreement
 
 
 class ContractForm(forms.ModelForm):
@@ -100,3 +100,12 @@ class PaymentOrderForm(forms.ModelForm):
             if not file.name.endswith('.pdf'):
                 raise ValidationError("Файл не подходящего формата. Загрузите скан документа в формате PDF.")
         return file
+
+
+class AdditionalAgreementForm(forms.ModelForm):
+    class Meta:
+        model = AdditionalAgreement
+        fields = ['date', 'number', 'agreement_file']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }

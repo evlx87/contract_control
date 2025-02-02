@@ -11,7 +11,7 @@ from django.views.generic import ListView, TemplateView
 from openpyxl.utils import get_column_letter
 from openpyxl.workbook import Workbook
 
-from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm
+from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm, AdditionalAgreementForm
 from contracts.models import Contract
 
 logger = logging.getLogger(__name__)
@@ -103,6 +103,7 @@ def contract_detail(request, pk):
 
 def contract_edit(request, contract_id):
     contract = Contract.objects.get(pk=contract_id)
+    additional_agreements = contract.additional_agreements.all()
     if request.method == 'POST':
         form = ContractForm(request.POST, request.FILES, instance=contract)
 
@@ -116,8 +117,11 @@ def contract_edit(request, contract_id):
     else:
         form = ContractForm(instance=contract)
 
-    return render(request, 'contracts/contract_edit.html',
-                  {'form': form, 'contract': contract})
+    return render(request,
+                  'contracts/contract_edit.html',
+                  {'form': form,
+                   'contract': contract,
+                   'additional_agreements': additional_agreements})
 
 
 def contract_delete(request, pk):
@@ -160,16 +164,24 @@ class AddPaymentDocView(View):
             payment_document.contract = contract
             try:
                 payment_document.save()
-                logger.info(f"Создан новый документ оплаты для контракта с ID {contract_id}")
+                logger.info(
+                    f"Создан новый документ оплаты для контракта с ID {contract_id}")
                 return redirect('contracts:contract-detail', pk=contract.id)
             except IntegrityError as e:
                 logger.error(f"Ошибка при сохранении документа: {str(e)}")
-                form.add_error(None, 'Произошла ошибка при сохранении документа. Пожалуйста, попробуйте снова.')  # Добавить общее сообщение об ошибке
+                # Добавить общее сообщение об ошибке
+                form.add_error(
+                    None,
+                    'Произошла ошибка при сохранении документа. Пожалуйста, попробуйте снова.')
         else:
-            logger.warning('Форма документа оплаты содержит ошибки: %s', form.errors)
+            logger.warning(
+                'Форма документа оплаты содержит ошибки: %s',
+                form.errors)
 
         # Если форма невалидна, отображаем ее снова с ошибками
-        return render(request, self.template_name, {'form': form, 'contract': contract})
+        return render(
+            request, self.template_name, {
+                'form': form, 'contract': contract})
 
 
 class AddPaymentOrderView(View):
@@ -192,12 +204,15 @@ class AddPaymentOrderView(View):
             payment_order.contract = contract
             try:
                 payment_order.save()
-                logger.info(f"Создан новый документ платежного поручения для контракта с ID {contract_id}")
+                logger.info(
+                    f"Создан новый документ платежного поручения для контракта с ID {contract_id}")
                 return redirect('contracts:contract-detail', pk=contract.id)
             except IntegrityError as e:
                 logger.error(f"Ошибка при сохранении документа: {str(e)}")
-                form.add_error(None,
-                               'Произошла ошибка при сохранении документа. Пожалуйста, попробуйте снова.')  # Добавить общее сообщение об ошибке
+                # Добавить общее сообщение об ошибке
+                form.add_error(
+                    None,
+                    'Произошла ошибка при сохранении документа. Пожалуйста, попробуйте снова.')
             logger.info(
                 f"Создано новое платежное поручение для контракта с ID {contract_id}")
             return redirect(
@@ -290,3 +305,24 @@ def export_to_excel(request):
     )
     response['Content-Disposition'] = 'attachment; filename="journal.xlsx"'
     return response
+
+
+class AddAdditionalAgreementView(View):
+    def get(self, request, contract_id):
+        contract = get_object_or_404(Contract, id=contract_id)
+        form = AdditionalAgreementForm()
+        return render(request, 'contracts/additional_agreement_add.html', {'form': form, 'contract': contract})
+
+    def post(self, request, contract_id):
+        contract = get_object_or_404(Contract, id=contract_id)
+        form = AdditionalAgreementForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            additional_agreement = form.save(commit=False)
+            additional_agreement.contract = contract
+            additional_agreement.save()
+            messages.success(request, 'Дополнительное соглашение успешно добавлено.')
+            return redirect('contracts:contract-detail', pk=contract.id)
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+            return redirect('contracts:contract-detail', pk=contract.id)
