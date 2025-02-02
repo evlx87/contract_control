@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views import View
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
 from openpyxl.utils import get_column_letter
 from openpyxl.workbook import Workbook
 
@@ -94,11 +94,15 @@ class PurchaseListView(ListView):
         return context
 
 
-def contract_detail(request, pk):
-    contract = get_object_or_404(Contract, pk=pk)
-    return render(request,
-                  'contracts/contract_detail.html',
-                  {'contract_detail': contract})
+class ContractDetailView(DetailView):
+    model = Contract
+    template_name = 'contracts/contract_detail.html'
+    context_object_name = 'contract_detail'  # Название контекста для представления контракта
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['additional_agreements'] = self.object.additional_agreements.all()  # Получаем все дополнительные соглашения для текущего контракта
+        return context
 
 
 def contract_edit(request, contract_id):
@@ -316,7 +320,6 @@ class AddAdditionalAgreementView(View):
     def post(self, request, contract_id):
         contract = get_object_or_404(Contract, id=contract_id)
         form = AdditionalAgreementForm(request.POST, request.FILES)
-
         if form.is_valid():
             additional_agreement = form.save(commit=False)
             additional_agreement.contract = contract
@@ -324,5 +327,6 @@ class AddAdditionalAgreementView(View):
             messages.success(request, 'Дополнительное соглашение успешно добавлено.')
             return redirect('contracts:contract-detail', pk=contract.id)
         else:
+            logger.error("Ошибка при добавлении дополнительного соглашения: %s", form.errors)
             messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
-            return redirect('contracts:contract-detail', pk=contract.id)
+            return render(request, 'contracts/additional_agreement_add.html', {'form': form, 'contract': contract})
