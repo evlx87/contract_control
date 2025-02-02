@@ -237,16 +237,10 @@ class AdditionalAgreement(models.Model):
 
     def save(self, *args, **kwargs):
         if self.agreement_file:
-            # Получаем данные из контракта
             contract_type = str(self.contract.contract_type)
             contract_date_str = self.contract.contract_date.strftime('%d.%m.%Y')
             contract_number = self.contract.contract_number
-
-            # Формируем новое имя файла
             date_str = self.date.strftime('%d.%m.%Y')
             new_filename = f"ДС_{self.number}_{date_str}_{contract_type}_{contract_date_str}_{contract_number}.pdf"
-
-            # Устанавливаем новое имя файла
             self.agreement_file.name = os.path.join('agreements', new_filename)
-
-            super().save(update_fields=['agreement_file'])
+        super().save(*args, **kwargs)

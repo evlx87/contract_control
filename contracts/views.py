@@ -316,7 +316,6 @@ class AddAdditionalAgreementView(View):
     def post(self, request, contract_id):
         contract = get_object_or_404(Contract, id=contract_id)
         form = AdditionalAgreementForm(request.POST, request.FILES)
-
         if form.is_valid():
             additional_agreement = form.save(commit=False)
             additional_agreement.contract = contract
@@ -324,5 +323,6 @@ class AddAdditionalAgreementView(View):
             messages.success(request, 'Дополнительное соглашение успешно добавлено.')
             return redirect('contracts:contract-detail', pk=contract.id)
         else:
+            logger.error("Ошибка при добавлении дополнительного соглашения: %s", form.errors)
             messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
-            return redirect('contracts:contract-detail', pk=contract.id)
+            return render(request, 'contracts/additional_agreement_add.html', {'form': form, 'contract': contract})
