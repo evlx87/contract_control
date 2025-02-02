@@ -236,24 +236,17 @@ class AdditionalAgreement(models.Model):
         return f"Доп.соглашение от {self.date.strftime('%d.%m.%Y')} №{self.number}"
 
     def save(self, *args, **kwargs):
-        # Сначала сохраняем объект, чтобы получить имя файла
-        super().save(*args, **kwargs)
-
-        # Если файл загружен, переименуем его
         if self.agreement_file:
-            # Создаем новое имя файла
-            contract_type = self.contract.contract_number  # Предположим, что у вас есть contract_number
-            date_str = self.date.strftime('%d.%m.%Y')   # Приводим дату к строке в нужном формате
-            new_filename = f"ДС_{self.number}_{date_str}_{contract_type}.pdf"  # Предположим, что файл pdf
+            # Получаем данные из контракта
+            contract_type = str(self.contract.contract_type)
+            contract_date_str = self.contract.contract_date.strftime('%d.%m.%Y')
+            contract_number = self.contract.contract_number
 
-            # Путь к новому файлу
-            new_file_path = os.path.join('agreements', new_filename)
+            # Формируем новое имя файла
+            date_str = self.date.strftime('%d.%m.%Y')
+            new_filename = f"ДС_{self.number}_{date_str}_{contract_type}_{contract_date_str}_{contract_number}.pdf"
 
-            # Изменяем имя файла
-            self.agreement_file.name = new_file_path
+            # Устанавливаем новое имя файла
+            self.agreement_file.name = os.path.join('agreements', new_filename)
 
-            # Сохраняем объект заново с новым именем файла
-            super().save(update_fields=['agreement_file'])
-
-            # Сохраняем объект заново с новым именем файла
             super().save(update_fields=['agreement_file'])
