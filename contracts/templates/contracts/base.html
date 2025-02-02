@@ -21,14 +21,7 @@
         {% endblock %}
         <hr>
         {% block main_menu %}
-            <div class="menu_container">
-    <ul>
-        <li><a class="pp_button_menu" href="{% url 'contracts:index' %}">Главная</a></li>
-        <li><a class="pp_button_menu" href="{% url 'contracts:journal_list' %}">Журнал регистрации контрактов</a></li>
-        <li><a class="pp_button_menu" href="{% url 'contracts:purchase_list' %}">Закупки</a></li>
-        <li><a class="pp_button_menu" href="{% url 'limits:limits_list' %}">Доведенные лимиты</a></li>
-    </ul>
-</div>
+            {% include 'contracts/includes/inc__menu.html' %}
             <hr>
         {% endblock %}
 
