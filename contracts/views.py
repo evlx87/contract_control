@@ -105,40 +105,56 @@ class ContractDetailView(DetailView):
         return context
 
 
-def contract_edit(request, contract_id):
-    contract = Contract.objects.get(pk=contract_id)
-    additional_agreements = contract.additional_agreements.all()
-    if request.method == 'POST':
+class ContractEditView(View):
+    template_name = 'contracts/contract_edit.html'
+
+    def get_object(self, contract_id):
+        return get_object_or_404(Contract, pk=contract_id)
+
+    def get(self, request, contract_id):
+        contract = self.get_object(contract_id)
+        form = ContractForm(instance=contract)
+        additional_agreements = contract.additional_agreements.all()
+        return render(request, self.template_name, {
+            'form': form,
+            'contract': contract,
+            'additional_agreements': additional_agreements
+        })
+
+    def post(self, request, contract_id):
+        contract = self.get_object(contract_id)
         form = ContractForm(request.POST, request.FILES, instance=contract)
 
         if form.is_valid():
             if 'contract_file' in request.FILES:
                 contract.contract_file = request.FILES['contract_file']
-
             form.save()
             logger.info(f"Контракт с ID {contract.id} успешно отредактирован")
             return redirect('contract-detail', pk=contract.id)
-    else:
-        form = ContractForm(instance=contract)
 
-    return render(request,
-                  'contracts/contract_edit.html',
-                  {'form': form,
-                   'contract': contract,
-                   'additional_agreements': additional_agreements})
+        return render(request, self.template_name, {
+            'form': form,
+            'contract': contract,
+            'additional_agreements': contract.additional_agreements.all()
+        })
 
 
-def contract_delete(request, pk):
-    contract = Contract.objects.get(pk=pk)
-    if request.method == 'POST':
+class ContractDeleteView(View):
+    template_name = 'contracts/contract_delete.html'
+
+    def get_object(self, pk):
+        return get_object_or_404(Contract, pk=pk)
+
+    def get(self, request, pk):
+        contract = self.get_object(pk)
+        return render(request, self.template_name, {'contract': contract})
+
+    def post(self, request, pk):
+        contract = self.get_object(pk)
         contract.delete()
         messages.success(request, 'Данные о закупке были успешно удалены.')
         logger.info(f"Контракт с ID {pk} был удален")
         return redirect('contracts:purchase_list')
-
-    return render(request,
-                  'contracts/contract_delete.html',
-                  {'contract': contract})
 
 
 class AddPaymentDocView(View):
@@ -246,69 +262,71 @@ class JournalListView(ListView):
 
 
 # Представление для экспорта в Excel
-def export_to_excel(request):
-    # Получение всех объектов модели контракта
-    purchases = Contract.objects.all().order_by('-id')
+class ExportToExcelView(View):
 
-    # Данные для заполнения таблицы
-    data = [['Дата контракта',
-             'Номер контракта',
-             'Контрагент',
-             'Предмет контракта',
-             'Срок действия контракта',
-             'Дата начала услуг/поставки',
-             'Дата окончания услуг/поставки',
-             'Сумма контракта',
-             'Тип закупки']]
+    def get(self, request):
+        # Получение всех объектов модели контракта
+        purchases = Contract.objects.all().order_by('-id')
 
-    for purchase in purchases:
-        data.append([
-            purchase.contract_date.strftime('%d.%m.%Y'),
-            purchase.contract_number,
-            purchase.supplier,
-            purchase.contract_subject,
-            purchase.contract_duration.strftime('%d.%m.%Y'),
-            purchase.service_start_date.strftime('%d.%m.%Y'),
-            purchase.service_end_date.strftime('%d.%m.%Y'),
-            purchase.contract_amount,
-            purchase.purchase_type
-        ])
+        # Данные для заполнения таблицы
+        data = [['Дата контракта',
+                 'Номер контракта',
+                 'Контрагент',
+                 'Предмет контракта',
+                 'Срок действия контракта',
+                 'Дата начала услуг/поставки',
+                 'Дата окончания услуг/поставки',
+                 'Сумма контракта',
+                 'Тип закупки']]
 
-    # Создание новой рабочей книги
-    wb = Workbook()
-    ws = wb.active
+        for purchase in purchases:
+            data.append([
+                purchase.contract_date.strftime('%d.%m.%Y'),
+                purchase.contract_number,
+                purchase.supplier,
+                purchase.contract_subject,
+                purchase.contract_duration.strftime('%d.%m.%Y'),
+                purchase.service_start_date.strftime('%d.%m.%Y'),
+                purchase.service_end_date.strftime('%d.%m.%Y'),
+                purchase.contract_amount,
+                str(purchase.purchase_type),
+            ])
 
-    # Заполнение данными
-    for row in data:
-        ws.append(row)
+        # Создание новой рабочей книги
+        wb = Workbook()
+        ws = wb.active
 
-    # Установка ширины колонок
-    dim_holder = {}
-    for col in range(len(data[0])):
-        for row in range(1, len(data) + 1):
-            column_letter = get_column_letter(col + 1)
-            cell_value = str(ws.cell(row=row, column=col + 1).value)
-            try:
-                dim_holder[column_letter].append(len(cell_value))
-            except KeyError:
-                dim_holder[column_letter] = [len(cell_value)]
+        # Заполнение данными
+        for row in data:
+            ws.append(row)
 
-    for col, widths in dim_holder.items():
-        max_width = max(widths)
-        ws.column_dimensions[col].width = max_width + 3
+        # Установка ширины колонок
+        dim_holder = {}
+        for col in range(len(data[0])):
+            for row in range(1, len(data) + 1):
+                column_letter = get_column_letter(col + 1)
+                cell_value = str(ws.cell(row=row, column=col + 1).value)
+                try:
+                    dim_holder[column_letter].append(len(cell_value))
+                except KeyError:
+                    dim_holder[column_letter] = [len(cell_value)]
 
-    # Сохранение файла в память
-    output = io.BytesIO()
-    wb.save(output)
-    output.seek(0)
+        for col, widths in dim_holder.items():
+            max_width = max(widths)
+            ws.column_dimensions[col].width = max_width + 3
 
-    # Отправка файла пользователю
-    response = HttpResponse(
-        content=output.getvalue(),
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    )
-    response['Content-Disposition'] = 'attachment; filename="journal.xlsx"'
-    return response
+        # Сохранение файла в память
+        output = io.BytesIO()
+        wb.save(output)
+        output.seek(0)
+
+        # Отправка файла пользователю
+        response = HttpResponse(
+            content=output.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        )
+        response['Content-Disposition'] = 'attachment; filename="journal.xlsx"'
+        return response
 
 
 class AddAdditionalAgreementView(View):
