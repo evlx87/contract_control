@@ -10,7 +10,7 @@
     {% endblock %}
 
     {% block css %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.min.css' %}">
     {% endblock %}
 </head>
 
@@ -21,7 +21,14 @@
         {% endblock %}
         <hr>
         {% block main_menu %}
-            {% include 'contracts/includes/inc__menu.html' %}
+            <div class="menu_container">
+    <ul>
+        <li><a class="pp_button_menu" href="{% url 'contracts:index' %}">Главная</a></li>
+        <li><a class="pp_button_menu" href="{% url 'contracts:journal_list' %}">Журнал регистрации контрактов</a></li>
+        <li><a class="pp_button_menu" href="{% url 'contracts:purchase_list' %}">Закупки</a></li>
+        <li><a class="pp_button_menu" href="{% url 'limits:limits_list' %}">Доведенные лимиты</a></li>
+    </ul>
+</div>
             <hr>
         {% endblock %}
 
