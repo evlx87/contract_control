@@ -25,13 +25,8 @@ class LimitListView(ListView):
 
         for limit in context['limits']:
             # Фильтрация контрактов по КБК, КОСГУ и году
-            # contracts = Contract.objects.filter(
-            #     kbk_type=limit.kbk.code,
-            #     kosgu_type=limit.kosgu.code,
-            #     contract_date__year=limit.year
-            # )
             contracts = Contract.objects.filter(
-                kbk_type=limit.kbk,  # Измените здесь: передавайте объект, а не его код
+                kbk_type=limit.kbk,
                 kosgu_type=limit.kosgu,
                 contract_date__year=limit.year
             )
@@ -158,10 +153,10 @@ class CardLimitView(TemplateView):
             # Флаг для превышения лимита
             limit_exceeded = total_contract_amount > total_limit_amount
 
-            print(f"Найдено контрактов: {contracts.count()}")  # Выводим количество найденных контрактов
+            print(f"Найдено контрактов: {contracts.count()}")
 
             # Подготовим контекст для шаблона
-            context['contracts'] = contracts  # Это должно быть queryset
+            context['contracts'] = contracts
             context['kbk'] = kbk
             context['kosgu'] = kosgu
             context['year'] = year
@@ -171,7 +166,6 @@ class CardLimitView(TemplateView):
             context['limit_exceeded'] = limit_exceeded
 
         else:
-            # Если лимит не найден, вы можете обработать это в контексте
             context['contracts'] = []  # Пустой список, если лимит не найден
 
         return context
