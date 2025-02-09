@@ -32,7 +32,8 @@ class LimitListView(ListView):
             )
 
             # Сумма цен контрактов
-            total_contract_amount = contracts.aggregate(total=models.Sum('contract_amount'))['total'] or Decimal('0.00')
+            total_contract_amount = contracts.aggregate(
+                total=models.Sum('contract_amount'))['total'] or Decimal('0.00')
 
             # Остаток по лимиту
             remaining_amount = Decimal(limit.amount) - total_contract_amount
@@ -53,6 +54,7 @@ class LimitListView(ListView):
 
         return context
 
+
 class AddLimitView(CreateView):
     model = Limit
     form_class = LimitForm
@@ -66,6 +68,7 @@ class AddLimitView(CreateView):
         messages.success(self.request, 'Лимит успешно создан!')
         return HttpResponseRedirect(self.success_url)
 
+
 class UpdateLimitView(UpdateView):
     model = Limit
     form_class = LimitForm
@@ -73,11 +76,12 @@ class UpdateLimitView(UpdateView):
     success_url = reverse_lazy('limits:limits_list')
 
     def form_valid(self, form):
-        limit = form.save(commit=False)
-        print(limit.kbk, limit.kosgu)
+        limit = form.save()
         limit.save()
         messages.success(self.request, 'Лимит успешно изменен!')
-        return HttpResponseRedirect(self.success_url)
+        # return HttpResponseRedirect(self.success_url)
+        return super().form_valid(form)
+
 
 class DeleteLimitView(DeleteView):
     model = Limit
@@ -90,13 +94,16 @@ class DeleteLimitView(DeleteView):
 
 def get_kbk_value(kbk):
     try:
-        return next(choice for choice in KBK.objects.all() if choice.code == kbk)  # Верно
+        return next(choice for choice in KBK.objects.all()
+                    if choice.code == kbk)  # Верно
     except StopIteration:
         return None
 
+
 def get_kosgu_value(kosgu):
     try:
-        return next(choice for choice in KOSGU.objects.all() if choice.code == str(kosgu))
+        return next(choice for choice in KOSGU.objects.all()
+                    if choice.code == str(kosgu))
     except StopIteration:
         return None
 
@@ -119,7 +126,10 @@ class CardLimitView(TemplateView):
         print(f"Запрашиваемый КОСГУ: {kosgu}, полученный КОСГУ: {kosgu_value}")
         print(f"Запрашиваемый год: {year}")
         # Поиск лимитов по КБК, КОСГУ и году
-        limit = Limit.objects.filter(kbk__code=kbk_value, kosgu__code=kosgu_value, year=year).first()
+        limit = Limit.objects.filter(
+            kbk__code=kbk_value,
+            kosgu__code=kosgu_value,
+            year=year).first()
 
         # Если нужно работать с одним лимитом:
         if limit:
@@ -129,10 +139,8 @@ class CardLimitView(TemplateView):
 
             # Подсчет контрактов, соответствующих фильтрам
             contracts = Contract.objects.filter(
-                kbk_type=limit.kbk,
-                kosgu_type=limit.kosgu,
-                contract_date__range=(start_of_current_year, end_of_current_year)
-            ).distinct()
+                kbk_type=limit.kbk, kosgu_type=limit.kosgu, contract_date__range=(
+                    start_of_current_year, end_of_current_year)).distinct()
 
             # Также добавим контракты из декабря предыдущего года
             contracts |= Contract.objects.filter(
@@ -144,8 +152,10 @@ class CardLimitView(TemplateView):
 
             # Расчет необходимых сумм
             total_limit_amount = limit.amount if limit else 0
-            total_contract_amount = contracts.aggregate(total=models.Sum('contract_amount'))['total'] or 0.00
-            total_contract_amount = Decimal(total_contract_amount)  # Приведение к Decimal
+            total_contract_amount = contracts.aggregate(
+                total=models.Sum('contract_amount'))['total'] or 0.00
+            total_contract_amount = Decimal(
+                total_contract_amount)  # Приведение к Decimal
 
             # Рассчитываем остаток
             remaining_amount = total_limit_amount - total_contract_amount

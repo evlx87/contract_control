@@ -24,6 +24,7 @@
                 <th>Сумма доведенного лимита</th>
                 <th>Законтрактовано</th>
                 <th>Остаток</th>
+                <th>Действия</th>
             </tr>
         </thead>
         <tbody>
@@ -43,6 +44,17 @@
                 <td>{{ item.amount }}</td>
                 <td>{{ item.total_contract_amount }}</td>
                 <td>{{ item.remaining_amount }}</td>
+                <td>
+                    {% if limit.id %}
+                        <a href="{% url 'limits:update_limit' limit.id %}">Редактировать</a>
+                        <form action="{% url 'limits:delete_limit' limit.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Удалить</button>
+                        </form>
+                    {% else %}
+                        <span>Нет доступного ID</span>
+                    {% endif %}
+                </td>
             </tr>
             {% empty %}
             <tr>
