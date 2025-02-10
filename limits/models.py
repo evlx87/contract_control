@@ -21,6 +21,12 @@ class Limit(models.Model):
     def __str__(self):
         return self.name
 
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
 
 # Сигнал для обновления остатка лимита при создании контракта
 @receiver(post_save, sender='contracts.Contract')

@@ -39,6 +39,7 @@ class LimitListView(ListView):
             remaining_amount = Decimal(limit.amount) - total_contract_amount
 
             summary.append({
+                'id': limit.id,
                 'kbk': limit.kbk,
                 'kosgu': limit.kosgu,
                 'year': limit.year,
@@ -75,11 +76,12 @@ class UpdateLimitView(UpdateView):
     template_name = 'limits/update_limit.html'
     success_url = reverse_lazy('limits:limits_list')
 
+    def get_object(self, queryset=None):
+        limit = super().get_object(queryset)
+        return limit
+
     def form_valid(self, form):
-        limit = form.save()
-        limit.save()
         messages.success(self.request, 'Лимит успешно изменен!')
-        # return HttpResponseRedirect(self.success_url)
         return super().form_valid(form)
 
 

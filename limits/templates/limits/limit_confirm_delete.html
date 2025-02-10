@@ -1,0 +1,19 @@
+{% extends 'contracts/base.html' %}
+
+   {% block title %}
+       <title>Подтверждение удаления лимита</title>
+   {% endblock %}
+
+   {% block page_header %}
+       <h1>Подтвердите удаление лимита</h1>
+   {% endblock %}
+
+   {% block page_content %}
+       <p>Вы уверены, что хотите удалить лимит "{{ object }}"?</p>
+
+       <form method="post">
+           {% csrf_token %}
+           <button type="submit">Подтвердить удаление</button>
+           <a href="{% url 'limits:limits_list' %}">Отмена</a>
+       </form>
+   {% endblock %}
