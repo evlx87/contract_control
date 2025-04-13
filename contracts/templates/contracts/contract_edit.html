@@ -1,29 +1,42 @@
 {% extends 'contracts/base.html' %}
-
 {% block title %}
     <title>Редактировать контракт</title>
 {% endblock %}
-
 {% block page_header %}
     <h1>Редактировать данные контракта</h1>
 {% endblock %}
-
 {% block page_content %}
     <div class="add_form">
-        <form id="paymentDocForm" method="post" enctype="multipart/form-data">
+        <form id="contractForm" method="post" enctype="multipart/form-data" onsubmit="return confirm('Сохранить изменения в контракте?');">
             {% csrf_token %}
-            {{ form.as_p }}
+            {% if form.non_field_errors %}
+                <div class="error">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in form %}
+                <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="btn-container">
+                <button type="submit" class="pp_button" aria-label="Сохранить изменения в контракте">Сохранить</button>
+                <a class="pp_button" href="{% url 'contracts:contract-delete' pk=contract.id %}" aria-label="Удалить контракт">Удалить</a>
+                <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" aria-label="Отменить редактирование">Отмена</a>
+            </div>
         </form>
-        <div class="btn-container">
-            <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" id="savePaymentDocBtn">Сохранить</a>
-            <a class="pp_button" href="{% url 'contracts:contract-delete' pk=contract.id %}">Удалить</a>
-            <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}" >Отмена</a>
-        </div>
     </div>
-
-<script>
-    document.getElementById('savePaymentDocBtn').addEventListener('click', function() {
-        document.getElementById('contractForm').submit();
-    });
-</script>
+{% endblock %}
+{% block script %}
+    <script>
+        document.getElementById('id_contract_file').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file && !file.name.endsWith('.pdf')) {
+                alert('Пожалуйста, загрузите файл в формате PDF.');
+                this.value = '';
+            }
+        });
+    </script>
 {% endblock %}

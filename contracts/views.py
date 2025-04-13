@@ -3,7 +3,7 @@ import logging
 
 from django.contrib import messages
 from django.db import IntegrityError
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views import View
@@ -12,7 +12,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.workbook import Workbook
 
 from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm, AdditionalAgreementForm
-from contracts.models import Contract
+from contracts.models import Contract, AdditionalAgreement
 
 logger = logging.getLogger(__name__)
 
@@ -97,11 +97,21 @@ class PurchaseListView(ListView):
 class ContractDetailView(DetailView):
     model = Contract
     template_name = 'contracts/contract_detail.html'
-    context_object_name = 'contract_detail'  # Название контекста для представления контракта
+    context_object_name = 'contract'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if not obj:
+            raise Http404("Контракт не найден.")
+        return obj
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['additional_agreements'] = self.object.additional_agreements.all()  # Получаем все дополнительные соглашения для текущего контракта
+        context['additional_agreements'] = self.object.additional_agreements.all()
+        # Вычисляем остатки
+        contract = self.object
+        context['remaining_after_payments'] = contract.contract_amount - contract.total_issued_amount
+        context['remaining_after_contract'] = contract.contract_amount - contract.total_pp_issued_amount
         return context
 
 
@@ -348,3 +358,14 @@ class AddAdditionalAgreementView(View):
             logger.error("Ошибка при добавлении дополнительного соглашения: %s", form.errors)
             messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
             return render(request, 'contracts/additional_agreement_add.html', {'form': form, 'contract': contract})
+
+
+class AdditionalAgreementDetailView(DetailView):
+    model = AdditionalAgreement
+    template_name = 'contracts/additional_agreement_detail.html'
+    context_object_name = 'agreement'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['contract'] = self.object.contract  # Добавляем контракт в контекст
+        return context

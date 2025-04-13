@@ -1,129 +1,68 @@
-{% extends 'contracts/base.html' %}
+{% extends "contracts/base.html" %}
 
+{% block title %}
+    <title>Контракт № {{ contract.contract_number }} от {{ contract.contract_date }}</title>
+{% endblock %}
 {% block page_header %}
-<h1>Контракт № {{ contract_detail.contract_number }} от {{ contract_detail.contract_date|date:"d.m.Y" }}</h1>
+    <h1>Контракт № {{ contract.contract_number }} от {{ contract.contract_date }}</h1>
 {% endblock %}
-
 {% block page_content %}
-<div class="contract_card">
-    <div class="contract_card_top">
-        <div class="amounts_card">
-            <p>Сумма контракта: {{ contract_detail.contract_amount }} </p>
-            <p>Сумма выставленных счетов: {{ contract_detail.total_issued_amount }} </p>
-            <p>Оплачено: {{ contract_detail.total_pp_issued_amount }} </p>
-            <p>Остаток по контракту: {{ contract_detail.total_balance }}</p>
+    <div class="contract_card">
+        <div class="contract_card_top">
+            <div class="amounts_card">
+                <p><strong>Сумма контракта:</strong> {{ contract.contract_amount }}</p>
+                <p><strong>Сумма плановых платежей:</strong> {{ contract.total_issued_amount }}</p>
+                <p><strong>Остаток после платежей:</strong> {{ remaining_after_payments|floatformat:2 }}</p>
+                <p><strong>Остаток после контракта:</strong> {{ remaining_after_contract|floatformat:2 }}</p>
+            </div>
+            <div class="contract_data">
+                <p><strong>КБК:</strong> {{ contract.kbk_full }}</p>
+                <p><strong>Контрагент:</strong> {{ contract.supplier }}</p>
+                <p><strong>Номер контракта:</strong> {{ contract.contract_number }}</p>
+                <p><strong>Дата:</strong> {{ contract.contract_date }}</p>
+                <p><strong>Срок действия:</strong> {{ contract.contract_duration }}</p>
+                <p><strong>Дата начала услуг:</strong> {{ contract.service_start_date }}</p>
+                <p><strong>Дата окончания услуг:</strong> {{ contract.service_end_date }}</p>
+            </div>
         </div>
-        <div class="contract_data">
-            <p>КБК {{ contract_detail.kbk_full }} </p>
-            <p>Контрагент: {{ contract_detail.supplier }}</p>
-            {% if contract_detail.contract_file %}
-                <p><a href="{{ contract_detail.contract_file.url }}" target="_blank">Скан контракта</a></p>
-            {% else %}
-                <p>Скан контракта не загружен</p>
-            {% endif %}
-            {% if contract_detail.additional_agreements.all %}
-                <p>Дополнительные соглашения ({{ contract_detail.additional_agreements.count }}):</p>
-                <ul>
-                    {% for agreement in additional_agreements %}
-                    <li>
-                        <strong>Номер:</strong> {{ agreement.number }} <br>
-                        <strong>Дата:</strong> {{ agreement.date|date:"d.m.Y" }} <br>
-                        {% if agreement.agreement_file %}
-                            <a href="{{ agreement.agreement_file.url }}" target="_blank">Скачать соглашение</a>
-                        {% else %}
-                            <span>Файл не загружен</span>
-                        {% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Дополнительные соглашения отсутствуют</p>
-            {% endif %}
-        </div>
-    </div>
-    <!-- Модальное окно для отображения дополнительных соглашений -->
- <div id="agreeModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Дополнительные соглашения</h2>
-            <ul>
+        <h2>Дополнительные соглашения ({{ additional_agreements|length }}):</h2>
+        <table class="agreement-table">
+            <thead>
+                <tr>
+                    <th>Номер</th>
+                    <th>Дата</th>
+                    <th>Файл</th>
+                </tr>
+            </thead>
+            <tbody>
                 {% for agreement in additional_agreements %}
-                    <li>{{ agreement }}</li>
+                    <tr>
+                        <td>
+                            <a href="{% url 'contracts:additional-agreement-detail' contract_id=contract.id pk=agreement.id %}">
+                                Доп. соглашение № {{ agreement.number }}
+                            </a>
+                        </td>
+                        <td>{{ agreement.date }}</td>
+                        <td>
+                            {% if agreement.agreement_file %}
+                                <a href="{{ agreement.agreement_file.url }}" class="file-link" target="_blank">Скачать</a>
+                            {% else %}
+                                Нет файла
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3">Соглашения отсутствуют.</td>
+                    </tr>
                 {% endfor %}
-            </ul>
+            </tbody>
+        </table>
+        <div class="button_container">
+            <a class="pp_button" href="{% url 'contracts:add_payment_doc' contract_id=contract.id %}">Платежный документ</a>
+            <a class="pp_button" href="{% url 'contracts:add_payment_order' contract_id=contract.id %}">Платежное поручение</a>
+            <a class="pp_button" href="{% url 'contracts:add_additional_agreement' contract_id=contract.id %}" id="addAgreementBtn">Доп.соглашение</a>
+            <a class="pp_button" href="{% url 'contracts:contract-edit' contract_id=contract.id %}">Редактировать</a>
         </div>
     </div>
-
-    {% if user.is_authenticated %}
-    <hr>
-    <div class="button_container">
-        <a class="pp_button" href="{% url 'contracts:add_payment_doc' contract_id=contract_detail.id %}">Добавить платежный документ</a>
-        <a class="pp_button" href="{% url 'contracts:add_payment_order' contract_id=contract_detail.id %}">Добавить платежное поручение</a>
-        <a class="pp_button" href="{% url 'contracts:add_additional_agreement' contract_id=contract_detail.id %}">Добавить доп.соглашение</a>
-        <a class="pp_button" href="{% url 'contracts:contract-edit' contract_id=contract_detail.id %}">Редактировать данные контракта</a>
-    </div>
-    {% endif %}
-    <hr>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Дата платежного документа</th>
-                <th>Наименование и номер документа</th>
-                <th>Сумма к оплате</th>
-                <th>Дата платежного поручения</th>
-                <th>Платежное поручение</th>
-                <th>Оплаченная сумма</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for document in contract_detail.payments.all %}
-            <tr>
-                <td>{{ document.date_issued|date:"d.m.Y" }}</td>
-                {% if document.payment_file %}
-                <td><a href="{{ document.payment_file.url }}" target="_blank">{{ document.document_name }}</a></td>
-                {% else %}
-                <td>{{ document.document_name }}</td>
-                {% endif %}
-                <td>{{ document.amount }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            {% endfor %}
-
-            {% for order in contract_detail.payment_orders.all %}
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>{{ order.pp_date|date:"d.m.Y" }}</td>
-                {% if order.pp_file %}
-                <td><a href="{{ order.pp_file.url }}" target="_blank">{{ order.pp_name }}</a></td>
-                {% else %}
-                <td>{{ order.pp_name }}</td>
-                {% endif %}
-                <td>{{ order.pp_amount }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
-
-{% block script %}
-<script>
-// Скрипты для управления модальным окном
-var modal = document.getElementById("agreeModal");
-var span = document.getElementsByClassName("close")[0];
-
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
 {% endblock %}

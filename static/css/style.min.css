@@ -1,115 +1,385 @@
+/* Сброс стандартных стилей */
+*,
+:after,
+:before {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* Общие стили */
+html {
+    font-family: sans-serif;
+    font-size: 10px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fcfcfc;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+a {
+    color: #337ab7;
+    text-decoration: none;
+    font-weight: 700;
+    background-color: transparent;
+}
+
+a:focus,
+a:hover {
+    color: #23527c;
+    text-decoration: underline;
+}
+
+a:focus {
+    outline: dotted thin;
+    outline: -webkit-focus-ring-color auto 5px;
+    outline-offset: -2px;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* Стили для наведения */
 a:hover,
 button:hover,
 li:hover {
     background-color: brown;
-}
-.contract_card_top,
-.menu_container,
-ul {
-    display: flex;
-}
-.contract-list p {
-    font-style: italic;
-}
-a {
-    background-color: transparent;
-}
-.contract-list ul,
-ul {
-    list-style-type: none;
-}
-h1,
-h2 {
-    text-align: center;
-    text-transform: uppercase;
-}
-ul {
-    padding: 0;
-    margin: 0;
-}
-li {
-    margin-right: 20px;
-}
-button:hover,
-li:hover {
     color: #fff;
 }
 
-a,
-strong {
-    font-weight: 700;
+/* Контейнер */
+.container {
+    max-width: 1200px; /* Ограничиваем максимальную ширину */
+    margin: 0 auto; /* Центрируем контейнер */
+    padding-right: 15px;
+    padding-left: 15px;
+    background-color: #fcfcfc;
 }
+
+.container:after,
+.container:before {
+    display: table;
+    content: " ";
+}
+
+.container:after {
+    clear: both;
+}
+
+.container > div > ul {
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 750px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 970px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1170px;
+        margin: 0 auto;
+    }
+}
+
+/* Заголовки */
+h1, .h1,
+h2, .h2 {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+h1, .h1 {
+    font-size: 36px;
+    margin: 0.67em 0;
+}
+
+h2, .h2 {
+    font-size: 30px;
+}
+
+p {
+    margin: 0 0 10px;
+}
+
+/* Списки */
+ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+}
+
+ul ul {
+    margin-bottom: 0;
+}
+
+li {
+    margin-right: 20px;
+}
+
 ul li:last-child {
     margin-right: 0;
 }
+
+/* Навигационное меню */
 .menu_container {
-    justify-content: center;
-}
-.button_container {
     display: flex;
     justify-content: center;
-    margin: 20px;
 }
+
+nav {
+    background-color: #007bff;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+nav a:hover {
+    background-color: #0056b3;
+}
+
+/* Стили для форм */
 .add_form,
 .contract_card {
     width: 800px;
     margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+.add_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add_form form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.add_form label {
+    grid-column: span 1;
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    color: #333;
+}
+
+.add_form input,
+.add_form select {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+.add_form .btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+/* Стили для полей формы */
+.form-field {
+    margin-bottom: 15px;
+}
+
+.form-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 11px;
+}
+
+.form-field input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
+}
+
+/* Стили для ошибок */
+.error {
+    color: #d32f2f;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+/* Кнопки */
+button,
+input,
+select {
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+button,
+html input[type="button"],
+input[type="submit"] {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+input {
+    line-height: normal;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    height: auto;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    input[type="date"] {
+        line-height: 34px;
+    }
+}
+
 button {
     height: 24px;
     width: 100px;
     border-radius: 12px;
     overflow: visible;
 }
-.amounts_card,
-.contract_data {
-    display: inline-block;
-    min-width: 350px;
-    flex-grow: 1;
-}
-.add_form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.add_form form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-    margin-top: 10px;
-}
-.add_form label {
-    grid-column: span 1;
-}
-.add_form input,
-.add_form select {
-    width: 100%;
-    padding: 5px;
-    box-sizing: border-box;
-}
-.add_form .btn-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
+
 .add_form button {
     margin: 0 10px;
     color: brown;
     font-weight: 700;
 }
-.button_container {
-    display: flex;
-    gap: 10px;
-}
+
+/* Стили для .pp_button */
 .pp_button {
     display: inline-block;
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
-    text-align: center;
     text-decoration: none;
     border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.5;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+    margin: 0;
+    vertical-align: middle;
 }
+
+.pp_button:hover {
+    background-color: #0056b3;
+    color: #fff;
+    text-decoration: none;
+}
+
+button.pp_button {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    background: none;
+    background-color: #007bff;
+    padding: 10px 20px;
+    line-height: 1.5;
+    margin: 0;
+    vertical-align: middle;
+    font: inherit;
+    color: #fff;
+    height: auto;
+    width: auto;
+}
+
+a.pp_button {
+    text-decoration: none;
+    color: #fff;
+    line-height: 1.5;
+    padding: 10px 20px;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.btn-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+/* Дополнительные стили для кнопок */
 .pp_button_index,
 .pp_button_menu {
     display: flex;
@@ -123,64 +393,157 @@ button {
     text-align: center;
     word-wrap: break-word;
 }
+
 .pp_button_index {
     align-items: center;
     font-size: 14px;
     height: 80px;
     width: 150px;
 }
+
 .pp_button_menu {
     align-items: center;
     height: 50px;
     width: 100px;
 }
+
 .pp_button_modal_login {
     display: inline-block;
-    width: 70px;
-    padding: 10px 10px;
+    padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    width: 120px; /* Увеличиваем ширину кнопок */
 }
 
-.btn {
-    white-space: nowrap;
+.pp_button_modal_login:hover {
+    background-color: #0056b3;
 }
-.auth_box_center {
+
+.pp_button_cancel {
+    background-color: #6c757d;
+}
+
+.pp_button_cancel:hover {
+    background-color: #5a6268;
+}
+
+/* Контейнер для кнопок */
+.button_container {
+    display: flex;
     justify-content: center;
-    text-align: center;
-    padding-top: 20px;
-    margin: auto;
-    width: 440px;
+    margin: 20px;
+    gap: 10px;
 }
 
-td,
-th {
-    text-align: left;
+/* Стили для контрактной карточки */
+.contract_card {
+    width: 800px;
+    margin: 0 auto;
 }
-.contract-table,
+
+.contract_card_top {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.amounts_card,
+.contract_data {
+    display: inline-block;
+    min-width: 350px;
+    flex-grow: 1;
+}
+
+.amounts_card p,
+.contract_data p {
+    margin-bottom: 10px;
+}
+
+/* Стили для таблиц */
 table {
     width: 100%;
     border-collapse: collapse;
-}
-table {
     border-spacing: 0;
+    background-color: transparent;
+    font: 11px Verdana, Geneva, sans-serif;
 }
+
 td,
 th {
+    padding: 2px 4px;
     border: 1px solid #ddd;
+    text-align: left;
 }
+
 th {
     background-color: #f2f2f2;
 }
+
+.contract-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.contract-table td,
+.contract-table th {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.contract-table th {
+    background-color: #f2f2f2;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+.table > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd;
+}
+
+.table > thead:first-child > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th {
+    border-top: 0;
+}
+
+.table > tbody + tbody {
+    border-top: 2px solid #ddd;
+}
+
+.table .table {
+    background-color: #fff;
+}
+
+/* Стили для списков контрактов */
 .contract-list {
     margin: 20px 0;
 }
+
 .contract-list ul {
     padding: 0;
 }
+
 .contract-list li {
     border: 1px solid #ccc;
     padding: 15px;
@@ -188,92 +551,171 @@ th {
     border-radius: 5px;
     background-color: #f9f9f9;
 }
+
 .contract-list h2 {
     margin: 0;
     font-size: 1.5em;
 }
-.contract-table {
-    margin-top: 20px;
-}
-.contract-table td,
-.contract-table th {
-    padding: 12px;
-    text-align: left;
-}
-.contract-table th {
-    background-color: #f2f2f2;
-}
+
 .contract-list p {
     color: #666;
-}
-html {
-    font-family: sans-serif;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
+    font-style: italic;
 }
 
-details,
-summary {
-    display: block;
+/* Стили для кнопок .btn */
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-image: none;
 }
 
-.hidden,
-.label:empty,
-[hidden] {
+.btn:focus,
+.btn:hover {
+    color: #333;
+    text-decoration: none;
+}
+
+.btn:active,
+.btn:active:focus,
+.btn:focus {
+    outline: dotted thin;
+    outline: -webkit-focus-ring-color auto 5px;
+    outline-offset: -2px;
+}
+
+.btn:active {
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+/* Стили для .button */
+.button {
+    position: relative;
+    text-align: center;
+    border-color: #ddd;
+    border-radius: 3px;
+    color: #fff;
+    padding: 6px;
+    text-decoration: none;
+    width: 50px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+/* Стили для .label */
+.label {
+    display: inline;
+    font-size: 11px;
+    padding: 1px;
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: baseline;
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 0.25em;
+}
+
+a.label:focus,
+a.label:hover {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn .label {
+    position: relative;
+    top: -1px;
+}
+
+.label:empty {
     display: none;
 }
 
-a:active,
-a:hover {
-    outline: 0;
+/* Стили для .alert */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
-h1 {
-    margin: 0.67em 0;
+
+.alert > p,
+.alert > ul {
+    margin-bottom: 0;
 }
-.btn {
-    vertical-align: middle;
+
+.alert > p + p {
+    margin-top: 5px;
 }
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert-danger hr {
+    border-top-color: #e4b9c0;
+}
+
+/* HR */
 hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
     height: 0;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
 
+/* Стили для кода */
 code {
-    font-size: 1em;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 90%;
+    padding: 2px 4px;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
 }
-button,
-input,
-select {
-    margin: 0;
-    font: inherit;
-    color: inherit;
+
+/* Анимации */
+@-webkit-keyframes progress-bar-stripes {
+    from { background-position: 40px 0; }
+    to { background-position: 0 0; }
 }
-button,
-select {
-    text-transform: none;
+
+@-o-keyframes progress-bar-stripes {
+    from { background-position: 40px 0; }
+    to { background-position: 0 0; }
 }
-button,
-html input[type="button"],
-input[type="submit"] {
-    -webkit-appearance: button;
-    cursor: pointer;
+
+@keyframes progress-bar-stripes {
+    from { background-position: 40px 0; }
+    to { background-position: 0 0; }
 }
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-}
-input {
-    line-height: normal;
-}
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    height: auto;
-}
+
+/* Стили для печати */
 @media print {
-    
     tr {
         page-break-inside: avoid;
     }
@@ -319,419 +761,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 }
 
-.modal-content {
-    -webkit-background-clip: padding-box;
-}
-.btn,
-.btn:active {
-    background-image: none;
-}
-@font-face {
-    font-family: "Glyphicons Halflings";
-    src: url(../fonts/glyphicons-halflings-regular.eot);
-    src:
-        url(../fonts/glyphicons-halflings-regular.eot?#iefix) format("embedded-opentype"),
-        url(../fonts/glyphicons-halflings-regular.woff2) format("woff2"),
-        url(../fonts/glyphicons-halflings-regular.woff) format("woff"),
-        url(../fonts/glyphicons-halflings-regular.ttf) format("truetype"),
-        url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format("svg");
-}
-
-body {
-    line-height: 1.42857143;
-}
-*,
-:after,
-:before {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-html {
-    font-size: 10px;
-    -webkit-tap-highlight-color: transparent;
-}
-body {
-    margin: 0;
-    color: #333;
-}
-button,
-input,
-select {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-}
-a {
-    color: #337ab7;
-    text-decoration: none;
-}
-a:focus,
-a:hover {
-    color: #23527c;
-    text-decoration: underline;
-}
-a:focus {
-    outline: dotted thin;
-    outline: -webkit-focus-ring-color auto 5px;
-    outline-offset: -2px;
-}
-.container > div > ul {
-    margin: 0;
-}
-
-label {
-    display: inline-block;
-}
-hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid #eee;
-}
-.h1,
-.h2,
-h1,
-h2 {
-    font-family: inherit;
-    font-weight: 500;
-    line-height: 1.1;
-    color: inherit;
-}
-
-label {
-    font-weight: 700;
-}
-.h1,
-.h2,
-h1,
-h2 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-ul {
-    margin-top: 0;
-}
-.h1,
-h1 {
-    font-size: 36px;
-}
-.h2,
-h2 {
-    font-size: 30px;
-}
-p {
-    margin: 0 0 10px;
-}
-
-.table .table {
-    background-color: #fff;
-}
-.table {
-    margin-bottom: 20px;
-}
-
-ul {
-    margin-bottom: 10px;
-}
-.alert > p,
-.alert > ul,
-ul ul {
-    margin-bottom: 0;
-}
-code {
-    font-size: 90%;
-    padding: 2px 4px;
-}
-.container {
-    padding-right: 15px;
-    padding-left: 15px;
-}
-code {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-}
-code {
-    color: #c7254e;
-    background-color: #f9f2f4;
-    border-radius: 4px;
-}
-.table {
-    width: 100%;
-    max-width: 100%;
-}
-.table > tbody > tr > td,
-.table > tbody > tr > th,
-.table > thead > tr > td,
-.table > thead > tr > th {
-    padding: 8px;
-    line-height: 1.42857143;
-    vertical-align: top;
-    border-top: 1px solid #ddd;
-}
-.table > thead > tr > th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #ddd;
-}
-
-.table > thead:first-child > tr:first-child > td,
-.table > thead:first-child > tr:first-child > th {
-    border-top: 0;
-}
-.table > tbody + tbody {
-    border-top: 2px solid #ddd;
-}
-label {
-    max-width: 100%;
-    margin-bottom: 5px;
-}
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-    input[type="date"] {
-        line-height: 34px;
-    }
-}
-.form-group {
-    margin-bottom: 15px;
-}
-.btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    text-align: center;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-
-.btn:active:focus,
-.btn:focus {
-    outline: dotted thin;
-    outline: -webkit-focus-ring-color auto 5px;
-    outline-offset: -2px;
-}
-
-.btn:focus,
-.btn:hover {
-    color: #333;
-    text-decoration: none;
-}
-
-.btn:active {
-    outline: 0;
-    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-.alert > p + p {
-    margin-top: 5px;
-}
-
-.label {
-    line-height: 1;
-    white-space: nowrap;
-    vertical-align: baseline;
-    text-align: center;
-    font-weight: 700;
-}
-.label {
-    display: inline;
-}
-.label {
-    color: #fff;
-    border-radius: 0.25em;
-}
-
-a.label:focus,
-a.label:hover {
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.btn .label {
-    position: relative;
-    top: -1px;
-}
-.alert {
-    margin-bottom: 20px;
-}
-.alert {
-    padding: 15px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-.alert-danger {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-}
-.alert-danger hr {
-    border-top-color: #e4b9c0;
-}
-@-webkit-keyframes progress-bar-stripes {
-    from {
-        background-position: 40px 0;
-    }
-    to {
-        background-position: 0 0;
-    }
-}
-@-o-keyframes progress-bar-stripes {
-    from {
-        background-position: 40px 0;
-    }
-    to {
-        background-position: 0 0;
-    }
-}
-@keyframes progress-bar-stripes {
-    from {
-        background-position: 40px 0;
-    }
-    to {
-        background-position: 0 0;
-    }
-}
-
-.close {
-    line-height: 1;
-}
-.close {
-    float: right;
-    font-size: 21px;
-    font-weight: 700;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: 0.2;
-}
-.close:focus,
-.close:hover {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-    opacity: 0.5;
-}
-button.close {
-    -webkit-appearance: none;
-    padding: 0;
-    cursor: pointer;
-    background: 0;
-    border: 0;
-}
-.modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1040;
-    display: none;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
-    outline: 0;
-}
-.modal-content {
-    position: relative;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    outline: 0;
-    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-}
-@media (min-width: 768px) {
-    .container {
-        width: 750px;
-    }
-    .modal-content {
-        -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    }
-}
-@media (min-width: 992px) {
-    .container {
-        width: 970px;
-    }
-}
-
-table {
-    background-color: transparent;
-}
-
-.container:after,
-.container:before {
-    display: table;
-    content: " ";
-}
-
-.container:after {
-    clear: both;
-}
-.hidden {
-    display: none !important;
-    visibility: hidden !important;
-}
-@-ms-viewport {
-    width: device-width;
-}
-@media (min-width: 1200px) {
-    .container {
-        width: 1170px;
-    }
-}
-body,
-table {
-    font:
-        11px Verdana,
-        Geneva,
-        sans-serif;
-}
-
-.button {
-    position: relative;
-}
-body {
-    background-color: #fcfcfc;
-}
-td,
-th {
-    padding: 2px 4px;
-}
-
-.container {
-    background-color: #fcfcfc;
-}
-.container {
-    margin: 0;
-    width: 99%;
-}
-
-.button {
-    text-align: center;
-}
-.button {
-    border-color: #ddd;
-    border-radius: 3px;
-    color: #fff;
-    padding: 6px;
-    text-decoration: none;
-    width: 50px;
-    margin-top: 6px;
-    cursor: pointer;
-}
-.label {
-    font-size: 11px;
-    padding: 1px;
-}
+/* Адаптивность */
 @media screen and (max-width: 600px) {
     td:first-child,
     td:last-child,
@@ -755,30 +785,262 @@ th {
     }
 }
 
-/* Стили для модального окна */
+@media (max-width: 768px) {
+    .contract_card_top {
+        flex-direction: column;
+    }
+
+    .btn-container,
+    .button_container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .pp_button,
+    .pp_button_index,
+    .pp_button_menu {
+        width: 100%;
+        text-align: center;
+    }
+
+    .add_form,
+    .contract_card {
+        width: 100%;
+    }
+
+    .add_form form {
+        grid-template-columns: 1fr;
+    }
+
+    .amounts_card,
+    .contract_data {
+        min-width: 100%;
+    }
+
+    .contract-table td,
+    .contract-table th {
+        padding: 5px;
+    }
+}
+
+/* Скрытые элементы */
+.hidden,
+.label:empty,
+[hidden] {
+    display: none;
+}
+
+details,
+summary {
+    display: block;
+}
+
+/* Шрифты */
+@font-face {
+    font-family: "Glyphicons Halflings";
+    src: url(../fonts/glyphicons-halflings-regular.eot);
+    src:
+        url(../fonts/glyphicons-halflings-regular.eot?#iefix) format("embedded-opentype"),
+        url(../fonts/glyphicons-halflings-regular.woff2) format("woff2"),
+        url(../fonts/glyphicons-halflings-regular.woff) format("woff"),
+        url(../fonts/glyphicons-halflings-regular.ttf) format("truetype"),
+        url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format("svg");
+}
+
+/* Стили для таблицы дополнительных соглашений */
+.agreement-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.agreement-table th,
+.agreement-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.agreement-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.agreement-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.agreement-table a {
+    text-decoration: none;
+    color: #337ab7;
+}
+
+.agreement-table a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для ссылки на файл */
+.file-link {
+    font-size: 11px;
+    color: #007bff;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+/* Стили для .auth_box_center */
+.auth_box_center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.auth_box_center p {
+    margin: 0; /* Убираем лишние отступы у параграфов */
+}
+
+/* Центрирование содержимого внутри #main_container */
+#main_container.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Модальное окно */
 .modal {
-    display: none; /* Скрыть по умолчанию */
-    position: fixed; /* Остается на месте */
-    z-index: 1; /* Сидит сверху */
-    left: 0;
+    display: none;
+    position: fixed;
     top: 0;
-    width: 100%; /* Ширина 100% */
-    height: 100%; /* Высота 100% */
-    overflow: auto; /* Включите прокрутку при необходимости */
-    background-color: rgb(0,0,0); /* Цвет фона */
-    background-color: rgba(0,0,0,0.4); /* Черный с низкой прозрачностью */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    overflow: auto;
+    animation: fadeIn 0.3s ease;
 }
 
+/* Анимация появления модального окна */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Контент модального окна */
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% от верхней и центрирование */
+    background-color: #fff;
+    margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 200px; /* Можно задать ширину */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    animation: slideIn 0.3s ease;
 }
 
-/* Дополнительные стили для формы, при желании */
+/* Анимация появления контента модального окна */
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Заголовок модального окна */
+.modal-content h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Кнопка закрытия */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* Стили для полей формы */
 .form-group {
     margin-bottom: 15px;
+    width: 100%;
 }
 
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Стили для кнопок */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pp_button_modal_login {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    width: 120px; /* Увеличиваем ширину кнопок */
+}
+
+.pp_button_modal_login:hover {
+    background-color: #0056b3;
+}
+
+.pp_button_cancel {
+    background-color: #6c757d;
+}
+
+.pp_button_cancel:hover {
+    background-color: #5a6268;
+}
+
+/* Стили для сообщения об ошибке */
+.error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-bottom: 15px;
+    text-align: center;
+    display: none;
+}
