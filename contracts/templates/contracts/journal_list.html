@@ -15,6 +15,32 @@
 </div>
 {% endif %}
 
+<div class="button_container">
+    <form method="get" class="filter-form">
+        <label for="year">Выберите год:</label>
+        <select name="year" id="year">
+            <option value="">Все</option>
+            {% for year in years %}
+                <option value="{{ year.year }}"
+                    {% if selected_year == year.year %}selected{% endif %}>
+                    {{ year.year }}
+                </option>
+            {% endfor %}
+        </select>
+        <label for="purchase_type">Выберите тип закупки:</label>
+        <select name="purchase_type" id="purchase_type">
+            <option value="">Все</option>
+            {% for purchase_type in purchase_types %}
+                <option value="{{ purchase_type }}"
+                    {% if selected_purchase_type == purchase_type %}selected{% endif %}>
+                    {{ purchase_type }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="pp_button">Применить</button>
+    </form>
+</div>
+
 <div class="table-container">
     <table border="1" cellpadding="2" cellspacing="0" class="display compact purchase-table" id="journalTable">
         <thead>
@@ -32,7 +58,7 @@
         </thead>
         <tbody>
             {% for purchase in purchases %}
-            <tr>
+            <tr {% if purchase.contract_duration|date:"U"|floatformat:0|add:0 < now|date:"U"|floatformat:0|add:2592000 %}class="highlight-danger"{% endif %}>
                 <td>{{ purchase.contract_date|date:"d.m.Y" }}</td>
                 <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
                 <td>{{ purchase.supplier }}</td>
@@ -60,7 +86,7 @@
     $(document).ready(function() {
         $('#journalTable').DataTable({
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/ru.json" // Локализация на русский язык
+                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/ru.json"
             },
             "paging": true,
             "searching": true,

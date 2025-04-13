@@ -13,6 +13,7 @@ from openpyxl.workbook import Workbook
 
 from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm, AdditionalAgreementForm
 from contracts.models import Contract, AdditionalAgreement
+from lib_ccportal.models import PurchaseType
 
 logger = logging.getLogger(__name__)
 
@@ -263,11 +264,28 @@ class JournalListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.order_by('contract_date')
+        year = self.request.GET.get('year')
+        purchase_type = self.request.GET.get('purchase_type')
+
+        if year:
+            queryset = queryset.filter(contract_date__year=year)
+        if purchase_type:
+            queryset = queryset.filter(purchase_type__code=purchase_type)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Журнал регистрации контрактов'
+        # Получаем список годов
+        years = Contract.objects.dates('contract_date', 'year', order='DESC')
+        context['years'] = years
+        # Получаем список типов закупок
+        purchase_types = PurchaseType.objects.values_list('code', flat=True).distinct()
+        context['purchase_types'] = purchase_types
+        # Передаем выбранные значения фильтров
+        context['selected_year'] = self.request.GET.get('year', '')
+        context['selected_purchase_type'] = self.request.GET.get('purchase_type', '')
         return context
 
 

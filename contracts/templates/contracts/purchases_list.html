@@ -59,7 +59,7 @@
         </thead>
         <tbody>
             {% for purchase in purchases %}
-            <tr>
+            <tr {% if purchase.calculate_payment_percent >= 80 %}class="highlight-success"{% elif purchase.calculate_payment_percent <= 20 %}class="highlight-warning"{% endif %}>
                 <td>{{ purchase.name }}</td>
                 <td>{{ purchase.purchase_type }}</td>
                 <td>{{ purchase.supplier }}</td>

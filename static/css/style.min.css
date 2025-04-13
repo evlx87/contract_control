@@ -1164,3 +1164,15 @@ summary {
     color: #fff;
     border-color: #007bff;
 }
+/* Цветовая индикация для строк */
+.highlight-success {
+    background-color: #e6f4ea !important;
+}
+
+.highlight-warning {
+    background-color: #fff3e0 !important;
+}
+
+.highlight-danger {
+    background-color: #ffe6e6 !important;
+}
