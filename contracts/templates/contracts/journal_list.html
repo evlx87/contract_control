@@ -10,14 +10,14 @@
 {% block page_content %}
 {% if user.is_authenticated %}
 <div class="button_container">
-    <a class="pp_button" href="{% url 'contracts:add_contract' %}">Добавить</a>
-    <a class="pp_button" href="{% url 'contracts:export_excel' %}">Экспорт в Excel</a>
+    <a class="pp_button" href="{% url 'contracts:add_contract' %}"><i class="fas fa-plus"></i> Добавить</a>
 </div>
 {% endif %}
 
-<div class="button_container">
-    <form method="get" class="filter-form">
-        <label for="year"><i class="fas fa-calendar-alt"></i> Выберите год:</label>
+<div class="table-controls">
+    <!-- Фильтры -->
+    <div class="filter-form">
+        <label for="year"><i class="fas fa-calendar-alt"></i> Год:</label>
         <select name="year" id="year">
             <option value="">Все</option>
             {% for year in years %}
@@ -27,7 +27,7 @@
                 </option>
             {% endfor %}
         </select>
-        <label for="purchase_type"><i class="fas fa-shopping-cart"></i> Выберите тип закупки:</label>
+        <label for="purchase_type"><i class="fas fa-shopping-cart"></i> Тип закупки:</label>
         <select name="purchase_type" id="purchase_type">
             <option value="">Все</option>
             {% for purchase_type in purchase_types %}
@@ -37,8 +37,23 @@
                 </option>
             {% endfor %}
         </select>
-        <button type="submit" class="pp_button"><i class="fas fa-filter"></i> Применить</button>
-    </form>
+        <button type="submit" class="pp_button filter-button"><i class="fas fa-filter"></i> Применить</button>
+    </div>
+
+    <!-- Поиск -->
+    <div class="search-container">
+        <input type="text" id="tableSearch" placeholder="Поиск..." class="search-input">
+        <button class="search-button"><i class="fas fa-search"></i></button>
+    </div>
+
+    <!-- Кнопки экспорта -->
+    <div class="export-buttons">
+        <button class="export-button" data-export="copy"><i class="fas fa-copy"></i> Копировать</button>
+        <button class="export-button" data-export="csv"><i class="fas fa-file-csv"></i> CSV</button>
+        <button class="export-button" data-export="excel"><i class="fas fa-file-excel"></i> Excel</button>
+        <button class="export-button" data-export="pdf"><i class="fas fa-file-pdf"></i> PDF</button>
+        <button class="export-button" data-export="print"><i class="fas fa-print"></i> Печать</button>
+    </div>
 </div>
 
 <div class="table-container">
@@ -79,7 +94,6 @@
 </div>
 
 {% endblock %}
-
 {% block script %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -91,7 +105,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script>
     $(document).ready(function() {
-        $('#journalTable').DataTable({
+        var table = $('#journalTable').DataTable({
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/ru.json"
             },
@@ -101,10 +115,30 @@
             "info": true,
             "autoWidth": false,
             "responsive": true,
-            "dom": 'Bfrtip',
-            "buttons": [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            "dom": 'rtip'
+        });
+
+        // Кастомный поиск
+        $('#tableSearch').on('keyup', function() {
+            table.search(this.value).draw();
+        });
+
+        // Обработчик кнопок экспорта
+        $('.export-button').on('click', function() {
+            var exportType = $(this).data('export');
+            table.button('buttons-' + exportType).trigger();
+        });
+
+        // Обработчик формы фильтрации
+        $('.filter-form').on('submit', function(e) {
+            e.preventDefault();
+            var year = $('#year').val();
+            var purchase_type = $('#purchase_type').val();
+            var url = "{% url 'contracts:journal_list' %}";
+            if (year || purchase_type) {
+                url += "?year=" + year + "&purchase_type=" + purchase_type;
+            }
+            window.location.href = url;
         });
     });
 </script>
