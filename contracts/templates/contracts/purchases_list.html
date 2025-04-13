@@ -1,15 +1,12 @@
 {% extends 'contracts/base.html' %}
-
 {% block title %}
 <title>
     {{ page_title|title }}
 </title>
 {% endblock %}
-
 {% block page_header %}
     <h1>Реестр закупок</h1>
 {% endblock %}
-
 {% block page_content %}
 {% if user.is_authenticated %}
 <div class="button_container">
@@ -17,64 +14,91 @@
 </div>
 {% endif %}
 <div class="button_container">
-    <form method="get">
-    <label for="year">Выберите год:</label>
-    <select name="year" id="year">
-        <option value="">Все</option>
-        {% for year in years %}
-            <option value="{{ year.year }}"
-                {% if selected_year == year.year %}selected{% endif %}>
-                {{ year.year }}
-            </option>
-        {% endfor %}
+    <form method="get" class="filter-form">
+        <label for="year">Выберите год:</label>
+        <select name="year" id="year">
+            <option value="">Все</option>
+            {% for year in years %}
+                <option value="{{ year.year }}"
+                    {% if selected_year == year.year %}selected{% endif %}>
+                    {{ year.year }}
+                </option>
+            {% endfor %}
         </select>
-    <label for="subject">Выберите предмет контракта:</label>
-    <select name="subject" id="subject">
-        <option value="">Все</option>
-        {% for subject in subjects %}
-            <option value="{{ subject }}"
-                {% if selected_subject == subject %}selected{% endif %}>
-                {{ subject }}
-            </option>
-        {% endfor %}
-    </select>
-    <button type="submit">Применить</button>
-</form>
+        <label for="subject">Выберите предмет контракта:</label>
+        <select name="subject" id="subject">
+            <option value="">Все</option>
+            {% for subject in subjects %}
+                <option value="{{ subject }}"
+                    {% if selected_subject == subject %}selected{% endif %}>
+                    {{ subject }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="pp_button">Применить</button>
+    </form>
 </div>
-<table border="1" cellpadding="2" cellspacing="0" class="display compact" id="details">
-    <thead>
-        <tr>
-            <th>Наименование объекта закупки</th>
-            <th>Тип закупки</th>
-            <th>Контрагент</th>
-            <th>Предмет контракта</th>
-            <th>Номер контракта</th>
-            <th>Дата контракта</th>
-            <th>Срок действия контракта</th>
-            <th>Дата начала услуг/поставки</th>
-            <th>Дата окончания услуг/поставки</th>
-            <th>Сумма контракта</th>
-            <th>Сумма оплаты</th>
-            <th>Процент оплаты</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for purchase in purchases %}
-        <tr>
-            <td>{{ purchase.name }}</td>
-            <td>{{ purchase.purchase_type }}</td>
-            <td>{{ purchase.supplier }}</td>
-            <td>{{ purchase.contract_subject }}</td>
-            <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
-            <td>{{ purchase.contract_date|date:"d.m.Y" }}</td>
-            <td>{{ purchase.contract_duration|date:"d.m.Y" }}</td>
-            <td>{{ purchase.service_start_date|date:"d.m.Y" }}</td>
-            <td>{{ purchase.service_end_date|date:"d.m.Y" }}</td>
-            <td>{{ purchase.contract_amount }}</td>
-            <td>{{ purchase.total_pp_issued_amount }}</td>
-            <td>{{ purchase.calculate_payment_percent  }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<div class="table-container">
+    <table border="1" cellpadding="2" cellspacing="0" class="display compact purchase-table" id="purchaseTable">
+        <thead>
+            <tr>
+                <th>Наименование объекта закупки</th>
+                <th>Тип закупки</th>
+                <th>Контрагент</th>
+                <th>Предмет контракта</th>
+                <th>Номер контракта</th>
+                <th>Дата контракта</th>
+                <th>Срок действия контракта</th>
+                <th>Дата начала услуг/поставки</th>
+                <th>Дата окончания услуг/поставки</th>
+                <th>Сумма контракта</th>
+                <th>Сумма оплаты</th>
+                <th>Процент оплаты</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+            <tr>
+                <td>{{ purchase.name }}</td>
+                <td>{{ purchase.purchase_type }}</td>
+                <td>{{ purchase.supplier }}</td>
+                <td>{{ purchase.contract_subject }}</td>
+                <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
+                <td>{{ purchase.contract_date|date:"d.m.Y" }}</td>
+                <td>{{ purchase.contract_duration|date:"d.m.Y" }}</td>
+                <td>{{ purchase.service_start_date|date:"d.m.Y" }}</td>
+                <td>{{ purchase.service_end_date|date:"d.m.Y" }}</td>
+                <td>{{ purchase.contract_amount }}</td>
+                <td>{{ purchase.total_pp_issued_amount }}</td>
+                <td>{{ purchase.calculate_payment_percent }}%</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="12" class="no-data">Нет данных о закупках.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#purchaseTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/ru.json" // Локализация на русский язык
+            },
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true
+        });
+    });
+</script>
 {% endblock %}
