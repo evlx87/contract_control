@@ -1,9 +1,7 @@
 {% extends 'contracts/base.html' %}
 
 {% block title %}
-<title xmlns="http://www.w3.org/1999/html">
-            {{ page_title|title }}
-        </title>
+    <title>Реестр закупок</title>
 {% endblock %}
 
 {% block page_header %}
@@ -11,7 +9,6 @@
 {% endblock %}
 
 {% block main_menu %}
-
 {% endblock %}
 
 {% block page_content %}
@@ -24,34 +21,37 @@
     <div class="auth_box_center">
         {% if user.is_authenticated %}
             <p>Вы авторизованы как {{ user.username }}</p>
-            <p><a class="pp_button" onclick="document.getElementById('logout-form').submit();">Выход</a>
-                <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display:none;">
-                    {% csrf_token %}
-                    <input type="hidden" name="next" value="{{ request.path }}">
-                </form>
-            </p>
+            <form id="logout-form" action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="pp_button">Выход</button>
+            </form>
         {% else %}
             <p>Вы не авторизованы</p>
-            <p><a class="pp_button" id="loginBtn">Вход</a></p>
+            <a class="pp_button" id="loginBtn">Вход</a>
         {% endif %}
     </div>
 
     <!-- Модальное окно -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
-            <div id="errorMessage" style="color: red; display: none;"></div> <!-- Сообщение об ошибке -->
+            <span class="close">&times;</span>
+            <h2>Авторизация</h2>
+            <div id="errorMessage" class="error"></div>
             <form id="loginForm" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="username">Логин:</label>
-                    <input type="text" name="username" required autofocus>
+                    <input type="text" name="username" id="username" required autofocus>
                 </div>
                 <div class="form-group">
                     <label for="password">Пароль:</label>
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" id="password" required>
                 </div>
-                <a class="pp_button_modal_login" id="submitLogin">Вход</a>
-                <a class="pp_button_modal_login" id="cancelLogin">Отмена</a>
+                <div class="btn-container">
+                    <a class="pp_button_modal_login" id="submitLogin">Вход</a>
+                    <a class="pp_button_modal_login pp_button_cancel" id="cancelLogin">Отмена</a>
+                </div>
             </form>
         </div>
     </div>
@@ -59,44 +59,45 @@
 
 {% block script %}
 <script>
-// Получаем элементы модального окна
 var modal = document.getElementById("loginModal");
 var btn = document.getElementById("loginBtn");
+var closeBtn = document.querySelector(".close");
 
-// Когда пользователь нажимает на кнопку, открыть модальное окно
 btn.onclick = function() {
     modal.style.display = "block";
 }
 
-// Обработка нажатия кнопки "Отмена"
-document.getElementById('cancelLogin').onclick = function() {
-    modal.style.display = "none"; // Закрытие модального окна
+closeBtn.onclick = function() {
+    modal.style.display = "none";
 }
 
-// Когда пользователь кликает вне модального окна, закрыть его
+document.getElementById('cancelLogin').onclick = function() {
+    modal.style.display = "none";
+}
+
 window.onclick = function(event) {
     if (event.target == modal) {
-        modal.style.display = "none"; // Закрытие модального окна
+        modal.style.display = "none";
     }
 }
 
-// Обработка отправки формы
 document.getElementById('submitLogin').onclick = function() {
     var form = document.getElementById('loginForm');
     var formData = new FormData(form);
 
     fetch("{% url 'login' %}", {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: {
+            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+        }
     })
     .then(response => response.text())
     .then(data => {
         if (data.includes("Пожалуйста, введите правильные имя пользователя и пароль.")) {
-            // Если есть ошибка, выводим сообщение
             document.getElementById('errorMessage').innerText = 'Пожалуйста, введите правильные имя пользователя и пароль.';
             document.getElementById('errorMessage').style.display = 'block';
         } else {
-            // Если всё хорошо, перезагружаем страницу
             window.location.reload();
         }
     })
