@@ -2,6 +2,7 @@ import os
 from decimal import Decimal
 
 from django.db import models
+from django.db.models import Sum
 
 from lib_ccportal.models import PurchaseObject, PurchaseType, ContractType, KBK, KOSGU
 
@@ -91,40 +92,45 @@ class Contract(models.Model):
             self.contract_file.name = os.path.join(
                 os.path.dirname(original_filename), new_filename)
 
-        if self.contract_amount and self.payment_amount:
+        if self.contract_amount:
             total_paid = sum(
-                payment.pp_amount for payment in self.payments.all())
+                payment.pp_amount for payment in self.payment_orders.all())
             self.payment_amount = total_paid
-            self.total_balance = self.contract_amount - total_paid
+            self.payment_percent = self.calculate_payment_percent
         else:
             self.payment_amount = 0
-            self.total_balance = self.contract_amount
 
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.contract_number
 
+    @property
     def total_issued_amount(self):
-        """ Возвращает сумму всех платежных документов, связанных с этим контрактом """
-        return self.payments.aggregate(total=models.Sum('amount'))[
-            'total'] or Decimal('0.00')
+        """Возвращает сумму всех платежных документов, связанных с этим контрактом"""
+        return self.payments.aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 
+    @property
     def total_pp_issued_amount(self):
-        """ Возвращает сумму всех оплат по платежным поручениям, связанным с этим контрактом """
+        """Возвращает сумму всех оплат по платежным поручениям, связанным с этим контрактом"""
         return sum(
-            payment_order.pp_amount for payment_order in self.payment_orders.all())
+            payment_order.pp_amount for payment_order in self.payment_orders.all()) or Decimal('0.00')
 
+    @property
     def total_balance(self):
-        return self.contract_amount - self.total_pp_issued_amount()
+        """Рассчитывает остаток по контракту"""
+        return self.contract_amount - self.total_pp_issued_amount
 
+    @property
     def calculate_payment_percent(self):
+        """Рассчитывает процент оплаты"""
         if self.contract_amount != 0:
-            total_issued = self.total_pp_issued_amount()
+            total_issued = self.total_pp_issued_amount
             percent_paid = (total_issued / self.contract_amount) * 100
             return round(percent_paid, 2)
         return 0
 
+    @property
     def kbk_full(self):
         return f'{self.kbk_type} {self.kosgu_type}'
 

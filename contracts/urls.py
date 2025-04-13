@@ -2,7 +2,7 @@ from django.urls import path
 
 from contracts.views import PurchaseListView, IndexView, AddContractView, AddPaymentDocView, AddPaymentOrderView, \
     JournalListView, AddAdditionalAgreementView, ContractDetailView, ExportToExcelView, ContractEditView, \
-    ContractDeleteView
+    ContractDeleteView, AdditionalAgreementDetailView
 
 app_name = 'contracts'
 
@@ -18,4 +18,5 @@ urlpatterns = [
     path('contract/<int:contract_id>/add_order', AddPaymentOrderView.as_view(), name='add_payment_order'),
     path('export-excel/', ExportToExcelView.as_view(), name='export_excel'),
     path('contract/<int:contract_id>/add_agreement/', AddAdditionalAgreementView.as_view(), name='add_additional_agreement'),
+    path('contract/<int:contract_id>/additional_agreement/<int:pk>/', AdditionalAgreementDetailView.as_view(), name='additional-agreement-detail'),
 ]

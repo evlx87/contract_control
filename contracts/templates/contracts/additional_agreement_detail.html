@@ -1,0 +1,25 @@
+{% extends "contracts/base.html" %}
+{% block title %}
+    <title>Доп. соглашение № {{ agreement.number }} от {{ agreement.date }}</title>
+{% endblock %}
+{% block page_header %}
+    <h1>Доп. соглашение № {{ agreement.number }} от {{ agreement.date }}</h1>
+{% endblock %}
+{% block page_content %}
+    <div class="contract_card">
+        <h2>Детали дополнительного соглашения</h2>
+        <p><strong>Контракт:</strong> <a href="{% url 'contracts:contract-detail' pk=contract.id %}">№ {{ contract.contract_number }} от {{ contract.contract_date }}</a></p>
+        <p><strong>Номер соглашения:</strong> {{ agreement.number }}</p>
+        <p><strong>Дата:</strong> {{ agreement.date }}</p>
+        <p><strong>Файл:</strong>
+            {% if agreement.agreement_file %}
+                <a href="{{ agreement.agreement_file.url }}" class="file-link" target="_blank">Скачать</a>
+            {% else %}
+                Нет файла
+            {% endif %}
+        </p>
+        <div class="button_container">
+            <a class="pp_button" href="{% url 'contracts:contract-detail' pk=contract.id %}">Назад к контракту</a>
+        </div>
+    </div>
+{% endblock %}
