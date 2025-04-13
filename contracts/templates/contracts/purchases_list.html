@@ -1,80 +1,159 @@
 {% extends 'contracts/base.html' %}
-
 {% block title %}
 <title>
     {{ page_title|title }}
 </title>
 {% endblock %}
-
 {% block page_header %}
     <h1>Реестр закупок</h1>
 {% endblock %}
-
 {% block page_content %}
 {% if user.is_authenticated %}
 <div class="button_container">
-    <a class="pp_button" href="{% url 'contracts:add_contract' %}">Добавить</a>
+    <a class="pp_button" href="{% url 'contracts:add_contract' %}"><i class="fas fa-plus"></i> Добавить</a>
 </div>
 {% endif %}
-<div class="button_container">
-    <form method="get">
-    <label for="year">Выберите год:</label>
-    <select name="year" id="year">
-        <option value="">Все</option>
-        {% for year in years %}
-            <option value="{{ year.year }}"
-                {% if selected_year == year.year %}selected{% endif %}>
-                {{ year.year }}
-            </option>
-        {% endfor %}
+
+<div class="table-controls">
+    <!-- Фильтры -->
+    <div class="filter-form">
+        <label for="year"><i class="fas fa-calendar-alt"></i> Год:</label>
+        <select name="year" id="year">
+            <option value="">Все</option>
+            {% for year in years %}
+                <option value="{{ year.year }}"
+                    {% if selected_year == year.year %}selected{% endif %}>
+                    {{ year.year }}
+                </option>
+            {% endfor %}
         </select>
-    <label for="subject">Выберите предмет контракта:</label>
-    <select name="subject" id="subject">
-        <option value="">Все</option>
-        {% for subject in subjects %}
-            <option value="{{ subject }}"
-                {% if selected_subject == subject %}selected{% endif %}>
-                {{ subject }}
-            </option>
-        {% endfor %}
-    </select>
-    <button type="submit">Применить</button>
-</form>
+        <label for="subject"><i class="fas fa-file-contract"></i> Предмет:</label>
+        <select name="subject" id="subject">
+            <option value="">Все</option>
+            {% for subject in subjects %}
+                <option value="{{ subject }}"
+                    {% if selected_subject == subject %}selected{% endif %}>
+                    {{ subject }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="pp_button filter-button"><i class="fas fa-filter"></i> Применить</button>
+    </div>
+
+    <!-- Поиск -->
+    <div class="search-container">
+        <input type="text" id="tableSearch" placeholder="Поиск..." class="search-input">
+        <button class="search-button"><i class="fas fa-search"></i></button>
+    </div>
+
+    <!-- Кнопки экспорта -->
+    <div class="export-buttons">
+        <button class="export-button" data-export="copy"><i class="fas fa-copy"></i> Копировать</button>
+        <button class="export-button" data-export="csv"><i class="fas fa-file-csv"></i> CSV</button>
+        <button class="export-button" data-export="excel"><i class="fas fa-file-excel"></i> Excel</button>
+        <button class="export-button" data-export="pdf"><i class="fas fa-file-pdf"></i> PDF</button>
+        <button class="export-button" data-export="print"><i class="fas fa-print"></i> Печать</button>
+    </div>
 </div>
-<table border="1" cellpadding="2" cellspacing="0" class="display compact" id="details">
-    <thead>
-        <tr>
-            <th>Наименование объекта закупки</th>
-            <th>Тип закупки</th>
-            <th>Контрагент</th>
-            <th>Предмет контракта</th>
-            <th>Номер контракта</th>
-            <th>Дата контракта</th>
-            <th>Срок действия контракта</th>
-            <th>Дата начала услуг/поставки</th>
-            <th>Дата окончания услуг/поставки</th>
-            <th>Сумма контракта</th>
-            <th>Сумма оплаты</th>
-            <th>Процент оплаты</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for purchase in purchases %}
-        <tr>
-            <td>{{ purchase.name }}</td>
-            <td>{{ purchase.purchase_type }}</td>
-            <td>{{ purchase.supplier }}</td>
-            <td>{{ purchase.contract_subject }}</td>
-            <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
-            <td>{{ purchase.contract_date|date:"d.m.Y" }}</td>
-            <td>{{ purchase.contract_duration|date:"d.m.Y" }}</td>
-            <td>{{ purchase.service_start_date|date:"d.m.Y" }}</td>
-            <td>{{ purchase.service_end_date|date:"d.m.Y" }}</td>
-            <td>{{ purchase.contract_amount }}</td>
-            <td>{{ purchase.total_pp_issued_amount }}</td>
-            <td>{{ purchase.calculate_payment_percent  }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<div class="table-container">
+    <table border="1" cellpadding="2" cellspacing="0" class="display compact purchase-table" id="purchaseTable">
+        <thead>
+            <tr>
+                <th title="Наименование объекта закупки согласно классификации">Наименование объекта закупки</th>
+                <th title="Тип закупки (например, открытый конкурс)">Тип закупки</th>
+                <th title="Контрагент, с которым заключен контракт">Контрагент</th>
+                <th title="Предмет контракта (что именно закупается)">Предмет контракта</th>
+                <th title="Уникальный номер контракта">Номер контракта</th>
+                <th title="Дата заключения контракта">Дата контракта</th>
+                <th title="Срок действия контракта">Срок действия контракта</th>
+                <th title="Дата начала оказания услуг или поставки">Дата начала услуг/поставки</th>
+                <th title="Дата окончания оказания услуг или поставки">Дата окончания услуг/поставки</th>
+                <th title="Общая сумма контракта">Сумма контракта</th>
+                <th title="Сумма уже оплаченных средств">Сумма оплаты</th>
+                <th title="Процент оплаты от общей суммы контракта">Процент оплаты</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+            <tr {% if purchase.calculate_payment_percent >= 80 %}class="highlight-success"{% elif purchase.calculate_payment_percent <= 20 %}class="highlight-warning"{% endif %}>
+                <td>{{ purchase.name }}</td>
+                <td>{{ purchase.purchase_type }}</td>
+                <td>{{ purchase.supplier }}</td>
+                <td>{{ purchase.contract_subject }}</td>
+                <td><a href="{% url 'contracts:contract-detail' purchase.id %}">{{ purchase.contract_number }}</a></td>
+                <td>{{ purchase.contract_date|date:"d.m.Y" }}</td>
+                <td>{{ purchase.contract_duration|date:"d.m.Y" }}</td>
+                <td>{{ purchase.service_start_date|date:"d.m.Y" }}</td>
+                <td>{{ purchase.service_end_date|date:"d.m.Y" }}</td>
+                <td>{{ purchase.contract_amount }}</td>
+                <td>{{ purchase.total_pp_issued_amount }}</td>
+                <td>{{ purchase.calculate_payment_percent }}%</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="12" class="no-data">Нет данных о закупках.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="summary-row">
+                <td colspan="9">Итого:</td>
+                <td>{{ total_contract_amount }}</td>
+                <td>{{ total_payment_amount }}</td>
+                <td>-</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{% endblock %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script>
+    $(document).ready(function() {
+        var table = $('#purchaseTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/ru.json"
+            },
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "dom": 'rtip' // Убираем встроенные элементы DataTables (кнопки, поиск), оставляем только таблицу, пагинацию и информацию
+        });
+
+        // Кастомный поиск
+        $('#tableSearch').on('keyup', function() {
+            table.search(this.value).draw();
+        });
+
+        // Обработчик кнопок экспорта
+        $('.export-button').on('click', function() {
+            var exportType = $(this).data('export');
+            table.button('buttons-' + exportType).trigger();
+        });
+
+        // Обработчик формы фильтрации
+        $('.filter-form').on('submit', function(e) {
+            e.preventDefault();
+            var year = $('#year').val();
+            var subject = $('#subject').val();
+            var url = "{% url 'contracts:purchase_list' %}";
+            if (year || subject) {
+                url += "?year=" + year + "&subject=" + subject;
+            }
+            window.location.href = url;
+        });
+    });
+</script>
 {% endblock %}

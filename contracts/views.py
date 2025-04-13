@@ -3,6 +3,7 @@ import logging
 
 from django.contrib import messages
 from django.db import IntegrityError
+from django.db.models import Sum
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -13,6 +14,7 @@ from openpyxl.workbook import Workbook
 
 from contracts.forms import ContractForm, PaymentDocumentForm, PaymentOrderForm, AdditionalAgreementForm
 from contracts.models import Contract, AdditionalAgreement
+from lib_ccportal.models import PurchaseType
 
 logger = logging.getLogger(__name__)
 
@@ -63,34 +65,40 @@ class PurchaseListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         year = self.request.GET.get('year')
-
-        if not year:
-            year = timezone.now().year
-        queryset = queryset.filter(service_end_date__year=year)
         subject = self.request.GET.get('subject')
 
+        if year:
+            queryset = queryset.filter(service_end_date__year=year)
+        else:
+            year = timezone.now().year
+            queryset = queryset.filter(service_end_date__year=year)
         if subject:
             queryset = queryset.filter(contract_subject=subject)
 
-        return queryset.order_by('-contract_date')
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Закупки'
-
-        # Получаем список всех годов
-        context['years'] = Contract.objects.order_by(
-            'service_end_date'
-        ).dates('service_end_date', 'year', order='ASC')
-
-        # Определяем текущий год
         current_year = timezone.now().year
-
-        # Если год не был передан через GET запрос, используем текущий год
-        context['selected_year'] = self.request.GET.get('year', current_year)
-        context['subjects'] = Contract.objects.values_list(
-            'contract_subject', flat=True).distinct()
+        years = Contract.objects.dates('service_end_date', 'year')
+        context['years'] = years
+        context['selected_year'] = self.request.GET.get('year', str(current_year))
+        subjects = Contract.objects.values_list('contract_subject', flat=True).distinct()
+        context['subjects'] = subjects
         context['selected_subject'] = self.request.GET.get('subject', '')
+
+        # Получаем все объекты после фильтрации
+        purchases = self.get_queryset()
+
+        # Вычисляем сумму contract_amount через aggregate
+        total_contract_amount = purchases.aggregate(Sum('contract_amount'))['contract_amount__sum'] or 0
+
+        # Вычисляем сумму total_pp_issued_amount вручную
+        total_payment_amount = sum(purchase.total_pp_issued_amount for purchase in purchases) or 0
+
+        context['total_contract_amount'] = total_contract_amount
+        context['total_payment_amount'] = total_payment_amount
+
         return context
 
 
@@ -263,11 +271,28 @@ class JournalListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.order_by('contract_date')
+        year = self.request.GET.get('year')
+        purchase_type = self.request.GET.get('purchase_type')
+
+        if year:
+            queryset = queryset.filter(contract_date__year=year)
+        if purchase_type:
+            queryset = queryset.filter(purchase_type__code=purchase_type)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Журнал регистрации контрактов'
+        # Получаем список годов
+        years = Contract.objects.dates('contract_date', 'year', order='DESC')
+        context['years'] = years
+        # Получаем список типов закупок
+        purchase_types = PurchaseType.objects.values_list('code', flat=True).distinct()
+        context['purchase_types'] = purchase_types
+        # Передаем выбранные значения фильтров
+        context['selected_year'] = self.request.GET.get('year', '')
+        context['selected_purchase_type'] = self.request.GET.get('purchase_type', '')
         return context
 
 
