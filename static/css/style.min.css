@@ -1185,3 +1185,22 @@ summary {
 .pp_button i {
     margin-right: 5px;
 }
+.purchase-table th {
+    position: relative;
+    cursor: help;
+}
+
+.purchase-table th:hover:after {
+    content: attr(title);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+}
