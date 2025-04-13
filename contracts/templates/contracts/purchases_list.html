@@ -79,6 +79,14 @@
             </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+            <tr class="summary-row">
+                <td colspan="9">Итого:</td>
+                <td>{{ total_contract_amount }}</td>
+                <td>{{ total_payment_amount }}</td>
+                <td>-</td>
+            </tr>
+        </tfoot>
     </table>
 </div>
 

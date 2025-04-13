@@ -1204,3 +1204,7 @@ summary {
     white-space: nowrap;
     z-index: 10;
 }
+.summary-row {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
