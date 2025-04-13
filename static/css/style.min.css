@@ -1176,3 +1176,12 @@ summary {
 .highlight-danger {
     background-color: #ffe6e6 !important;
 }
+
+.filter-form label i {
+    margin-right: 5px;
+    color: #007bff;
+}
+
+.pp_button i {
+    margin-right: 5px;
+}
