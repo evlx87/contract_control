@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('contracts.urls', namespace='contracts')),
-    path('accounts/', include('django.contrib.auth.urls')),  # Добавляем стандартные маршруты для auth
+    path('accounts/', include('django.contrib.auth.urls')),
     path('', include('limits.urls', namespace='limits')),
+    path('lib_ccportal/', include('lib_ccportal.urls')),
     path('', include('users.urls', namespace='users')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
