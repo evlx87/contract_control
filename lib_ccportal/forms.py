@@ -14,6 +14,12 @@ class KBKForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 4}),
         }
 
+    def clean_code(self):
+        code = self.cleaned_data.get('code')
+        if KBK.objects.filter(code=code).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError('Код КБК уже существует.')
+        return code
+
 class KOSGUForm(forms.ModelForm):
     class Meta:
         model = KOSGU
@@ -26,3 +32,9 @@ class KOSGUForm(forms.ModelForm):
             'code': forms.TextInput(attrs={'required': True}),
             'description': forms.Textarea(attrs={'rows': 4}),
         }
+
+    def clean_code(self):
+        code = self.cleaned_data.get('code')
+        if KOSGU.objects.filter(code=code).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError('Код КОСГУ уже существует.')
+        return code
