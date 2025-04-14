@@ -29,6 +29,7 @@
                     <td>
                         {% if user.is_authenticated %}
                         <a class="pp_button" href="{% url 'lib_ccportal:kosgu_edit' kosgu.pk %}">Редактировать</a>
+                        <a class="pp_button" href="{% url 'lib_ccportal:kosgu_delete' kosgu.pk %}">Удалить</a>
                         {% endif %}
                     </td>
                 </tr>
