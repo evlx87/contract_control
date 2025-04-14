@@ -1,0 +1,48 @@
+{% extends 'contracts/base.html' %}
+{% block title %}
+    <title>Удалить КОСГУ</title>
+{% endblock %}
+{% block page_header %}
+    <h1>Удаление КОСГУ: {{ kosgu.code }}</h1>
+{% endblock %}
+{% block page_content %}
+    <div class="add_form">
+        {% if related_contracts %}
+            <div class="alert alert-danger">
+                <p><strong>Нельзя удалить КОСГУ, так как к нему привязаны следующие контракты:</strong></p>
+                <ul>
+                    {% for contract in related_contracts %}
+                        <li>
+                            <a href="{% url 'contracts:contract-detail' contract.id %}">
+                                Контракт № {{ contract.contract_number }} от {{ contract.contract_date|date:"d.m.Y" }} ({{ contract.supplier }})
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="btn-container">
+                <a class="pp_button" href="{% url 'lib_ccportal:kosgu_list' %}">Вернуться к списку</a>
+            </div>
+        {% else %}
+            <p>Вы уверены, что хотите удалить КОСГУ <strong>{{ kosgu.code }}</strong>?</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="btn-container">
+                    <button type="submit" class="pp_button" id="confirmDeleteBtn">Подтвердить</button>
+                    <a class="pp_button" href="{% url 'lib_ccportal:kosgu_list' %}">Отмена</a>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block script %}
+    {% if not related_contracts %}
+    <script>
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function(event) {
+            if (!confirm('Вы действительно хотите удалить КОСГУ "{{ kosgu.code }}"?')) {
+                event.preventDefault();
+            }
+        });
+    </script>
+    {% endif %}
+{% endblock %}

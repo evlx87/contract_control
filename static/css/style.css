@@ -1,0 +1,1288 @@
+/* Сброс стандартных стилей */
+*,:after,:before {
+    margin:0;
+    padding:0;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+} /* Устанавливает глобальный сброс отступов и box-sizing */
+
+/* Настройки базовых элементов HTML */
+html {
+    font-family:sans-serif;
+    font-size:10px;
+    -webkit-text-size-adjust:100%;
+    -ms-text-size-adjust:100%;
+    -webkit-tap-highlight-color:transparent;
+} /* Задает базовый шрифт, размер и поведение текста на мобильных устройствах */
+
+body {
+    font-family:Verdana,Geneva,sans-serif;
+    font-size:11px;
+    line-height:1.42857143;
+    color:#333;
+    background-color:#fcfcfc;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-height:100vh;
+} /* Стили для body: шрифт, цвет, фон и центрирование содержимого */
+
+/* Стили для ссылок */
+a {
+    color:#337ab7;
+    text-decoration:none;
+    font-weight:700;
+    background-color:transparent;
+} /* Базовый стиль ссылок: цвет, отсутствие подчеркивания, жирный шрифт */
+
+a:focus,a:hover {
+    color:#23527c;
+    text-decoration:underline;
+} /* Стили при наведении и фокусе: изменение цвета и добавление подчеркивания */
+
+a:focus {
+    outline:dotted thin;
+    outline:-webkit-focus-ring-color auto 5px;
+    outline-offset:-2px;
+} /* Контур при фокусе для доступности */
+
+a:active,a:hover {
+    outline:0;
+} /* Убирает контур при клике или наведении */
+
+/* Эффект наведения для ссылок, кнопок и элементов списка */
+a:hover,button:hover,li:hover {
+    background-color:brown;
+    color:#fff;
+} /* Коричневый фон и белый текст при наведении */
+
+/* Контейнер для содержимого */
+.container {
+    max-width:1200px;
+    margin:0 auto;
+    padding-right:15px;
+    padding-left:15px;
+    background-color:#fcfcfc;
+} /* Центрирует содержимое с максимальной шириной и отступами */
+
+.container:after,.container:before {
+    display:table;
+    content:" ";
+} /* Псевдоэлементы для корректной работы float */
+
+.container:after {
+    clear:both;
+} /* Очистка float */
+
+.container>div>ul {
+    margin:0;
+} /* Убирает отступы у списков внутри контейнера */
+
+/* Адаптивные размеры контейнера */
+@media (min-width:768px) {
+    .container {
+        max-width:750px;
+        margin:0 auto;
+    }
+} /* Ширина контейнера для экранов от 768px */
+
+@media (min-width:992px) {
+    .container {
+        max-width:970px;
+        margin:0 auto;
+    }
+} /* Ширина контейнера для экранов от 992px */
+
+@media (min-width:1200px) {
+    .container {
+        max-width:1170px;
+        margin:0 auto;
+    }
+} /* Ширина контейнера для экранов от 1200px */
+
+/* Стили для заголовков */
+h1,.h1,h2,.h2 {
+    font-family:inherit;
+    font-weight:500;
+    line-height:1.1;
+    color:inherit;
+    text-align:center;
+    text-transform:uppercase;
+    margin-top:20px;
+    margin-bottom:10px;
+} /* Общие стили для заголовков: центрирование, верхний регистр */
+
+h1,.h1 {
+    font-size:36px;
+    margin:.67em 0;
+} /* Размер и отступы для h1 */
+
+h2,.h2 {
+    font-size:30px;
+} /* Размер для h2 */
+
+/* Стили для параграфов */
+p {
+    margin:0 0 10px;
+} /* Базовые отступы для параграфов */
+
+/* Стили для списков */
+ul {
+    display:flex;
+    list-style-type:none;
+    padding:0;
+    margin:0 0 10px 0;
+} /* Гибкий список без маркеров */
+
+ul ul {
+    margin-bottom:0;
+} /* Убирает нижний отступ у вложенных списков */
+
+li {
+    margin-right:20px;
+} /* Отступ между элементами списка */
+
+ul li:last-child {
+    margin-right:0;
+} /* Убирает отступ у последнего элемента списка */
+
+/* Контейнер для меню */
+.menu_container {
+    display:flex;
+    justify-content:center;
+} /* Центрирует содержимое меню */
+
+/* Навигационное меню */
+nav {
+    background-color:#007bff;
+    padding:10px 0;
+    margin-bottom:20px;
+} /* Синий фон и отступы для навигации */
+
+nav a {
+    color:#fff;
+    text-decoration:none;
+    padding:10px 15px;
+    display:inline-block;
+} /* Стили ссылок в навигации: белый текст, отступы */
+
+nav a:hover {
+    background-color:#0056b3;
+} /* Темно-синий фон при наведении на ссылки навигации */
+
+/* Стили для форм и карточек контрактов */
+.add_form,.contract_card {
+    width:800px;
+    margin:0 auto;
+    background-color:#fff;
+    padding:20px;
+    border-radius:5px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+} /* Фиксированная ширина, белый фон, тень для форм и карточек */
+
+.add_form {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+} /* Центрирование содержимого формы */
+
+.add_form form {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-gap:10px;
+    margin-top:10px;
+    width:100%;
+} /* Сетка для полей формы: два столбца */
+
+.add_form label {
+    grid-column:span 1;
+    display:inline-block;
+    max-width:100%;
+    margin-bottom:5px;
+    font-weight:700;
+    color:#333;
+} /* Стили меток формы: жирный шрифт, темный цвет */
+
+.add_form input,.add_form select {
+    width:100%;
+    padding:5px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:4px;
+    font-size:11px;
+} /* Поля ввода и выбор: полная ширина, рамка, скругление */
+
+.add_form .btn-container {
+    display:flex;
+    justify-content:center;
+    margin-top:10px;
+    gap:10px;
+} /* Контейнер для кнопок формы: центрирование, отступы между кнопками */
+
+/* Поля формы */
+.form-field {
+    margin-bottom:15px;
+} /* Отступ под полями формы */
+
+.form-field label {
+    display:block;
+    font-weight:700;
+    margin-bottom:5px;
+    color:#333;
+} /* Метки полей: блочный элемент, жирный шрифт */
+
+.form-field input,.form-field select,.form-field textarea {
+    width:100%;
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    box-sizing:border-box;
+    font-size:11px;
+} /* Стили для ввода, выбора и текстовых полей */
+
+.form-field input[type=checkbox] {
+    width:auto;
+    margin-right:5px;
+} /* Чекбоксы: автоматическая ширина, небольшой отступ */
+
+/* Сообщения об ошибках */
+.error {
+    color:#d32f2f;
+    font-size:11px;
+    margin-top:5px;
+} /* Красный цвет и маленький шрифт для ошибок */
+
+/* Базовые стили для кнопок и полей ввода */
+button,input,select {
+    margin:0;
+    font:inherit;
+    color:inherit;
+    font-family:inherit;
+    font-size:inherit;
+    line-height:inherit;
+} /* Наследование шрифта и цвета для кнопок и полей */
+
+button,select {
+    text-transform:none;
+} /* Отключает преобразование текста для кнопок и выбора */
+
+button,html input[type=button],input[type=submit] {
+    -webkit-appearance:button;
+    cursor:pointer;
+} /* Курсор указателя и вид кнопки для submit */
+
+button::-moz-focus-inner,input::-moz-focus-inner {
+    padding:0;
+    border:0;
+} /* Убирает внутренние рамки в Firefox */
+
+input {
+    line-height:normal;
+} /* Нормальная высота строки для полей ввода */
+
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {
+    height:auto;
+} /* Корректирует стрелки для числовых полей в WebKit */
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input[type=date] {
+        line-height:34px;
+    }
+} /* Корректирует высоту строки для полей даты в WebKit */
+
+/* Общие стили кнопок */
+button {
+    height:24px;
+    width:100px;
+    border-radius:12px;
+    overflow:visible;
+} /* Фиксированные размеры и скругление для кнопок */
+
+.add_form button {
+    margin:0 10px;
+    color:brown;
+    font-weight:700;
+} /* Коричневый цвет и жирный шрифт для кнопок в форме */
+
+/* Кнопки с классом .pp_button */
+.pp_button {
+    display:inline-block;
+    padding:10px 20px;
+    background-color:#007bff;
+    color:#fff;
+    text-decoration:none;
+    border-radius:5px;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:500;
+    text-align:center;
+    line-height:1.5;
+    box-sizing:border-box;
+    transition:background-color .2s ease;
+    margin:0;
+    vertical-align:middle;
+} /* Стили для основных кнопок: синий фон, белый текст, анимация */
+
+.pp_button:hover {
+    background-color:#0056b3;
+    color:#fff;
+    text-decoration:none;
+} /* Темно-синий фон при наведении */
+
+button.pp_button {
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    border:none;
+    background:none;
+    background-color:#007bff;
+    padding:10px 20px;
+    line-height:1.5;
+    margin:0;
+    vertical-align:middle;
+    font:inherit;
+    color:#fff;
+    height:auto;
+    width:auto;
+} /* Стили для кнопок-элементов button с классом .pp_button */
+
+a.pp_button {
+    text-decoration:none;
+    color:#fff;
+    line-height:1.5;
+    padding:10px 20px;
+    margin:0;
+    vertical-align:middle;
+} /* Стили для ссылок с классом .pp_button */
+
+/* Контейнер для кнопок */
+.btn-container {
+    display:flex;
+    gap:10px;
+    justify-content:flex-start;
+    margin-top:20px;
+} /* Гибкое расположение кнопок с отступами */
+
+/* Специфические кнопки */
+.pp_button_index,.pp_button_menu {
+    display:flex;
+    justify-content:center;
+    padding:10px;
+    background-color:#007bff;
+    color:#fff;
+    text-decoration:none;
+    border-radius:5px;
+    white-space:normal;
+    text-align:center;
+    word-wrap:break-word;
+} /* Базовые стили для кнопок на главной и в меню */
+
+.pp_button_index {
+    align-items:center;
+    font-size:14px;
+    height:80px;
+    width:150px;
+} /* Кнопки на главной: фиксированные размеры */
+
+.pp_button_menu {
+    display:inline-block;
+    padding:10px 15px;
+    background-color:#007bff;
+    color:#fff;
+    text-decoration:none;
+    border-radius:5px;
+    white-space:normal;
+    text-align:center;
+    word-wrap:break-word;
+    font-weight:normal;
+    transition:background-color .2s ease;
+} /* Кнопки меню: синий фон, нормальный вес шрифта */
+
+.pp_button_menu:hover {
+    background-color:#0056b3;
+    color:#fff;
+} /* Темно-синий фон при наведении на кнопки меню */
+
+/* Стили для элементов выпадающего меню */
+.dropdown-menu li a.pp_button_menu {
+    background-color:transparent;
+    color:#333;
+    border-radius:0;
+    padding:10px 15px;
+    font-size:14px;
+} /* Элементы подменю: прозрачный фон, темный текст */
+
+.dropdown-menu li a.pp_button_menu:hover {
+    background-color:#f1f1f1;
+    color:#333;
+} /* Серый фон при наведении на элементы подменю */
+
+/* Кнопки для модального окна логина */
+.pp_button_modal_login {
+    display:inline-block;
+    padding:10px 20px;
+    background-color:#007bff;
+    color:#fff;
+    text-align:center;
+    text-decoration:none;
+    border-radius:5px;
+    font-size:14px;
+    transition:background-color .2s ease;
+    width:120px;
+} /* Стили для кнопок логина: фиксированная ширина */
+
+.pp_button_modal_login:hover {
+    background-color:#0056b3;
+} /* Темно-синий фон при наведении */
+
+/* Кнопки отмены */
+.pp_button_cancel {
+    background-color:#6c757d;
+} /* Серый фон для кнопок отмены */
+
+.pp_button_cancel:hover {
+    background-color:#5a6268;
+} /* Темно-серый фон при наведении */
+
+/* Контейнер для кнопок */
+.button_container {
+    display:flex;
+    justify-content:center;
+    margin:20px;
+    gap:10px;
+} /* Центрирование кнопок с отступами */
+
+/* Карточка контракта */
+.contract_card {
+    width:800px;
+    margin:0 auto;
+} /* Фиксированная ширина карточки контракта */
+
+.contract_card_top {
+    display:flex;
+    gap:20px;
+    margin-bottom:20px;
+} /* Гибкое расположение верхней части карточки */
+
+.amounts_card,.contract_data {
+    display:inline-block;
+    min-width:350px;
+    flex-grow:1;
+} /* Минимальная ширина и гибкость для блоков данных */
+
+.amounts_card p,.contract_data p {
+    margin-bottom:10px;
+} /* Отступы для параграфов в блоках данных */
+
+/* Стили для таблиц */
+table {
+    width:100%;
+    border-collapse:collapse;
+    border-spacing:0;
+    background-color:transparent;
+    font:11px Verdana,Geneva,sans-serif;
+} /* Базовые стили таблиц: полная ширина, шрифт */
+
+td,th {
+    padding:2px 4px;
+    border:1px solid #ddd;
+    text-align:left;
+} /* Отступы и рамки для ячеек */
+
+th {
+    background-color:#f2f2f2;
+} /* Светло-серый фон для заголовков таблицы */
+
+.contract-table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+} /* Таблица контрактов: полная ширина, отступ сверху */
+
+.contract-table td,.contract-table th {
+    padding:12px;
+    text-align:left;
+    border:1px solid #ddd;
+} /* Большие отступы для ячеек таблицы контрактов */
+
+.contract-table th {
+    background-color:#f2f2f2;
+} /* Светло-серый фон для заголовков таблицы контрактов */
+
+.table {
+    width:100%;
+    max-width:100%;
+    margin-bottom:20px;
+} /* Общая таблица: полная ширина, нижний отступ */
+
+.table>tbody>tr>td,.table>tbody>tr>th,.table>thead>tr>td,.table>thead>tr>th {
+    padding:8px;
+    line-height:1.42857143;
+    vertical-align:top;
+    border-top:1px solid #ddd;
+} /* Отступы и рамки для ячеек общей таблицы */
+
+.table>thead>tr>th {
+    vertical-align:bottom;
+    border-bottom:2px solid #ddd;
+} /* Нижняя рамка для заголовков таблицы */
+
+.table>thead:first-child>tr:first-child>td,.table>thead:first-child>tr:first-child>th {
+    border-top:0;
+} /* Убирает верхнюю рамку для первой строки заголовков */
+
+.table>tbody+tbody {
+    border-top:2px solid #ddd;
+} /* Рамка между группами строк */
+
+.table .table {
+    background-color:#fff;
+} /* Белый фон для вложенных таблиц */
+
+/* Список контрактов */
+.contract-list {
+    margin:20px 0;
+} /* Отступы для списка контрактов */
+
+.contract-list ul {
+    padding:0;
+} /* Убирает отступы у списка */
+
+.contract-list li {
+    border:1px solid #ccc;
+    padding:15px;
+    margin-bottom:10px;
+    border-radius:5px;
+    background-color:#f9f9f9;
+} /* Стили элементов списка: рамка, отступы, фон */
+
+.contract-list h2 {
+    margin:0;
+    font-size:1.5em;
+} /* Заголовки в списке: без отступов, размер шрифта */
+
+.contract-list p {
+    color:#666;
+    font-style:italic;
+} /* Параграфы в списке: серый цвет, курсив */
+
+/* Кнопки с классом .btn */
+.btn {
+    display:inline-block;
+    padding:6px 12px;
+    margin-bottom:0;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.42857143;
+    text-align:center;
+    white-space:nowrap;
+    vertical-align:middle;
+    -ms-touch-action:manipulation;
+    touch-action:manipulation;
+    cursor:pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    border:1px solid transparent;
+    border-radius:4px;
+    background-image:none;
+} /* Базовые стили для кнопок: размер, курсор, рамка */
+
+.btn:focus,.btn:hover {
+    color:#333;
+    text-decoration:none;
+} /* Стили при наведении и фокусе для кнопок */
+
+.btn:active,.btn:active:focus,.btn:focus {
+    outline:dotted thin;
+    outline:-webkit-focus-ring-color auto 5px;
+    outline-offset:-2px;
+} /* Контур при активации и фокусе для кнопок */
+
+.btn:active {
+    outline:0;
+    -webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);
+    box-shadow:inset 0 3px 5px rgba(0,0,0,.125);
+} /* Тень при клике на кнопку */
+
+/* Общие кнопки */
+.button {
+    position:relative;
+    text-align:center;
+    border-color:#ddd;
+    border-radius:3px;
+    color:#fff;
+    padding:6px;
+    text-decoration:none;
+    width:50px;
+    margin-top:6px;
+    cursor:pointer;
+} /* Простые кнопки: фиксированная ширина, белый текст */
+
+/* Метки */
+.label {
+    display:inline;
+    font-size:11px;
+    padding:1px;
+    line-height:1;
+    white-space:nowrap;
+    vertical-align:baseline;
+    text-align:center;
+    font-weight:700;
+    color:#fff;
+    border-radius:.25em;
+} /* Стили для меток: маленький размер, белый текст */
+
+a.label:focus,a.label:hover {
+    color:#fff;
+    text-decoration:none;
+    cursor:pointer;
+} /* Стили для ссылок-меток при наведении и фокусе */
+
+.btn .label {
+    position:relative;
+    top:-1px;
+} /* Позиционирование метки внутри кнопки */
+
+.label:empty {
+    display:none;
+} /* Скрывает пустые метки */
+
+/* Сообщения об ошибках */
+.alert {
+    padding:15px;
+    margin-bottom:20px;
+    border:1px solid transparent;
+    border-radius:4px;
+} /* Базовые стили для уведомлений */
+
+.alert>p,.alert>ul {
+    margin-bottom:0;
+} /* Убирает нижний отступ у содержимого уведомления */
+
+.alert>p+p {
+    margin-top:5px;
+} /* Отступ между параграфами в уведомлении */
+
+.alert-danger {
+    color:#a94442;
+    background-color:#f2dede;
+    border-color:#ebccd1;
+} /* Красное уведомление об ошибке */
+
+.alert-danger hr {
+    border-top-color:#e4b9c0;
+} /* Цвет разделителя в уведомлении об ошибке */
+
+/* Горизонтальная линия */
+hr {
+    margin-top:20px;
+    margin-bottom:20px;
+    border:0;
+    border-top:1px solid #eee;
+    height:0;
+    -webkit-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+} /* Стили для разделительной линии */
+
+/* Код */
+code {
+    font-family:Menlo,Monaco,Consolas,"Courier New",monospace;
+    font-size:90%;
+    padding:2px 4px;
+    color:#c7254e;
+    background-color:#f9f2f4;
+    border-radius:4px;
+} /* Стили для фрагментов кода: моноширинный шрифт, розовый фон */
+
+/* Анимации для прогресс-бара */
+@-webkit-keyframes progress-bar-stripes {
+    from{background-position:40px 0}
+    to{background-position:0 0}
+}
+@-o-keyframes progress-bar-stripes {
+    from{background-position:40px 0}
+    to{background-position:0 0}
+}
+@keyframes progress-bar-stripes {
+    from{background-position:40px 0}
+    to{background-position:0 0}
+} /* Анимация полос прогресс-бара */
+
+/* Стили для печати */
+@media print {
+    tr{page-break-inside:avoid}
+    *,:after,:before{color:#000!important;text-shadow:none!important;background:0 0!important;-webkit-box-shadow:none!important;box-shadow:none!important}
+    a,a:visited{text-decoration:underline}
+    a[href]:after{content:"(" attr(href) ")"}
+    thead{display:table-header-group}
+    h2,p{orphans:3;widows:3}
+    h2{page-break-after:avoid}
+    select{background:#fff!important}
+    .label{border:1px solid #000}
+    .table{border-collapse:collapse!important}
+    .table td,.table th{background-color:#fff!important}
+} /* Настройки для печати: черный текст, подчеркивание ссылок, коррекция таблиц */
+
+/* Адаптивность для маленьких экранов */
+@media screen and (max-width:600px) {
+    td:first-child,td:last-child,td:nth-child(11),td:nth-child(12),td:nth-child(2),td:nth-child(3),td:nth-child(5),td:nth-child(6),td:nth-child(9),th:first-child,th:last-child,th:nth-child(11),th:nth-child(12),th:nth-child(2),th:nth-child(3),th:nth-child(5),th:nth-child(6),th:nth-child(9) {
+        display:none;
+    }
+} /* Скрытие определенных столбцов таблицы на экранах до 600px */
+
+/* Адаптивность для планшетов и мобильных */
+@media (max-width:768px) {
+    .contract_card_top{flex-direction:column}
+    .btn-container,.button_container{flex-direction:column;gap:5px}
+    .pp_button,.pp_button_index,.pp_button_menu{width:100%;text-align:center}
+    .add_form,.contract_card{width:100%}
+    .add_form form{grid-template-columns:1fr}
+    .amounts_card,.contract_data{min-width:100%}
+    .contract-table td,.contract-table th{padding:5px}
+} /* Корректировки для экранов до 768px: колонки, ширина, отступы */
+
+/* Скрытые элементы */
+.hidden,.label:empty,[hidden] {
+    display:none;
+} /* Скрытие элементов с классами или пустых меток */
+
+details,summary {
+    display:block;
+} /* Блочное отображение для details и summary */
+
+/* Подключение шрифта иконок */
+@font-face {
+    font-family:"Glyphicons Halflings";
+    src:url(../fonts/glyphicons-halflings-regular.eot);
+    src:url(../fonts/glyphicons-halflings-regular.eot?#iefix) format("embedded-opentype"),url(../fonts/glyphicons-halflings-regular.woff2) format("woff2"),url(../fonts/glyphicons-halflings-regular.woff) format("woff"),url(../fonts/glyphicons-halflings-regular.ttf) format("truetype"),url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format("svg");
+} /* Подключение шрифта Glyphicons */
+
+/* Таблица дополнительных соглашений */
+.agreement-table {
+    width:100%;
+    border-collapse:collapse;
+    margin:20px 0;
+} /* Полная ширина и отступы для таблицы соглашений */
+
+.agreement-table th,.agreement-table td {
+    padding:10px;
+    border:1px solid #ddd;
+    text-align:left;
+} /* Отступы и рамки для ячеек таблицы соглашений */
+
+.agreement-table th {
+    background-color:#f2f2f2;
+    font-weight:700;
+} /* Светло-серый фон и жирный шрифт для заголовков */
+
+.agreement-table tr:hover {
+    background-color:#f1f1f1;
+} /* Серый фон при наведении на строку */
+
+.agreement-table a {
+    text-decoration:none;
+    color:#337ab7;
+} /* Стили ссылок в таблице: синий цвет, без подчеркивания */
+
+.agreement-table a:hover {
+    text-decoration:underline;
+} /* Подчеркивание при наведении на ссылки */
+
+/* Ссылки на файлы */
+.file-link {
+    font-size:11px;
+    color:#007bff;
+    text-decoration:none;
+    margin-left:10px;
+} /* Стили ссылок на файлы: маленький шрифт, синий цвет */
+
+.file-link:hover {
+    text-decoration:underline;
+} /* Подчеркивание при наведении */
+
+/* Блок авторизации */
+.auth_box_center {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    margin:20px 0;
+} /* Центрированный блок авторизации с отступами */
+
+.auth_box_center p {
+    margin:0;
+} /* Убирает отступы у параграфов в блоке авторизации */
+
+/* Главный контейнер */
+#main_container.container {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:100%;
+} /* Полная ширина и центрирование для главного контейнера */
+
+/* Модальное окно */
+.modal {
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,.5);
+    z-index:1050;
+    overflow:auto;
+    animation:fadeIn .3s ease;
+} /* Стили модального окна: затемнение фона, анимация появления */
+
+@keyframes fadeIn {
+    from{opacity:0}
+    to{opacity:1}
+} /* Анимация появления модального окна */
+
+.modal-content {
+    background-color:#fff;
+    margin:10% auto;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 20px rgba(0,0,0,.2);
+    width:90%;
+    max-width:400px;
+    position:relative;
+    animation:slideIn .3s ease;
+} /* Стили содержимого модального окна: белый фон, тень, анимация */
+
+@keyframes slideIn {
+    from{transform:translateY(-50px);opacity:0}
+    to{transform:translateY(0);opacity:1}
+} /* Анимация выезда содержимого модального окна */
+
+.modal-content h2 {
+    font-size:24px;
+    margin-bottom:20px;
+    text-align:center;
+    color:#333;
+} /* Заголовок модального окна: размер, центрирование */
+
+.close {
+    position:absolute;
+    top:10px;
+    right:15px;
+    font-size:24px;
+    font-weight:700;
+    color:#666;
+    cursor:pointer;
+    transition:color .2s ease;
+} /* Кнопка закрытия: позиция, цвет, анимация */
+
+.close:hover {
+    color:#000;
+} /* Черный цвет при наведении на кнопку закрытия */
+
+/* Поля формы в модальном окне */
+.form-group {
+    margin-bottom:15px;
+    width:100%;
+} /* Отступы и полная ширина для групп полей */
+
+.form-group label {
+    display:block;
+    font-weight:700;
+    margin-bottom:5px;
+    color:#333;
+} /* Метки: блочный элемент, жирный шрифт */
+
+.form-group input {
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:14px;
+    transition:border-color .2s ease;
+} /* Поля ввода: полная ширина, рамка, анимация */
+
+.form-group input:focus {
+    border-color:#007bff;
+    outline:0;
+    box-shadow:0 0 5px rgba(0,123,255,.3);
+} /* Синяя рамка и тень при фокусе на поле ввода */
+
+/* Контейнер для кнопок в модальном окне */
+.btn-container {
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:20px;
+} /* Центрирование кнопок с отступами */
+
+/* Кнопки логина в модальном окне */
+.pp_button_modal_login {
+    display:inline-block;
+    padding:10px 20px;
+    background-color:#007bff;
+    color:#fff;
+    text-align:center;
+    text-decoration:none;
+    border-radius:5px;
+    font-size:14px;
+    transition:background-color .2s ease;
+    width:120px;
+} /* Стили кнопок логина: синий фон, фиксированная ширина */
+
+.pp_button_modal_login:hover {
+    background-color:#0056b3;
+} /* Темно-синий фон при наведении */
+
+/* Кнопки отмены в модальном окне */
+.pp_button_cancel {
+    background-color:#6c757d;
+} /* Серый фон для кнопок отмены */
+
+.pp_button_cancel:hover {
+    background-color:#5a6268;
+} /* Темно-серый фон при наведении */
+
+/* Сообщения об ошибках в модальном окне */
+.error {
+    color:#d32f2f;
+    font-size:12px;
+    margin-bottom:15px;
+    text-align:center;
+    display:none;
+} /* Скрытые красные сообщения об ошибке */
+
+/* Контейнер для таблиц */
+.table-container {
+    overflow-x:auto;
+    margin:20px 0;
+    border-radius:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+} /* Прокрутка и тень для таблиц */
+
+/* Таблица закупок */
+.purchase-table {
+    width:100%;
+    border-collapse:collapse;
+    background-color:#fff;
+    font-size:14px;
+    color:#333;
+} /* Полная ширина, белый фон для таблицы закупок */
+
+.purchase-table th,.purchase-table td {
+    padding:12px 15px;
+    text-align:left;
+    border-bottom:1px solid #e0e0e0;
+} /* Отступы и нижняя рамка для ячеек таблицы закупок */
+
+.purchase-table th {
+    background-color:#f5f5f5;
+    font-weight:600;
+    text-transform:uppercase;
+    color:#555;
+    position:sticky;
+    top:0;
+    z-index:1;
+} /* Заголовки таблицы: серый фон, верхний регистр, фиксация */
+
+.purchase-table tbody tr:hover {
+    background-color:#f9f9f9;
+    transition:background-color .3s ease;
+} /* Серый фон при наведении на строки таблицы */
+
+.purchase-table tbody tr td a {
+    color:#007bff;
+    text-decoration:none;
+} /* Ссылки в таблице: синий цвет, без подчеркивания */
+
+.purchase-table tbody tr td a:hover {
+    text-decoration:underline;
+    color:#0056b3;
+} /* Подчеркивание и темно-синий цвет при наведении */
+
+/* Пустая таблица */
+.no-data {
+    text-align:center;
+    color:#888;
+    font-style:italic;
+    padding:20px;
+} /* Стили для сообщения о пустой таблице */
+
+/* Форма фильтров */
+.filter-form {
+    display:flex;
+    gap:15px;
+    align-items:center;
+    margin-bottom:20px;
+} /* Гибкое расположение фильтров с отступами */
+
+.filter-form label {
+    font-weight:500;
+    color:#333;
+} /* Метки фильтров: средний вес шрифта */
+
+.filter-form select {
+    padding:8px 12px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    font-size:14px;
+    background-color:#fff;
+    cursor:pointer;
+} /* Поля выбора фильтров: рамка, размер шрифта */
+
+.filter-form select:focus {
+    outline:0;
+    border-color:#007bff;
+    box-shadow:0 0 5px rgba(0,123,255,.3);
+} /* Синяя рамка и тень при фокусе на поле выбора */
+
+/* Элементы DataTables */
+.dataTables_wrapper .dataTables_length,.dataTables_wrapper .dataTables_filter,.dataTables_wrapper .dataTables_info,.dataTables_wrapper .dataTables_paginate {
+    margin:10px 0;
+    font-size:14px;
+} /* Отступы и размер шрифта для элементов DataTables */
+
+.dataTables_wrapper .dataTables_filter input {
+    padding:6px 10px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    margin-left:5px;
+} /* Поле поиска DataTables: рамка, отступы */
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding:6px 12px;
+    margin:0 2px;
+    border:1px solid #ddd;
+    border-radius:4px;
+    background-color:#fff;
+    color:#333;
+    cursor:pointer;
+} /* Кнопки пагинации: рамка, цвет, курсор */
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color:#f0f0f0;
+} /* Серый фон при наведении на кнопки пагинации */
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color:#007bff;
+    color:#fff;
+    border-color:#007bff;
+} /* Синий фон для активной кнопки пагинации */
+
+/* Подсветка строк */
+.highlight-success {
+    background-color:#e6f4ea!important;
+} /* Зеленый фон для успешных строк */
+
+.highlight-warning {
+    background-color:#fff3e0!important;
+} /* Оранжевый фон для предупреждений */
+
+.highlight-danger {
+    background-color:#ffe6e6!important;
+} /* Красный фон для ошибок */
+
+/* Иконки в фильтрах и кнопках */
+.filter-form label i {
+    margin-right:5px;
+    color:#007bff;
+} /* Отступ и синий цвет для иконок в метках фильтров */
+
+.pp_button i {
+    margin-right:5px;
+} /* Отступ для иконок в кнопках */
+
+/* Заголовки таблицы закупок */
+.purchase-table th {
+    position:relative;
+    cursor:help;
+} /* Курсор подсказки для заголовков таблицы */
+
+.purchase-table th:hover:after {
+    content:attr(title);
+    position:absolute;
+    top:-30px;
+    left:50%;
+    transform:translateX(-50%);
+    background-color:#333;
+    color:#fff;
+    padding:5px 10px;
+    border-radius:4px;
+    font-size:12px;
+    white-space:nowrap;
+    z-index:10;
+} /* Всплывающая подсказка при наведении на заголовок */
+
+/* Строка итогов */
+.summary-row {
+    background-color:#f0f0f0;
+    font-weight:700;
+} /* Серый фон и жирный шрифт для итоговой строки */
+
+/* Контейнер для управления таблицей */
+.table-controls {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+} /* Гибкое расположение элементов управления таблицей */
+
+/* Форма фильтров */
+.filter-form {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+} /* Гибкое расположение фильтров с переносом */
+
+/* Метки фильтров */
+.filter-form label {
+    font-weight:500;
+    color:#333;
+    display:flex;
+    align-items:center;
+    gap:5px;
+} /* Стили меток: гибкое расположение, отступы */
+
+/* Поля выбора фильтров */
+.filter-form select {
+    padding:6px 10px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    font-size:14px;
+    background-color:#fff;
+    cursor:pointer;
+} /* Стили для полей выбора: рамка, курсор */
+
+.filter-form select:focus {
+    outline:0;
+    border-color:#007bff;
+    box-shadow:0 0 5px rgba(0,123,255,.3);
+} /* Синяя рамка и тень при фокусе */
+
+/* Кнопка фильтрации */
+.filter-button {
+    padding:6px 12px;
+    font-size:14px;
+} /* Размер и отступы для кнопки фильтрации */
+
+/* Контейнер для поиска */
+.search-container {
+    display:flex;
+    align-items:center;
+    gap:5px;
+} /* Гибкое расположение элементов поиска */
+
+/* Поле поиска */
+.search-input {
+    padding:6px 10px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    font-size:14px;
+    width:200px;
+} /* Стили поля поиска: рамка, фиксированная ширина */
+
+.search-input:focus {
+    outline:0;
+    border-color:#007bff;
+    box-shadow:0 0 5px rgba(0,123,255,.3);
+} /* Синяя рамка и тень при фокусе на поле поиска */
+
+/* Кнопка поиска */
+.search-button {
+    padding:6px 10px;
+    border:0;
+    background-color:#007bff;
+    color:#fff;
+    border-radius:4px;
+    cursor:pointer;
+} /* Стили кнопки поиска: синий фон, белый текст */
+
+.search-button:hover {
+    background-color:#0056b3;
+} /* Темно-синий фон при наведении */
+
+/* Кнопки экспорта */
+.export-buttons {
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
+} /* Гибкое расположение кнопок экспорта с переносом */
+
+/* Кнопка экспорта */
+.export-button {
+    padding:6px 10px;
+    border:0;
+    background-color:#007bff;
+    color:#fff;
+    border-radius:4px;
+    font-size:14px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:5px;
+} /* Стили кнопки экспорта: синий фон, гибкое расположение */
+
+.export-button:hover {
+    background-color:#0056b3;
+} /* Темно-синий фон при наведении */
+
+/* Иконки */
+.filter-form i,.search-button i,.export-button i {
+    font-size:14px;
+} /* Размер шрифта для иконок */
+
+/* Скрытие элементов DataTables */
+.dataTables_wrapper .dataTables_filter,.dataTables_wrapper .dataTables_length {
+    display:none;
+} /* Скрывает стандартные фильтры и выбор длины DataTables */
+
+/* Выпадающее меню */
+.dropdown {
+    position:relative;
+    display:inline-block;
+} /* Контейнер для выпадающего меню: относительное позиционирование */
+
+.dropdown-toggle {
+    cursor:pointer;
+} /* Курсор указателя для переключателя меню */
+
+.dropdown-menu {
+    display:none;
+    position:absolute;
+    background-color:#fff;
+    min-width:200px;
+    box-shadow:0 8px 16px rgba(0,0,0,.2);
+    z-index:1;
+    list-style:none;
+    padding:0;
+    margin:0;
+    border:1px solid #ddd;
+} /* Стили выпадающего меню: скрытое, белый фон, тень */
+
+.dropdown-menu li {
+    display:block;
+} /* Блочное отображение элементов списка меню */
+
+.dropdown-menu li a {
+    display:block;
+    padding:10px 15px;
+    text-decoration:none;
+    color:#333;
+    font-size:14px;
+} /* Стили ссылок в меню: блочный элемент, темный текст */
+
+.dropdown-menu li a:hover {
+    background-color:#f1f1f1;
+} /* Серый фон при наведении на ссылки меню */
+
+.dropdown:hover .dropdown-menu {
+    display:block;
+} /* Показывает меню при наведении на контейнер */
