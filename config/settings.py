@@ -131,7 +131,7 @@ USE_TZ = True
 # URL для доступа к статическим файлам
 STATIC_URL = '/static/'
 
-# Директория, где находятся ваши статические файлы (например, style.min.css)
+# Директория, где находятся ваши статические файлы (например, style.css)
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]

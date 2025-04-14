@@ -1,17 +1,19 @@
 from django.urls import path
-from . import views
+
+from lib_ccportal.views import KBKListView, KBKCreateView, KBKUpdateView, KBKDeleteView, KOSGUListView, KOSGUCreateView, \
+    KOSGUUpdateView, KOSGUDeleteView
 
 app_name = 'lib_ccportal'
 
 urlpatterns = [
     # KBK URLs
-    path('kbk/', views.KBKListView.as_view(), name='kbk_list'),
-    path('kbk/add/', views.KBKCreateView.as_view(), name='kbk_add'),
-    path('kbk/edit/<int:pk>/', views.KBKUpdateView.as_view(), name='kbk_edit'),
-    path('kbk/delete/<int:pk>/', views.KBKDeleteView.as_view(), name='kbk_delete'),
+    path('kbk/', KBKListView.as_view(), name='kbk_list'),
+    path('kbk/add/', KBKCreateView.as_view(), name='kbk_add'),
+    path('kbk/edit/<int:pk>/', KBKUpdateView.as_view(), name='kbk_edit'),
+    path('kbk/delete/<int:pk>/', KBKDeleteView.as_view(), name='kbk_delete'),
     # KOSGU URLs
-    path('kosgu/', views.KOSGUListView.as_view(), name='kosgu_list'),
-    path('kosgu/add/', views.KOSGUCreateView.as_view(), name='kosgu_add'),
-    path('kosgu/edit/<int:pk>/', views.KOSGUUpdateView.as_view(), name='kosgu_edit'),
-    path('kosgu/delete/<int:pk>/', views.KOSGUDeleteView.as_view(), name='kosgu_delete'),
+    path('kosgu/', KOSGUListView.as_view(), name='kosgu_list'),
+    path('kosgu/add/', KOSGUCreateView.as_view(), name='kosgu_add'),
+    path('kosgu/edit/<int:pk>/', KOSGUUpdateView.as_view(), name='kosgu_edit'),
+    path('kosgu/delete/<int:pk>/', KOSGUDeleteView.as_view(), name='kosgu_delete'),
 ]
